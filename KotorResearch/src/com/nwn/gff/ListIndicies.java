@@ -1,4 +1,4 @@
-package nwn.gff;
+package com.nwn.gff;
 
 import java.util.ArrayList;
 import java.util.HashMap;

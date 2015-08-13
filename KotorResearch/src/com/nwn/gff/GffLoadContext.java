@@ -1,6 +1,6 @@
-package nwn.gff;
+package com.nwn.gff;
 
-import nwn.NwnByteArrayInputStream;
+import com.nwn.NwnByteArrayInputStream;
 
 /**
  * @author sad

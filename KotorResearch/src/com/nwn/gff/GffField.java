@@ -1,6 +1,6 @@
-package nwn.gff;
+package com.nwn.gff;
 
-import nwn.gff.fields.GffFieldValue;
+import com.nwn.gff.fields.GffFieldValue;
 
 /**
  * @author sad

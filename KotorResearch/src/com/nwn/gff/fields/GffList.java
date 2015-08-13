@@ -1,8 +1,8 @@
-package nwn.gff.fields;
+package com.nwn.gff.fields;
 
 import java.io.IOException;
-import nwn.gff.GffLoadContext;
-import nwn.gff.GffStructure;
+import com.nwn.gff.GffLoadContext;
+import com.nwn.gff.GffStructure;
 
 /**
  * @author sad

@@ -1,25 +1,21 @@
-package nwn;
+package com.nwn;
 
-import nwn.gff.Gff;
+import com.nwn.gff.Gff;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import nwn.gff.ListIndicies;
-import nwn.gff.GffField;
-import nwn.gff.GffFieldType;
-import nwn.gff.GffLoadContext;
-import nwn.gff.GffStructure;
-import nwn.gff.fields.GffFieldValue;
+import com.nwn.gff.*;
+
+import com.nwn.gff.fields.GffFieldValue;
 
 public class FileReaderGff extends BaseReader {
 
     public Gff loadFile(FileInputStream stream, String fileName) throws IOException {
         init(stream);
-        Gff gff = new Gff();
+        
         String type = readString(stream, 4);
         String version = readString(stream, 4);
-        gff.setType(type);
-        gff.setVersion(version);
+        
         int structOffset = readInt(stream);
         int structCount = readInt(stream);
         int fieldOffset = readInt(stream);
@@ -57,6 +53,7 @@ public class FileReaderGff extends BaseReader {
 
         setAbsolutePosition(stream, structOffset);
         loadStructures(stream, structCount, loadContext);
+        Gff gff = new Gff(type, version, loadContext.getStructs()[0]);
         return gff;
     }
 

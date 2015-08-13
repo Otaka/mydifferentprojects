@@ -1,28 +1,26 @@
-package nwn.gff;
+package com.nwn.gff;
 
 /**
  * @author sad
  */
 public class Gff {
 
-    private String type;
-    private String version;
-    public void setType(String type) {
+    private final String type;
+    private final String version;
+    private final GffStructure root;
+
+    public Gff(String type, String version, GffStructure root) {
         this.type = type;
+        this.version = version;
+        this.root = root;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
     public String getVersion() {
         return version;
     }
-    
-    
 
 }

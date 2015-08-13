@@ -1,4 +1,4 @@
-package nwn.gff;
+package com.nwn.gff;
 
 /**
  * @author sad

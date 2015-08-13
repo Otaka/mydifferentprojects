@@ -1,4 +1,4 @@
-package nwn;
+package com.nwn;
 
 import java.io.ByteArrayInputStream;
 
