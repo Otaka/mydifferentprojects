@@ -4,17 +4,15 @@ import com.nwn.gff.*;
 import com.nwn.gff.fields.GffField;
 import com.nwn.gff.fields.GffFieldValue;
 import java.io.*;
-import nwn.gff.Gff;
 
 public class FileReaderGff extends BaseReader {
 
     public Gff loadFile(FileInputStream stream, String fileName) throws IOException {
         init(stream);
-        Gff gff = new Gff();
+
         String type = readString(stream, 4);
         String version = readString(stream, 4);
-        gff.setType(type);
-        gff.setVersion(version);
+
         int structOffset = readInt(stream);
         int structCount = readInt(stream);
         int fieldOffset = readInt(stream);
@@ -52,6 +50,7 @@ public class FileReaderGff extends BaseReader {
 
         setAbsolutePosition(stream, structOffset);
         loadStructures(stream, structCount, loadContext);
+        Gff gff = new Gff(type, version, loadContext.getStructs()[0]);
         return gff;
     }
 

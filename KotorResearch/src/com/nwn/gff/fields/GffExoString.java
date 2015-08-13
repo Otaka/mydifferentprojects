@@ -1,8 +1,9 @@
 package com.nwn.gff.fields;
 
+import java.io.IOException;
 import com.nwn.BaseReader;
 import com.nwn.gff.GffLoadContext;
-import java.io.IOException;
+import com.nwn.gff.fields.GffFieldValue;
 
 /**
  * @author sad
