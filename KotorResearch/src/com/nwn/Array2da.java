@@ -1,4 +1,4 @@
-package nwn;
+package com.nwn;
 
 import java.util.List;
 
@@ -6,8 +6,9 @@ import java.util.List;
  * @author sad
  */
 public class Array2da {
-    private  List<String> columnNames;
-    private  List<String[]> rowData;
+    private List<String> columnNames;
+    private List<String[]> rowData;
+
     public Array2da() {
     }
 
@@ -26,6 +27,5 @@ public class Array2da {
     public void setRowData(List<String[]> rowData) {
         this.rowData = rowData;
     }
-    
-    
+
 }

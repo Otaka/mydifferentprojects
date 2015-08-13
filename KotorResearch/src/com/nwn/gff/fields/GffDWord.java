@@ -1,6 +1,6 @@
-package nwn.gff.fields;
+package com.nwn.gff.fields;
 
-import nwn.gff.GffLoadContext;
+import com.nwn.gff.GffLoadContext;
 
 /**
  * @author sad

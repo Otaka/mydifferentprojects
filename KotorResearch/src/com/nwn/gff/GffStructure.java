@@ -1,4 +1,6 @@
-package nwn.gff;
+package com.nwn.gff;
+
+import com.nwn.gff.fields.GffField;
 
 /**
  * @author sad
@@ -15,7 +17,6 @@ public class GffStructure {
         this.type = type;
     }
 
-    
     public void setFields(GffField[] fields) {
         this.fields = fields;
     }

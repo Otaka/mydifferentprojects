@@ -1,15 +1,10 @@
-package nwn;
+package com.nwn;
 
+import com.nwn.gff.*;
+import com.nwn.gff.fields.GffField;
+import com.nwn.gff.fields.GffFieldValue;
+import java.io.*;
 import nwn.gff.Gff;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import nwn.gff.ListIndicies;
-import nwn.gff.GffField;
-import nwn.gff.GffFieldType;
-import nwn.gff.GffLoadContext;
-import nwn.gff.GffStructure;
-import nwn.gff.fields.GffFieldValue;
 
 public class FileReaderGff extends BaseReader {
 
@@ -29,9 +24,9 @@ public class FileReaderGff extends BaseReader {
         int fieldDataOffset = readInt(stream);
         int fieldDataCount = readInt(stream);
         int fieldIndiciesOffset = readInt(stream);
-        int fieldIndiciesCount = readInt(stream)/4;
+        int fieldIndiciesCount = readInt(stream) / 4;
         int listIndiciesOffset = readInt(stream);
-        int listIndiciesCount = readInt(stream)/4;
+        int listIndiciesCount = readInt(stream) / 4;
 
         setAbsolutePosition(stream, labelOffset);
         String[] labels = loadLabels(stream, labelCount);
@@ -75,7 +70,7 @@ public class FileReaderGff extends BaseReader {
                 fields = new GffField[fieldsCount];
                 for (int j = 0; j < fieldsCount; j++) {
                     int index = loadContext.getFieldIndicies()[fieldIndiciesOffset + j];
-                    GffField field=loadContext.getFields()[index];
+                    GffField field = loadContext.getFields()[index];
                     field.toString();
                     fields[j] = field;
                 }
@@ -94,20 +89,20 @@ public class FileReaderGff extends BaseReader {
     }
 
     private int[] loadListIndicies(InputStream stream, int indiciesCount) throws IOException {
-        int[]rawList=new int[indiciesCount];
+        int[] rawList = new int[indiciesCount];
         for (int i = 0; i < indiciesCount; i++) {
             rawList[i] = readInt(stream);
         }
-        
-        int listCount=0;
-        for(int i=0;i<indiciesCount;i++){
-            int n=rawList[i];
-            i+=n;
+
+        int listCount = 0;
+        for (int i = 0; i < indiciesCount; i++) {
+            int n = rawList[i];
+            i += n;
             listCount++;
         }
 
-        int[]list=new int[listCount];
-        
+        int[] list = new int[listCount];
+
         return rawList;
     }
 

@@ -1,6 +1,7 @@
-package nwn.gff;
+package com.nwn.gff;
 
-import nwn.NwnByteArrayInputStream;
+import com.nwn.NwnByteArrayInputStream;
+import com.nwn.gff.fields.GffField;
 
 /**
  * @author sad
@@ -25,8 +26,6 @@ public class GffLoadContext {
     public GffStructure[] getStructs() {
         return structs;
     }
-    
-    
 
     public void setFields(GffField[] fields) {
         this.fields = fields;

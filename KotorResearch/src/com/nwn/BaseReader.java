@@ -1,8 +1,6 @@
-package nwn;
+package com.nwn;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * @author sad
@@ -76,10 +74,14 @@ public class BaseReader {
     public static int readInt(InputStream inputStream) throws IOException {
         return (inputStream.read() & 0xFF) | ((inputStream.read() & 0xFF) << 8) | ((inputStream.read() & 0xFF) << 16) | ((inputStream.read() & 0xFF) << 24);
     }
-    
+
+    public static float readFloat(InputStream inputStream) throws IOException {
+        return Float.intBitsToFloat(readInt(inputStream));
+    }
+
     public static long readLong(InputStream inputStream) throws IOException {
-        return (inputStream.read() & 0xFF) | ((inputStream.read() & 0xFF) << 8) | ((inputStream.read() & 0xFF) << 16) | ((inputStream.read() & 0xFF) << 24)|
-                ((inputStream.read() & 0xFF)<<32) | ((inputStream.read() & 0xFF) << 40) | ((inputStream.read() & 0xFF) << 48) | ((inputStream.read() & 0xFF) << 56);
+        return (inputStream.read() & 0xFF) | ((inputStream.read() & 0xFF) << 8) | ((inputStream.read() & 0xFF) << 16) | ((inputStream.read() & 0xFF) << 24)
+                | ((inputStream.read() & 0xFF) << 32) | ((inputStream.read() & 0xFF) << 40) | ((inputStream.read() & 0xFF) << 48) | ((inputStream.read() & 0xFF) << 56);
     }
 
     public static short readShort(InputStream inputStream) throws IOException {

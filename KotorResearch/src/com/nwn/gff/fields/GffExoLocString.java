@@ -1,9 +1,9 @@
-package nwn.gff.fields;
+package com.nwn.gff.fields;
 
+import com.nwn.BaseReader;
+import com.nwn.NwnByteArrayInputStream;
+import com.nwn.gff.GffLoadContext;
 import java.io.IOException;
-import nwn.BaseReader;
-import nwn.NwnByteArrayInputStream;
-import nwn.gff.GffLoadContext;
 
 /**
  * @author sad

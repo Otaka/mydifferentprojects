@@ -1,6 +1,4 @@
-package nwn.gff;
-
-import nwn.gff.fields.GffFieldValue;
+package com.nwn.gff.fields;
 
 /**
  * @author sad
@@ -27,9 +25,7 @@ public class GffField {
 
     @Override
     public String toString() {
-        return getLabel()+":"+(value==null?"null":value.toString());
+        return getLabel() + ":" + (value == null ? "null" : value.toString());
     }
-    
-    
-    
+
 }

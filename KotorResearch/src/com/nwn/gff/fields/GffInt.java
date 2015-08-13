@@ -1,4 +1,4 @@
-package nwn.gff.fields;
+package com.nwn.gff.fields;
 
 /**
  * @author sad

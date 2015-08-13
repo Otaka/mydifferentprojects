@@ -1,7 +1,7 @@
-package nwn.gff.fields;
+package com.nwn.gff.fields;
 
+import com.nwn.gff.GffLoadContext;
 import java.io.IOException;
-import nwn.gff.GffLoadContext;
 
 /**
  * @author sad
@@ -13,7 +13,7 @@ public abstract class GffFieldValue {
     @Override
     public String toString() {
         try {
-            return getClass().getMethod("getValue").invoke(this)+":"+getClass().getSimpleName();
+            return getClass().getMethod("getValue").invoke(this) + ":" + getClass().getSimpleName();
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex);

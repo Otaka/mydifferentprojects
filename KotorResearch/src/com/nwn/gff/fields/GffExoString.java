@@ -1,8 +1,8 @@
-package nwn.gff.fields;
+package com.nwn.gff.fields;
 
+import com.nwn.BaseReader;
+import com.nwn.gff.GffLoadContext;
 import java.io.IOException;
-import nwn.BaseReader;
-import nwn.gff.GffLoadContext;
 
 /**
  * @author sad
@@ -18,7 +18,7 @@ public class GffExoString extends GffFieldValue {
     @Override
     public void load(GffLoadContext loadContext, int dataOrOffset) throws IOException {
         loadContext.getRawData().setPosition(dataOrOffset);
-        int size=BaseReader.readInt(loadContext.getRawData());
-        value=BaseReader.readString(loadContext.getRawData(), size);
+        int size = BaseReader.readInt(loadContext.getRawData());
+        value = BaseReader.readString(loadContext.getRawData(), size);
     }
 }

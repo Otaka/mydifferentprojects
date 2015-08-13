@@ -1,8 +1,8 @@
-package nwn.gff;
+package com.nwn.gff;
 
+import com.nwn.gff.fields.*;
 import java.io.IOException;
 import java.util.HashMap;
-import nwn.gff.fields.*;
 
 /**
  * @author sad
