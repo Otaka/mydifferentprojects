@@ -2,17 +2,23 @@ package com.nwn.dialog;
 
 import com.nwn.BaseReader;
 import com.nwn.NwnByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
 
 public class FileReaderTlk extends BaseReader {
+    private final Charset charset;
 
     public FileReaderTlk() {
+        charset = Charset.forName("cp1251");
     }
 
-    public Tlk loadFile(FileInputStream stream, String fileName) throws IOException {
-        init(stream);
-
+    public Tlk loadFile(FileInputStream fileStream, String fileName) throws IOException {
+        init(fileStream);
+        long size = fileStream.getChannel().size();
+        byte[] fullBuffer = new byte[(int) size];
+        fileStream.read(fullBuffer);
+        fileStream.close();
+        NwnByteArrayInputStream stream = new NwnByteArrayInputStream(fullBuffer);
         String type = readString(stream, 4);
         if (!type.equals("TLK ")) {
             throw new IllegalArgumentException("File " + fileName + " is not a valid tlk file");
@@ -22,20 +28,23 @@ public class FileReaderTlk extends BaseReader {
         int languageId = readInt(stream);
         int stringCount = readInt(stream);
         int stringEntriesOffset = readInt(stream);
-        long position = stream.getChannel().position();
-        int rawDataSize = (int) (stream.getChannel().size() - stringEntriesOffset);
-        setAbsolutePosition(stream, stringEntriesOffset);
+        long position = stream.getPosition();
+        int rawDataSize = (int) (size - stringEntriesOffset);
+        stream.setPosition(stringEntriesOffset);
+        //setAbsolutePosition(stream, stringEntriesOffset);
         byte[] rawDataBuffer = new byte[rawDataSize];
         NwnByteArrayInputStream rawDataInputStream = new NwnByteArrayInputStream(rawDataBuffer);
 
         stream.read(rawDataBuffer);
-        setAbsolutePosition(stream, (int) position);
+
+        stream.setPosition((int) position);
+        //setAbsolutePosition(stream, (int) position);
         StringEntry[] entries = loadStringDataTable(stream, stringCount, rawDataInputStream);
         Tlk tlk = new Tlk(languageId, entries);
         return tlk;
     }
 
-    private StringEntry[] loadStringDataTable(FileInputStream stream, int stringCount, NwnByteArrayInputStream rawDataInputStream) throws IOException {
+    private StringEntry[] loadStringDataTable(NwnByteArrayInputStream stream, int stringCount, NwnByteArrayInputStream rawDataInputStream) throws IOException {
         StringEntry[] strings = new StringEntry[stringCount];
         for (int i = 0; i < stringCount; i++) {
             int stringRef = i;
@@ -48,6 +57,7 @@ public class FileReaderTlk extends BaseReader {
             float soundLength = Float.intBitsToFloat(readInt(stream));
             rawDataInputStream.setPosition(offsetToString);
             String stringValue = readString(rawDataInputStream, stringSize);
+            stringValue = new String(stringValue.getBytes("cp1252"), charset);
             StringEntry string = new StringEntry(stringRef, stringValue, soundResRef, soundLength, flags);
             strings[i] = string;
         }
