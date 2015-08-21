@@ -4,16 +4,33 @@ package com.nwn.script;
  * @author Dmitry
  */
 public class ScriptManager {
+
     private int index = 0;
+    private NwStack stack;
+    private byte[] buffer;
 
     public void execute(NwnScript script) {
         index = 0;
-        byte[] buffer = script.getCommandArray();
+        buffer = script.getCommandArray();
         while (true) {
-            byte opcode = buffer[index];
+            byte opcode = getCommandByte();
             process(opcode);
-            index++;
         }
+    }
+
+    private byte getCommandByte() {
+        byte opcode = buffer[index];
+        index++;
+        return opcode;
+    }
+
+    private int getCommandInt() {
+        int result = buffer[index + 3] & 0xFF
+                | (buffer[index + 2] & 0xFF) << 8
+                | (buffer[index + 1] & 0xFF) << 16
+                | (buffer[index + 0] & 0xFF) << 24;
+        index += 4;
+        return result;
     }
 
     private void cpDownSp() {
@@ -26,27 +43,50 @@ public class ScriptManager {
     }
 
     private void constFunction() {
+
     }
 
     private void actionCall() {
     }
 
     private void logAndII() {
+        index++;
+        int value1 = stack.popInt();
+        int value2 = stack.popInt();
+        stack.pushInt((value1 & value2) == 0 ? 0 : 1);
     }
 
     private void logOrII() {
+        index++;
+        int value1 = stack.popInt();
+        int value2 = stack.popInt();
+        stack.pushInt((value1 | value2) == 0 ? 0 : 1);
     }
 
     private void incOrII() {
+        index++;
+        int value1 = stack.popInt();
+        int value2 = stack.popInt();
+        stack.pushInt(value1 | value2);
     }
 
     private void excOrII() {
+        index++;
+        int value1 = stack.popInt();
+        int value2 = stack.popInt();
+        stack.pushInt(value1 ^ value2);
+
     }
 
     private void boolAndII() {
+        index++;
+        int value1 = stack.popInt();
+        int value2 = stack.popInt();
+        stack.pushInt((value1 & value2) == 0 ? 0 : 1);
     }
 
     private void equal() {
+        byte type =
     }
 
     private void nequal() {
