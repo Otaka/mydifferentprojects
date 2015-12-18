@@ -1,4 +1,4 @@
-package com.macro;
+package com.macro.functions;
 
 /**
  * @author sad
