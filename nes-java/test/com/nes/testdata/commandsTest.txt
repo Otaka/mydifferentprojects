@@ -1,0 +1,439 @@
+;ADC
+	lda #$5
+	sta $1
+	lda #$9
+	adc $1
+	sta $1000
+;expected 0x0e   0
+
+;AND
+	lda #$16
+	and #$12
+	sta $1001
+;expected 0x12   1
+
+;ASL
+	lda #$10
+	asl A
+	sta $1002;
+;expected 0x20   2
+
+;BCC
+clc
+bcc cclear
+	lda #$12
+	sta $1003
+	jmp endBccIf
+cclear:
+	lda #$13
+	sta $1003
+endBccIf:
+;expected 0x13    3
+
+;BCS
+sec
+bcs cSet
+	lda #$14
+	sta $1004
+	jmp endBcsIf
+cSet:
+	lda #$15
+	sta $1004
+endBcsIf:
+;expected 0x15   4
+
+;BCS not
+clc
+bcs cSetNot
+	lda #$14
+	sta $1005
+	jmp endBcsIfNot
+cSetNot:
+	lda #$15
+	sta $1005
+endBcsIfNot:
+;expected 0x14    5
+
+;BEQ
+lda #$0
+beq cEqual
+	lda #$16
+	sta $1006
+	jmp endBeq
+cEqual:
+	lda #$17
+	sta $1006
+endBeq:
+;expected 0x17   6
+
+;BNE
+lda #$0
+bne cNEqualbne
+	lda #$16
+	sta $1007
+	jmp endBneEnd2
+cNEqualbne:
+	lda #$17
+	sta $1007
+endBneEnd2:
+;expected 0x16    7
+
+;BNE
+lda #$0
+bne cNEqual
+	lda #$16
+	sta $1008
+	jmp endBne
+cNEqual:
+	lda #$17
+	sta $1008
+endBne:
+;expected 0x16    8
+
+;BMI
+lda #$80
+bmi cBMI
+	lda #$18
+	sta $1009
+	jmp endBmi
+cBMI:
+	lda #$19
+	sta $1009
+endBmi:
+;expected 0x19    9
+
+;BMI not
+lda #$64
+bmi cBMInot
+	lda #$18
+	sta $100a
+	jmp endBmiNot
+cBMInot:
+	lda #$19
+	sta $100a
+endBmiNot:
+;expected 0x18    10
+
+;BPL
+lda #$64
+bpl cBPL
+	lda #$1a
+	sta $100b
+	jmp endBpl
+cBPL:
+	lda #$1b
+	sta $100b
+endBpl:
+;expected 0x1b    11
+
+;BPL not
+lda #$80
+bpl cBPLnot
+	lda #$1a
+	sta $100c
+	jmp endBplnot
+cBPLnot:
+	lda #$1b
+	sta $100c
+endBplnot:
+;expected 0x1a    12
+
+;BVS
+php
+pla
+ora #$64 ; here we set Overflow flag
+pha
+plp
+bvs cBVS
+	lda #$1c
+	sta $100d
+	jmp endBvs
+cBVS:
+	lda #$1d
+	sta $100d
+endBvs:
+;expected 0x1d     13
+
+;BVS not
+php
+pla
+and #$0 ; here we clear Overflow flag
+pha
+plp
+bvs cBVSnot
+	lda #$1e
+	sta $100e
+	jmp endBvsNot
+cBVSnot:
+	lda #$1f
+	sta $100e
+endBvsNot:
+;expected 0x1e     14
+
+;BVC
+php
+pla
+ora #$64 ; here we set Overflow flag
+pha
+plp
+bvc cBVC
+	lda #$1c
+	sta $100f
+	jmp endBvc
+cBVC:
+	lda #$1d
+	sta $100f
+endBvc:
+;expected 0x1c     15
+
+;BVC not
+php
+pla
+and #$0 ; here we clear Overflow flag
+pha
+plp
+bvc cBVCnot
+	lda #$1c
+	sta $1010
+	jmp endBvcNot
+cBVCnot:
+	lda #$1d
+	sta $1010
+endBvcNot:
+;expected 0x1d     16
+
+;CLC
+clc
+bcc cIsNotSet
+	lda #$1e
+	sta $1011
+	jmp endCIsSet
+cIsNotSet:
+	lda #$1f
+	sta $1011
+endCIsSet:
+;expected 0x1f     17
+
+;SEC
+sec
+bcs cIsOpSet
+	lda #$20
+	sta $1012
+	jmp endCOpIsSet
+cIsOpSet:
+	lda #$20
+	sta $1012
+endCOpIsSet:
+;expected 0x20     18
+
+;CMP >
+lda #$0
+pha
+plp ;clear flags
+lda #$10
+cmp #$15
+php
+pla
+sta $1013
+;expected 0xb0     19
+
+;CMP <
+lda #$0
+pha
+plp ;clear flags
+lda #$15
+cmp #$10
+php
+pla
+sta $1014
+;expected 0x31     20
+
+;CMP =
+lda #$0
+pha
+plp ;clear flags
+lda #$10
+cmp #$10
+php
+pla
+sta $1015
+;expected 0x33      21
+
+;CPX >
+lda #$0
+pha
+plp ;clear flags
+ldx #$10
+cpx #$15
+php
+pla
+sta $1016
+;expected 0xb0      22
+
+;CPX <
+lda #$0
+pha
+plp ;clear flags
+ldx #$15
+cpx #$10
+php
+pla
+sta $1017
+;expected 0x31      23
+
+;CPX =
+lda #$0
+pha
+plp ;clear flags
+ldx #$10
+cpx #$10
+php
+pla
+sta $1018
+;expected 0x33      24
+
+;CPY >
+lda #$0
+pha
+plp ;clear flags
+ldy #$10
+cpy #$15
+php
+pla
+sta $1019
+;expected 0xb0      25
+
+;CPY <
+lda #$0
+pha
+plp ;clear flags
+ldy #$15
+cpy #$10
+php
+pla
+sta $101a
+;expected 0x31      26
+
+;CPY =
+lda #$0
+pha
+plp ;clear flags
+ldy #$10
+cpy #$10
+php
+pla
+sta $101b
+;expected 0x33      27
+
+;DEC
+lda #$25
+sta $101c
+dec $101c
+;expected 0x24      28
+
+;DEX
+ldx #$98
+dex
+stx $101d
+;expected 0x97      29
+
+;DEY
+ldy #$97
+dey
+sty $101e
+;expected 0x96      30
+
+;EOR
+lda #$76
+eor #$86
+sta $101f
+;expected 0xf0      31
+
+;INC
+lda #$77
+sta $03
+inc $03
+lda $03
+sta $1020
+;expected 0x78      32
+
+;INX
+ldx #$78
+inx
+stx $1021
+;expected 0x79      33
+
+;INY
+ldy #$79
+iny
+sty $1022
+;expected 0x7a      34
+
+;LSR
+lda #$10
+lsr A
+sta $1023
+;expected 0x8       35
+
+;ORA
+lda #$10
+ora #$4
+sta $1024
+;expected 0x14      36
+
+;ROL
+clc
+lda #$94
+rol A
+sta $1025
+;expected 0x28      37
+
+;ROR
+clc
+lda #$95
+ror A
+sta $1026
+;expected 0x4a      38
+
+;SBC clc
+clc
+lda #$50
+sbc #$5
+sta $1027
+;expected 0x4a      39
+
+;SBC sec
+sec
+lda #$50
+sbc #$5
+sta $1028
+;expected 0x4b      40
+
+;TAX
+lda #$56
+tax
+stx $1029
+;expected 0x56      41
+
+;TAY
+lda #$57
+tay
+sty $102a
+;expected 0x57      42
+
+;TSX
+tsx
+stx $102b
+;expected 0xff      43
+
+;TXA
+ldx #$43
+txa
+sta $102c
+;expected 0x43      44
+
+;TYA
+ldy #$44
+tya
+sta $102d
+;expected 0x44      45

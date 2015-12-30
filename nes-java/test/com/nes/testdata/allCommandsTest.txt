@@ -1,0 +1,159 @@
+ADC #$d8 
+ADC $08 
+ADC $05,X 
+ADC $0345
+ADC $c000,X
+ADC $0345, Y
+ADC ($08, X)
+ADC ($08), Y
+AND #$d8
+AND $08
+AND $08, X
+AND $0345 
+AND $0345, X 
+AND $0345, Y 
+AND ($08, X) 
+AND ($08), Y 
+label:
+ASL A 
+ASL $08 
+ASL $08, X 
+ASL $0345 
+ASL $0345, X 
+BCC label 
+BCS label 
+BEQ label
+BIT $08 
+BIT $0345 
+
+BMI label 
+BNE label
+BPL label
+BRK 
+BVC label
+BVS label
+CLC 
+CLD 
+CLI 
+CLV 
+CMP #$d8 
+CMP $08 
+CMP $08, X 
+CMP $0345 
+CMP $0345, X 
+CMP $0345, Y 
+CMP ($08, X) 
+CMP ($08), Y 
+CPX #$d8 
+CPX $08 
+CPX $0345 
+CPY #$d8 
+CPY $08 
+CPY $0345 
+DEC $08 
+DEC $08, X 
+DEC $0345 
+DEC $0345, X 
+DEX 
+DEY 
+EOR #$d8 
+EOR $08 
+EOR $08, X 
+EOR $0345 
+EOR $0345, X 
+EOR $0345, Y 
+EOR ($08, X) 
+EOR ($08), Y 
+INC $08 
+INC $08, X 
+INC $0345 
+INC $0345, X 
+INX 
+INY 
+JMP label 
+JMP ($00f0) 
+JSR label 
+LDA #$d8 
+LDA $08 
+LDA $08, X 
+LDA $0345 
+LDA $0345, X 
+LDA $0345, Y 
+LDA ($08, X) 
+LDA ($08), Y 
+
+LDX #$d8 
+LDX $08 
+LDX $08, Y 
+LDX $0345 
+LDX $0345, Y 
+
+LDY #$d8 
+LDY $08 
+LDY $08, X
+LDY $0345
+LDY $0345, X
+
+LSR A 
+LSR $08 
+LSR $08, X 
+LSR $0345 
+LSR $0345, X 
+
+NOP 
+
+ORA #$d8 
+ORA $08 
+ORA $08, X 
+ORA $0345 
+ORA $0345, X 
+ORA $0345, Y 
+ORA ($08, X) 
+ORA ($08), Y
+
+PHA 
+PHP 
+PLA 
+PLP 
+ROL A 
+ROL $08 
+ROL $08, X 
+ROL $0345 
+ROL $0345, X 
+ROR A 
+ROR $08 
+ROR $08, X 
+ROR $0345 
+ROR $0345, X 
+RTI 
+RTS 
+SBC #$d8 
+SBC $08 
+SBC $08, X 
+SBC $0345 
+SBC $0345, X 
+SBC $0345, Y 
+SBC ($08, X) 
+SBC ($08), Y 
+SEC 
+SED 
+SEI 
+STA $08 
+STA $08, X 
+STA $0345 
+STA $0345, X 
+STA $0345; Y 
+STA ($08, X) 
+STA ($08),Y 
+STX $08 
+STX $08, Y 
+STX $0345 
+STY $08 
+STY $08, X 
+STY $0345 
+TAX
+TAY
+TSX 
+TXA 
+TXS 
+TYA 

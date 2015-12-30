@@ -1,0 +1,5 @@
+init:
+ brk
+ rts
+jsr init
+  brk
