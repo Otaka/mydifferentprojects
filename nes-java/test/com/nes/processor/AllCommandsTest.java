@@ -2,6 +2,7 @@ package com.nes.processor;
 
 import com.nes.NesAbstractTst;
 import com.nes.assembler.Assembler;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -11,6 +12,7 @@ import org.junit.Test;
 public class AllCommandsTest extends NesAbstractTst {
 
     @Test
+    @Ignore
     public void testAllCommands() {
         String text = readString("commandsTest.txt");
         byte[] expectedByteCode = readByteArrayFromHexTextFile("commandsByteCodeTestResult.txt");

@@ -17,7 +17,7 @@ public class NesMemory extends Memory {
         this.ppu = ppu;
         this.rom = rom;
     }
-    
+
     protected int normalizeAddress(int address) {
         if (address >= 0 && address <= 0x1FFF) {
             return address & 0x7FF;
@@ -28,52 +28,57 @@ public class NesMemory extends Memory {
 
         return address;
     }
-    
+
     @Override
     public byte getValue(int address) {
         int normalized = normalizeAddress(address);
         if (normalized >= 0 && normalized < 0x800) {
             return ram[normalized];
-        }
+        }else
         if (normalized >= 0x2000 && normalized <= 0x2007) {
             return ppu.readRegister(normalized);
-        }
+        }else
         if (normalized >= 0x4000 && normalized < 0x4019) {
             //apu
             return 0x0;
-        }
+        }else
         if (normalized >= 0x4020 && normalized < 0x5FFF) {
             return rom.readExpansionRom(address);
-        }
+        }else
         if (normalized >= 0x6000 && normalized < 0x7FFF) {
             return sram[normalized - 0x6000];
-        }
+        }else
         if (normalized >= 0x8000 && normalized < 0xFFFF) {
             return rom.readPrgRom(normalized);
         }
 
-        return (byte)0xFF;
+        return (byte) 0xFF;
     }
 
     @Override
     public void setValue(byte value, int address) {
         int normalized = normalizeAddress(address);
         if (normalized >= 0 && normalized < 0x800) {
-            ram[normalized]=value;
-        }
+            ram[normalized] = value;
+        }else
         if (normalized >= 0x2000 && normalized <= 0x2007) {
-            ppu.writeRegister(normalized,value);
-        }
+            ppu.writeRegister(normalized, value);
+        }else
         if (normalized >= 0x4000 && normalized < 0x4019) {
+            if (normalized == 0x4014) {
+                ppu.writeRegister(normalized, value);//oamdma
+            } else {
+                throw new IllegalStateException("not implemented apu registers");
+            }
             //apu
             //return 0x0;
-        }
+        }else
         if (normalized >= 0x4020 && normalized < 0x5FFF) {
             rom.writeExpansionRom(address, value);
-        }
+        }else
         if (normalized >= 0x6000 && normalized < 0x7FFF) {
-            sram[normalized - 0x6000]=value;
-        }
+            sram[normalized - 0x6000] = value;
+        }else
         if (normalized >= 0x8000 && normalized < 0xFFFF) {
             rom.writePrgRom(normalized, value);
         }
