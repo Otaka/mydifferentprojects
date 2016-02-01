@@ -22,7 +22,7 @@ public class Tokenizer {
         return currentPosition;
     }
 
-    protected int getLineNumber() {
+    public int getLineNumber() {
         return currentLineNumber;
     }
 
@@ -211,6 +211,30 @@ public class Tokenizer {
 
     private boolean isSpaceLikeChar(char c) {
         return c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == '\f';
+    }
+
+    public Token nextTokenSkipSpaceAndComments() {
+        while (true) {
+            Token t = nextToken();
+            if (t == null) {
+                return null;
+            }
+            if (t.getTokenType() == TokenType.Data) {
+                return t;
+            }
+        }
+    }
+    
+    public Token nextTokenSkipComment() {
+        while (true) {
+            Token t = nextToken();
+            if (t == null) {
+                return null;
+            }
+            if (t.getTokenType() == TokenType.Data || t.getTokenType() == TokenType.Space) {
+                return t;
+            }
+        }
     }
 
     public Token nextToken() {
