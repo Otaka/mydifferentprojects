@@ -86,7 +86,8 @@ public class ScriptManager {
     }
 
     private void equal() {
-        byte type =
+        byte type = getCommandByte();
+        
     }
 
     private void nequal() {
