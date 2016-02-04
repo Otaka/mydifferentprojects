@@ -64,6 +64,16 @@ public class hFileChooser extends JFileChooser {
      * JPEG)|jpg,jpeg;BMP Images|bmp;All Files|*</b><br/>
      */
     public void setFileFilter(String fileFilterString) {
+        setFileFilter(fileFilterString, true);
+    }
+    /**
+     * Filter that allows directories and filters files with
+     * <i>fileFilterString</i>
+     *
+     * @param fileFilterString Should be like:<br/> <b>JPG Images(JPG,
+     * JPEG)|jpg,jpeg;BMP Images|bmp;All Files|*</b><br/>
+     */
+    public void setFileFilter(String fileFilterString,boolean allowDirectory) {
         for (FileFilter ff : getChoosableFileFilters()) {
             removeChoosableFileFilter(ff);
         }
@@ -82,7 +92,7 @@ public class hFileChooser extends JFileChooser {
             String description = filterParts[0].trim();
             String extensionsList = filterParts[1].trim();
             String regexp = formatFileValidateRegexp(extensionsList);
-            addFilter(new hFileFilter(description, regexp), true);
+            addFilter(new hFileFilter(description, regexp), allowDirectory);
         }
     }
 
