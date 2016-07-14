@@ -1,6 +1,7 @@
 package com.nwn.data.key;
 
 import static com.nwn.data.key.ContentType.*;
+import com.nwn.exceptions.ParsingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +56,8 @@ public enum ResourceType {
     MDX(3008, MDX_MODEL),
     BTC(2026, GFF),
     BTI(2024, GFF),
-    VIS(3001, TEXT);
+    VIS(3001, TEXT),
+    TPC(3007, TPC_TEXTURE);
 
     private final int id;
     private final ContentType contentType;
@@ -68,7 +70,11 @@ public enum ResourceType {
     }
 
     public static ResourceType getByType(int id) {
-        return resourceTypeMap.get(id);
+        ResourceType type = resourceTypeMap.get(id);
+        if (type == null) {
+            throw new ParsingException("Cannot determine ResourceType by this [" + id + "] id");
+        }
+        return type;
     }
 
     private ResourceType(int id, ContentType contentType) {

@@ -28,7 +28,7 @@ public class KeyResource {
 
     @Override
     public String toString() {
-        return resId + ":" + resRef + ":" + resourceType;
+        return resRef + ":" + resId + ":" + resourceType;
     }
 
 }

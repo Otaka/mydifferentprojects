@@ -9,7 +9,7 @@ import java.util.Map;
 public class Key {
     private final KeyResource[] keyResources;
     private final BifShort[] bifs;
-    private final Map<Integer, KeyResource> resourcesMap = new HashMap<Integer, KeyResource>();
+    private final Map<Integer, KeyResource> resourcesMap = new HashMap<>();
 
     public Key(KeyResource[] keyResources, BifShort[] biffs) {
         this.keyResources = keyResources;

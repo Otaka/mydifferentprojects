@@ -1,6 +1,7 @@
 package com.nwn.data;
 
 import java.io.*;
+import java.lang.reflect.Field;
 
 /**
  * @author sad
@@ -10,6 +11,17 @@ public class BaseReader {
     protected static final StringBuilder tempBuffer = new StringBuilder();
     private long baseFileOffset;
 
+    private static Field posField;
+
+    static {
+        try {
+            posField = ByteArrayInputStream.class.getDeclaredField("pos");
+            posField.setAccessible(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     protected void init(FileInputStream stream) throws IOException {
         baseFileOffset = stream.getChannel().position();
     }
@@ -18,9 +30,33 @@ public class BaseReader {
         stream.getChannel().position(baseFileOffset + pos);
     }
 
+    protected void setAbsolutePosition(ByteArrayInputStream stream, int pos) throws IOException {
+        stream.reset();
+        stream.skip(pos);
+    }
+
+    protected long getPosition(FileInputStream stream) throws IOException {
+        long position = stream.getChannel().position() - baseFileOffset;
+        return position;
+    }
+
+    protected long getPosition(ByteArrayInputStream stream) throws IOException {
+        try {
+            return posField.getInt(stream);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
+    }
+
     protected void setRelativePosition(FileInputStream stream, int pos) throws IOException {
         long position = stream.getChannel().position();
         stream.getChannel().position(position + pos);
+    }
+
+    protected void setRelativePosition(ByteArrayInputStream stream, int pos) throws IOException {
+        long position = getPosition(stream);
+        setAbsolutePosition(stream, (int) (position + pos));
     }
 
     public static String readTabEndedString(InputStream stream) throws IOException {
