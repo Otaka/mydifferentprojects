@@ -4,6 +4,7 @@ import com.gooddies.events.ValueChangedEvent;
 import com.gooddies.texteditors.DefaultIntegerTextField;
 import com.settings.editor.builder.PropertyHolder;
 import com.settings.editor.components.annotations.PropertyInt;
+import com.settings.editor.components.utils.ContextMouseListener;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,6 +18,7 @@ public class PropertyIntBuilder extends AbstractComponentPropertyBuilder {
     public JComponent createComponent(final PropertyHolder property, JPanel container) {
         JLabel label = new JLabel(property.getName());
         DefaultIntegerTextField textField = new DefaultIntegerTextField();
+        textField.addMouseListener(new ContextMouseListener());
         PropertyInt annotation = (PropertyInt) property.getAnnotation();
 
         textField.setValue(property.getValueInt());
