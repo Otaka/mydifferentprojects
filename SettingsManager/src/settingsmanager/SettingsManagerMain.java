@@ -20,7 +20,6 @@ public class SettingsManagerMain {
         p.setX(43);
         p.setSomeColor(Color.red);
         SwingUtilities.invokeLater(new Runnable() {
-
             @Override
             public void run() {
                 new SettingsDialogBuilder()
@@ -31,5 +30,4 @@ public class SettingsManagerMain {
             }
         });
     }
-
 }

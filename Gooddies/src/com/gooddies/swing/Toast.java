@@ -1,22 +1,10 @@
 package com.gooddies.swing;
 
-import java.awt.Color;
 import java.awt.Dialog.ModalityType;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.Point;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
+import javax.swing.*;
 
 /**
  * @author Dmitry
@@ -46,7 +34,8 @@ public class Toast extends JDialog {
     private int mDuration;
     private Color mBackgroundColor = Color.BLACK;
     private Color mForegroundColor = Color.WHITE;
-    private static int offset=0;
+    private static int offset = 0;
+
     public Toast(Window owner) {
         super(owner);
         mOwner = owner;
@@ -122,12 +111,12 @@ public class Toast extends JDialog {
         if (mOwner != null) {
             Point ownerLoc = mOwner.getLocation();
             int x = (int) (ownerLoc.getX() + ((mOwner.getWidth() - this.getWidth()) / 2));
-            int y = (int) (ownerLoc.getY() + DISTANCE_FROM_PARENT_TOP)+offset;
+            int y = (int) (ownerLoc.getY() + DISTANCE_FROM_PARENT_TOP) + offset;
 
             return new Point(x, y);
         } else {
             Dimension d = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-            return new Point(d.width / 2, d.height / 2+offset);
+            return new Point(d.width / 2, d.height / 2 + offset);
         }
     }
 
@@ -162,7 +151,7 @@ public class Toast extends JDialog {
     }
 
     public static Toast makeText(JComponent owner, String text, int duration, Style style) {
-        Toast toast = new Toast(owner==null?null:SwingUtilities.getWindowAncestor(owner));
+        Toast toast = new Toast(owner == null ? null : SwingUtilities.getWindowAncestor(owner));
         toast.mText = text;
         toast.mDuration = duration;
 
@@ -185,11 +174,29 @@ public class Toast extends JDialog {
             public void run() {
                 try {
                     createGUI();
-                    offset+=30;
+                    offset += 30;
                     fadeIn();
                     Thread.sleep(mDuration);
                     fadeOut();
-                    offset-=30;
+                    offset -= 30;
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public void displayDirect() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    createGUI();
+                    setLocation(getToastLocation());
+                    setVisible(true);
+                    Thread.sleep(mDuration);
+                    setVisible(false);
+                    offset -= 30;
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }

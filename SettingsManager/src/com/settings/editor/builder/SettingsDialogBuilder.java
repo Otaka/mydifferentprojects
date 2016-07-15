@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 
 /**
  * @author sad
@@ -86,7 +85,7 @@ public class SettingsDialogBuilder {
         return maxSize;
     }
 
-    public void show() {
+    public JDialog show() {
         SettingsPanelBuilder panelBuilder = new SettingsPanelBuilder();
         panelBuilder.setCategoryProperties(categoryProperties);
         JComponent panel = panelBuilder.build(property);
@@ -110,5 +109,6 @@ public class SettingsDialogBuilder {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+        return dialog;
     }
 }
