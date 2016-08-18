@@ -42,7 +42,6 @@ import static com.jnr.x86asm.Util.*;
  */
 public final class Assembler extends Serializer {
 
-    public boolean oldCompiler = false;
     private final CodeBuffer _buffer = new CodeBuffer();
     private final List<RelocData> _relocData = new LinkedList<RelocData>();
     private final CpuInfo cpuInfo = CpuInfo.GENERIC;
@@ -64,15 +63,12 @@ public final class Assembler extends Serializer {
         return b ? 1 : 0;
     }
 
+    public static final CPU X86_16 = CPU.X86_16;
     public static final CPU I386 = CPU.I386;
     public static final CPU X86_64 = CPU.X86_64;
 
     public Assembler(CPU cpu) {
         this.cpu = cpu;
-    }
-
-    public void setOldCompiler(boolean oldCompiler) {
-        this.oldCompiler = oldCompiler;
     }
 
     public final int offset() {
@@ -451,7 +447,7 @@ public final class Assembler extends Serializer {
     void _emitX86Inl(int opCode, boolean i16bit, int rexw, int reg) {
         // 16 bit prefix
         if (i16bit) {
-            if (!oldCompiler) {
+            if (!(cpu == X86_16)) {
                 _emitByte(0x66);
             }
         }
@@ -514,7 +510,7 @@ public final class Assembler extends Serializer {
     void _emitX86RM(int opCode, boolean i16bit, int rexw, int o, Operand op, int immSize) {
         // 16 bit prefix
         if (i16bit) {
-            if (!oldCompiler) {
+            if (cpu != X86_16) {
                 _emitByte(0x66);
             }
         }
@@ -529,6 +525,9 @@ public final class Assembler extends Serializer {
 
         // rex prefix
         if (is64()) {
+            if (cpu == X86_16) {
+                throw new RuntimeException("Cannot use 64 bit mode in old 16 bit mode");
+            }
             _emitRexRM(rexw, o, op);
         }
 
@@ -1082,7 +1081,7 @@ public final class Assembler extends Serializer {
                         _emitByte(0xCD);
                         _emitImmediate(imm, 1);
                     } else {
-                        throw new RuntimeException("Wrong number in 'int' instruction "+imm.value());
+                        throw new RuntimeException("Wrong number in 'int' instruction " + imm.value());
                     }
                     return;
                 }

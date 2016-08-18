@@ -26,6 +26,7 @@ package com.jnr.x86asm;
 
 
 public enum CPU {
-    X86_32, X86_64;
+    X86_32, X86_64,X86_16;
+    
     public static final CPU I386 = X86_32;
 }
