@@ -1,0 +1,56 @@
+{
+    "preferredSize":[300,50],
+    "label":{
+      "text":"Offset:"  
+    },
+    "label":{
+        "id":"offset",
+        "mig":"wrap"
+    },
+    
+    "label":{
+      "text":"Label:"  
+    },
+    "label":{
+        "id":"label",
+        "mig":"wrap"
+    },
+    
+    "label":{
+      "text":"Type:"  
+    },
+    "label":{
+        "id":"type",
+        "mig":"wrap"
+    },
+    
+    "label":{
+      "text":"Value:"  
+    },
+    "label":{
+        "id":"value",
+        "mig":"wrap"
+    },
+    
+    "label":{
+      "text":"Float:"  
+    },
+    "label":{
+        "id":"floatValue",
+        "mig":"wrap"
+    },
+    
+    "label":{
+      "text":"Int:"  
+    },
+    "label":{
+        "id":"intValue",
+        "mig":"wrap"
+    },
+    "dataList":{
+        "width":"100%",
+        "height":"100%",
+        "mig":"spanx 2"
+    }
+    
+}

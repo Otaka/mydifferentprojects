@@ -1,7 +1,7 @@
 package com;
 
 import com.lang.ASTCompiler;
-import com.lang.Module;
+import com.lang.expressions.Module;
 
 /**
  * @author Dmitry
