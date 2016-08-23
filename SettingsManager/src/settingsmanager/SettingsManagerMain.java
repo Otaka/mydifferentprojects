@@ -23,9 +23,9 @@ public class SettingsManagerMain {
             @Override
             public void run() {
                 new SettingsDialogBuilder()
-                        .setProperty(p)
+                        .setProperty(p).setResizable(true)
                         .setCategoryProperties("someCategory", new CategoryProperties().setScroll(true))
-                        .setPreferredSize(new Dimension(200, 200))
+                        .setPreferredSize(new Dimension(200, 300))
                         .show();
             }
         });

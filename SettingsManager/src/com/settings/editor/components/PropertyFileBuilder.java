@@ -5,6 +5,7 @@ import com.gooddies.swing.hFileChooser;
 import com.gooddies.texteditors.DefaultTextField;
 import com.settings.editor.builder.PropertyHolder;
 import com.settings.editor.components.annotations.PropertyFile;
+import com.settings.editor.components.utils.ContextMouseListener;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -28,6 +29,7 @@ public class PropertyFileBuilder extends AbstractComponentPropertyBuilder {
     public JComponent createComponent(final PropertyHolder property, final JPanel container) {
         JLabel label = new JLabel(property.getName());
         final DefaultTextField pathField = new DefaultTextField();
+        pathField.addMouseListener(new ContextMouseListener());
         pathField.setHelpMessage("adasd");
         final PropertyFile annotation = (PropertyFile) property.getAnnotation();
 

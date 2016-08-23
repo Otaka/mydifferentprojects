@@ -13,12 +13,22 @@ public class Prop {
     private int x;
     @PropertyText(category = "someCategory", name = "Text")
     private String text;
-    
+    @PropertyText(category = "someCategory", name = "TextMultiline", multiline = true,width = "90%",height="200px")
+    private String multiline;
+
     @PropertyColor(category = "Colors", name = "Color of car")
     private Color someColor;
-    
-    @PropertyFile(category = "Colors", name = "File of car",width = "180px",selectDir = false)
+
+    @PropertyFile(category = "Colors", name = "File of car", width = "180px", selectDir = false)
     private File file;
+
+    public String getMultiline() {
+        return multiline;
+    }
+
+    public void setMultiline(String multiline) {
+        this.multiline = multiline;
+    }
 
     public void setFile(File file) {
         this.file = file;
@@ -27,8 +37,6 @@ public class Prop {
     public File getFile() {
         return file;
     }
-    
-    
 
     public void setX(int x) {
         this.x = x;
@@ -38,9 +46,11 @@ public class Prop {
         this.text = text;
     }
 
+    public Color getSomeColor() {
+        return someColor;
+    }
+
     public void setSomeColor(Color someColor) {
         this.someColor = someColor;
     }
-
-    
 }
