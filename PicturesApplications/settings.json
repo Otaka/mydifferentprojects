@@ -1,0 +1,722 @@
+{
+	"keys":{
+		"greater": {
+			"rect": {
+				"color": "#79817e",
+				"position": "0 0 1 1"
+			}
+		},
+		"tab": {
+			"rect": {
+				"color": "#3f5c64",
+				"position": "0 0 1 1"
+			}
+		},
+		"alphanumeric": {
+			"rect": {
+				"color": "#abb83f",
+				"position": "0 0 1 1"
+			}
+		},
+		"ctrl": {
+			"rect": {
+				"color": "#71c2ee",
+				"position": "0 0 1 1"
+			}
+		},
+		"circumflex": {
+			"rect": {
+				"color": "#fa2929",
+				"position": "0 0 1 1"
+			}
+		},
+		"help": {
+			"rect": {
+				"color": "#a35010",
+				"position": "0 0 1 1"
+			}
+		},
+		"page up": {
+			"rect": {
+				"color": "#d0f0eb",
+				"position": "0 0 1 1"
+			}
+		},
+		"close bracket": {
+			"rect": {
+				"color": "#8d4e4f",
+				"position": "0 0 1 1"
+			}
+		},
+		"right": {
+			"rect": {
+				"color": "#c5003c",
+				"position": "0 0 1 1"
+			}
+		},
+		"plus": {
+			"rect": {
+				"color": "#03fa25",
+				"position": "0 0 1 1"
+			}
+		},
+		"final": {
+			"rect": {
+				"color": "#b61de1",
+				"position": "0 0 1 1"
+			}
+		},
+		"equals": {
+			"rect": {
+				"color": "#308045",
+				"position": "0 0 1 1"
+			}
+		},
+		"left brace": {
+			"rect": {
+				"color": "#44c5e7",
+				"position": "0 0 1 1"
+			}
+		},
+		"exclamation mark": {
+			"rect": {
+				"color": "#7a9418",
+				"position": "0 0 1 1"
+			}
+		},
+		"1": {
+			"rect": {
+				"color": "#15ccac",
+				"position": "0 0 1 1"
+			}
+		},
+		"2": {
+			"rect": {
+				"color": "#ac3a8d",
+				"position": "0 0 1 1"
+			}
+		},
+		"3": {
+			"rect": {
+				"color": "#3f9f1f",
+				"position": "0 0 1 1"
+			}
+		},
+		"0": {
+			"rect": {
+				"color": "#6ed9c7",
+				"position": "0 0 1 1"
+			}
+		},
+		"7": {
+			"rect": {
+				"color": "#7ae88b",
+				"position": "0 0 1 1"
+			}
+		},
+		"6": {
+			"rect": {
+				"color": "#d7bebe",
+				"position": "0 0 1 1"
+			}
+		},
+		"5": {
+			"rect": {
+				"color": "#ca39c1",
+				"position": "0 0 1 1"
+			}
+		},
+		"4": {
+			"rect": {
+				"color": "#30e567",
+				"position": "0 0 1 1"
+			}
+		},
+		"9": {
+			"rect": {
+				"color": "#f1e60f",
+				"position": "0 0 1 1"
+			}
+		},
+		"8": {
+			"rect": {
+				"color": "#889b00",
+				"position": "0 0 1 1"
+			}
+		},
+		"f6": {
+			"rect": {
+				"color": "#0099a1",
+				"position": "0 0 1 1"
+			}
+		},
+		"katakana": {
+			"rect": {
+				"color": "#4c6d22",
+				"position": "0 0 1 1"
+			}
+		},
+		"home": {
+			"rect": {
+				"color": "#2e8d1b",
+				"position": "0 0 1 1"
+			}
+		},
+		"f7": {
+			"rect": {
+				"color": "#f6f2e6",
+				"position": "0 0 1 1"
+			}
+		},
+		"f8": {
+			"rect": {
+				"color": "#76e076",
+				"position": "0 0 1 1"
+			}
+		},
+		"f9": {
+			"rect": {
+				"color": "#335182",
+				"position": "0 0 1 1"
+			}
+		},
+		"f12": {
+			"rect": {
+				"color": "#73e11f",
+				"position": "0 0 1 1"
+			}
+		},
+		"f11": {
+			"rect": {
+				"color": "#7276c2",
+				"position": "0 0 1 1"
+			}
+		},
+		"f10": {
+			"rect": {
+				"color": "#2bb5c2",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad *": {
+			"rect": {
+				"color": "#d19029",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad ,": {
+			"rect": {
+				"color": "#58e615",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad +": {
+			"rect": {
+				"color": "#7257a5",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad .": {
+			"rect": {
+				"color": "#ddf37c",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad -": {
+			"rect": {
+				"color": "#c53bd6",
+				"position": "0 0 1 1"
+			}
+		},
+		"space": {
+			"rect": {
+				"color": "#da355a",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad /": {
+			"rect": {
+				"color": "#5f1823",
+				"position": "0 0 1 1"
+			}
+		},
+		"meta": {
+			"rect": {
+				"color": "#f0551a",
+				"position": "0 0 1 1"
+			}
+		},
+		"escape": {
+			"rect": {
+				"color": "#33ad6e",
+				"position": "0 0 1 1"
+			}
+		},
+		"caps lock": {
+			"rect": {
+				"color": "#563a14",
+				"position": "0 0 1 1"
+			}
+		},
+		"clear": {
+			"rect": {
+				"color": "#532403",
+				"position": "0 0 1 1"
+			}
+		},
+		"delete": {
+			"rect": {
+				"color": "#8bcbaf",
+				"position": "0 0 1 1"
+			}
+		},
+		"dollar": {
+			"rect": {
+				"color": "#5461f3",
+				"position": "0 0 1 1"
+			}
+		},
+		"left": {
+			"rect": {
+				"color": "#89f488",
+				"position": "0 0 1 1"
+			}
+		},
+		"f1": {
+			"rect": {
+				"color": "#dc22af",
+				"position": "0 0 1 1"
+			}
+		},
+		"f3": {
+			"rect": {
+				"color": "#9adcf0",
+				"position": "0 0 1 1"
+			}
+		},
+		"f2": {
+			"rect": {
+				"color": "#27f21f",
+				"position": "0 0 1 1"
+			}
+		},
+		"end": {
+			"rect": {
+				"color": "#c9434f",
+				"position": "0 0 1 1"
+			}
+		},
+		"f5": {
+			"rect": {
+				"color": "#3c6e17",
+				"position": "0 0 1 1"
+			}
+		},
+		"f4": {
+			"rect": {
+				"color": "#d3428b",
+				"position": "0 0 1 1"
+			}
+		},
+		"slash": {
+			"rect": {
+				"color": "#2b796d",
+				"position": "0 0 1 1"
+			}
+		},
+		"all candidates": {
+			"rect": {
+				"color": "#28c168",
+				"position": "0 0 1 1"
+			}
+		},
+		
+		"back slash": {
+			"rect": {
+				"color": "#c1e7ff",
+				"position": "0 0 1 1"
+			}
+		},
+		"num lock": {
+			"rect": {
+				"color": "#10ed26",
+				"position": "0 0 1 1"
+			}
+		},
+		"inverted exclamation mark": {
+			"rect": {
+				"color": "#c17776",
+				"position": "0 0 1 1"
+			}
+		},
+		"ampersand": {
+			"rect": {
+				"color": "#c9275f",
+				"position": "0 0 1 1"
+			}
+		},
+		"up": {
+			"rect": {
+				"color": "#3d1cc1",
+				"position": "0 0 1 1"
+			}
+		},
+		"a": {
+			"image": {
+                "url": "http://prophotos.ru/data/devices/nikon/nikon-d5200/image-rectangle_900_x.jpg"
+            }
+		},
+		"b": {
+			 "image": {
+                "url": "http://skill.ru/images/2006/03/12/118095.jpg"
+            }
+		},
+		"c": {
+			"image": {
+                "url": "http://img-fotki.yandex.ru/get/6514/137106206.1f4/0_9fcbd_2aad3470_orig.jpg"
+            }
+		},
+		"d": {
+			"image": {
+                "url": "http://velocita.com.ua/img/Comanche%20Niagara_M_Red_Pluton.jpg"
+            }
+		},
+		"e": {
+			"image": {
+                "url": "http://2.bp.blogspot.com/-2axUl1Z_hpc/UHcplTxvBJI/AAAAAAAAALo/hJvJa4LlXVs/s320/0_50ea3_418102cf_XL.png"
+            }
+		},
+		"f": {
+			"image": {
+                "url": "http://giftedbaby.net/wp-content/uploads/2014/04/АРБУЗ.jpg"
+            }
+		},
+		"g": {
+			"image": {
+                "url": "http://farm1.static.flickr.com/47/140045368_86a51facdf_o.jpg"
+            }
+		},
+		"h": {
+			"image": {
+                "url": "http://ins-money.com/wp-content/uploads/2015/02/Binari-144.jpg"
+            }
+		},
+		"i": {
+			"image": {
+                "url": "http://i2.rozetka.ua/goods/767672/del_mare_041401005_12_images_767672514.jpg"
+            }
+		},
+		"j": {
+			"image": {
+                "url": "http://slavyanskaya-kultura.ru/images/9(36).jpg"
+            }
+		},
+		"k": {
+			"image": {
+                "url": "http://posuda2000.ru/userfiles/Image/good/photo_1261.jpg"
+            }
+		},
+		"l": {
+			"image": {
+                "url": "http://pernatidruzi.org.ua/pictures/veldjat/ser.jpg"
+            }
+		},
+		"m": {
+			"image": {
+                "url": "http://detskiychas.ru/wp-content/uploads/2012/11/bukva_myagkiy_znak.jpg"
+            }
+		},
+		"n": {
+			"image": {
+                "url": "http://kakotvet.com/images_1/kak_pech_krasivie_torti.jpg"
+            }
+		},
+		"o": {
+			"image": {
+                "url": "http://eruditov.net/_pu/4/12980798.jpg"
+            }
+		},
+		"p": {
+			"image": {
+                "url": "http://img.animal-photos.ru/hares/hares31.jpg"
+            }
+		},
+		"q": {
+			"image": {
+                "url": "http://irecommend.ru.q5.r-99.com/sites/default/files/product-images/134320/90599.jpg"
+            }
+		},
+		"r": {
+			"image": {
+                "url": "http://img.animal-photos.ru/cows/cows3.jpg"
+            }
+		},
+		"s": {
+			"image": {
+                "url": "http://www.vokrugsveta.ru/img/cmn/2013/08/28/002.jpg"
+            }
+		},
+		"t": {
+			"image": {
+                "url": "http://pp.vk.me/c623817/v623817108/305db/8ozQ-xke35M.jpg"
+            }
+		},
+		"w": {
+			"image": {
+                "url": "http://mycoweb2.narod.ru/Submitted/SKI/Grey_heron_SKI_20110522.jpg"
+            }
+		},
+		"v": {
+			"image": {
+                "url": "http://images.promirauto.com/2013/01/fiesta_new.jpg"
+            }
+		},
+		"u": {
+			"image": {
+                "url": "http://www.nnzoo.ru/file/watermark/vzntr/oveqf/thf/gus.wm.jpg"
+            }
+		},
+		"x": {
+			"image": {
+                "url": "http://www.burokrat.by/pub/image/WallC-R07P_black.jpg"
+            }
+		},
+		"y": {
+			"image": {
+                "url": "http://www.gulliver.ru/upload/iblock/326/88031.jpg"
+            }
+		},
+		"z": {
+			"image": {
+                "url": "http://himalaya-herbals.com.ua/images/komponentu/yabloko/yabloko3.gif"
+            }
+		},
+		"left parenthesis": {
+			"rect": {
+				"color": "#eefb50",
+				"position": "0 0 1 1"
+			}
+		},
+		"print screen": {
+			"rect": {
+				"color": "#031288",
+				"position": "0 0 1 1"
+			}
+		},
+		"down": {
+			"rect": {
+				"color": "#243098",
+				"position": "0 0 1 1"
+			}
+		},
+		"insert": {
+			"rect": {
+				"color": "#d2d4fb",
+				"position": "0 0 1 1"
+			}
+		},
+		"cancel": {
+			"rect": {
+				"color": "#dd3d07",
+				"position": "0 0 1 1"
+			}
+		},
+		"euro": {
+			"rect": {
+				"color": "#b765c4",
+				"position": "0 0 1 1"
+			}
+		},
+		"number sign": {
+			"rect": {
+				"color": "#87f574",
+				"position": "0 0 1 1"
+			}
+		},
+		"underscore": {
+			"rect": {
+				"color": "#879d2f",
+				"position": "0 0 1 1"
+			}
+		},
+		"page down": {
+			"rect": {
+				"color": "#4c8c00",
+				"position": "0 0 1 1"
+			}
+		},
+		"right brace": {
+			"rect": {
+				"color": "#5be99a",
+				"position": "0 0 1 1"
+			}
+		},
+		"comma": {
+			"image": {
+                "url": "http://rnd.urpur.ru/files/2015/03/dajjdzhest_afisha4.jpg"
+            }
+		},
+		"minus": {
+			"rect": {
+				"color": "#0b58a8",
+				"position": "0 0 1 1"
+			}
+		},
+		"enter": {
+			"rect": {
+				"color": "#c1e6ee",
+				"position": "0 0 1 1"
+			}
+		},
+		"period": {
+			"image": {
+                "url": "https://clubphoenixblog.files.wordpress.com/2014/11/d18ed0bbd0b0.jpg"
+            }
+		},
+		"scroll lock": {
+			"rect": {
+				"color": "#5cf66a",
+				"position": "0 0 1 1"
+			}
+		},
+		"open bracket": {
+			"image": {
+                "url": "http://hitgid.com/images/хомяк-6.jpg"
+            }
+		},
+		"right parenthesis": {
+			"rect": {
+				"color": "#529a3f",
+				"position": "0 0 1 1"
+			}
+		},
+		"colon": {
+			"image": {
+                "url": "http://img-fotki.yandex.ru/get/5634/137106206.2bf/0_b5c78_a80d2b9a_orig.jpg"
+            }
+		},
+		"quote": {
+			"image": {
+                "url": "http://900igr.net/datas/chtenie/Alfavit-4.files/0033-033-E.jpg"
+            }
+		},
+		"alt": {
+			"rect": {
+				"color": "#152099",
+				"position": "0 0 1 1"
+			}
+		},
+		"backspace": {
+			"rect": {
+				"color": "#ce9e47",
+				"position": "0 0 1 1"
+			}
+		},
+		"context menu": {
+			"rect": {
+				"color": "#3aaef0",
+				"position": "0 0 1 1"
+			}
+		},
+		"double quote": {
+			"rect": {
+				"color": "#c3ccae",
+				"position": "0 0 1 1"
+			}
+		},
+		"less": {
+			"rect": {
+				"color": "#f43aa1",
+				"position": "0 0 1 1"
+			}
+		},
+		"asterisk": {
+			"rect": {
+				"color": "#2ce27e",
+				"position": "0 0 1 1"
+			}
+		},
+		"at": {
+			"rect": {
+				"color": "#f4e8dc",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad-8": {
+			"rect": {
+				"color": "#6bb671",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad-9": {
+			"rect": {
+				"color": "#d9f791",
+				"position": "0 0 1 1"
+			}
+		},
+		"semicolon": {
+			"image": {
+                "url": "http://img-fotki.yandex.ru/get/5634/137106206.2bf/0_b5c78_a80d2b9a_orig.jpg"
+            }
+		},
+		"numpad-0": {
+			"rect": {
+				"color": "#3179aa",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad-1": {
+			"rect": {
+				"color": "#34a1ea",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad-2": {
+			"rect": {
+				"color": "#558021",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad-3": {
+			"rect": {
+				"color": "#66ea45",
+				"position": "0 0 1 1"
+			}
+		},
+		"back quote": {
+			"image": {
+                "url": "http://radio.astv.ru/uploaded/653e834a9753e0b960e3aea08577a54d.jpg"
+            }
+		},
+		"numpad-4": {
+			"rect": {
+				"color": "#9704cc",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad-5": {
+			"rect": {
+				"color": "#aab402",
+				"position": "0 0 1 1"
+			}
+		},
+		"shift": {
+			"rect": {
+				"color": "#40ce58",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad-6": {
+			"rect": {
+				"color": "#2a1f40",
+				"position": "0 0 1 1"
+			}
+		},
+		"numpad-7": {
+			"rect": {
+				"color": "#c660ac",
+				"position": "0 0 1 1"
+			}
+		}
+	}
+}

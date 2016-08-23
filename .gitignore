@@ -30,3 +30,5 @@ hs_err_pid*
 /PicturesApplications/nbproject/private/
 /PicturesApplications/build/
 /PicturesApplications/dist/
+/Compiler/build
+/PicturesApplications/cache
