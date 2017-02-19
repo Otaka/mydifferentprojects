@@ -156,7 +156,7 @@ public class MainParser extends MainParserActions {
                         Optional('.', OneOrMore(Digit()))
                 ),
                 possibleSpace()
-        );
+        ).suppressSubnodes();
     }
 
     public Rule Digit() {
@@ -336,7 +336,13 @@ public class MainParser extends MainParserActions {
     }
 
     public Rule identifier() {
-        return Sequence(possibleSpace(), new JavaUnicodeMatcherStartString(), ZeroOrMore(new JavaUnicodeMatcherString()), possibleSpace());
+        return Sequence(
+                possibleSpace(),
+                new JavaUnicodeMatcherStartString(), 
+                ZeroOrMore(
+                        new JavaUnicodeMatcherString()), 
+                possibleSpace()
+        ).suppressSubnodes();
     }
 
     public Rule typeIdentifier() {
@@ -344,7 +350,7 @@ public class MainParser extends MainParserActions {
     }
 
     public Rule keyword(String val) {
-        return Sequence(possibleSpace(), val, possibleSpace());
+        return Sequence(possibleSpace(), val, possibleSpace()).suppressSubnodes();
     }
 
     public Rule openBracket() {

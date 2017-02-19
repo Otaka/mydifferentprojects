@@ -16,30 +16,31 @@ public class CommentRemover {
 
     public String process() {
         StringBuilder sb = new StringBuilder(inputStream.size());
-
         while (!inputStream.eof()) {
             char c = inputStream.next();
-            if (c == '\"') {
-                sb.append("\"");
-                if (inputStream.peek(0) == '\"' && inputStream.peek(1) == '\"') {
-                    sb.append("\"\"");
-                    skipRawString(sb);
-                } else {
-                    skipGenericString(sb);
-                }
-            } else if (c == '/') {
-                char nextChar = inputStream.peek(0);
-                if (nextChar == '/') {
-                    inputStream.next();
-                    //skip until the end of line
-                    appendCharToStringBuilder(sb, ' ', skipUntilEndOfLineReturnCount());
-                } else if (nextChar == '*') {
-                    inputStream.next();
-                    //skip until the '*/'
-                    skipUntilEndCommentReturnCount(sb);
-                }
-            } else {
-                sb.append(c);
+            switch (c) {
+                case '\"':
+                    sb.append("\"");
+                    if (inputStream.peek(0) == '\"' && inputStream.peek(1) == '\"') {
+                        sb.append("\"\"");
+                        skipRawString(sb);
+                    } else {
+                        skipGenericString(sb);
+                    }   break;
+                case '/':
+                    char nextChar = inputStream.peek(0);
+                    if (nextChar == '/') {
+                        inputStream.next();
+                        //skip until the end of line
+                        appendCharToStringBuilder(sb, ' ', skipUntilEndOfLineReturnCount());
+                    } else if (nextChar == '*') {
+                        inputStream.next();
+                        //skip until the '*/'
+                        skipUntilEndCommentReturnCount(sb);
+                    }   break;
+                default:
+                    sb.append(c);
+                    break;
             }
         }
 
