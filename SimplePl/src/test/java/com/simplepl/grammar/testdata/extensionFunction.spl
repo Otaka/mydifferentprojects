@@ -1,0 +1,7 @@
+fun usingOpenedFile(string fileName, FileOpenMode mode):@extension(File){
+    File file=sys.open();
+    if(file!=null){
+        extension(file);
+        sys.close(file);
+    }
+}

@@ -32,3 +32,8 @@ hs_err_pid*
 /PicturesApplications/dist/
 /Compiler/build
 /PicturesApplications/cache
+/smos/compiler_java/CompilerJava/nbproject/private/
+/smos/compiler_java/CompilerJava/build/
+/smos/compiler_java/CompilerJava/dist/
+/SimplePl/target/
+/SimplePl/nbproject/
