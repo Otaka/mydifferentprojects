@@ -163,11 +163,50 @@ public class MainParser extends MainParserActions {
         return Sequence(possibleSpace(), OneOrMore(CharRange('0', '9')), possibleSpace());
     }
 
-    public Rule stringRule() {
+    public Rule testGenericStringRule() {
+        return Sequence(genericStringRule(), EOI);
+    }
+
+    public Rule genericStringRule() {
         return Sequence(
-                possibleSpace(),
-                "'", STR_TERMINAL('\''),
-                possibleSpace()
+                '"',
+                ZeroOrMore(
+                        FirstOf(
+                                Sequence(
+                                        EOI, 
+                                        actionFail("Found end of line while reading string")),
+                                Escape(),
+                                Sequence(TestNot("\""), ANY)
+                        )
+                ).suppressSubnodes(),
+                '"'
+        );
+    }
+    
+    public Rule testRawStringRule() {
+        return Sequence(rawStringRule(), EOI);
+    }
+    
+    public Rule rawStringRule() {
+        return Sequence(
+                "\"\"\"",
+                ZeroOrMore(
+                        FirstOf(
+                                Sequence(
+                                        EOI, 
+                                        actionFail("Found end of line while reading string")
+                                ),
+                                Sequence(TestNot("\"\"\""), ANY)
+                        )
+                ).suppressSubnodes(),
+                "\"\"\""
+        );
+    }
+
+    Rule Escape() {
+        return Sequence(
+                '\\',
+                AnyOf("btnfr\"\'\\")
         );
     }
 
@@ -253,16 +292,16 @@ public class MainParser extends MainParserActions {
     }
 
     public Rule atom() {
-        return FirstOf(
-                number(),
+        return FirstOf(number(),
                 booleanValueRule(),
                 variable(),
-                stringRule(),
+                genericStringRule(),
+                rawStringRule(),
                 parens()
         );
     }
-    
-    public Rule variable(){
+
+    public Rule variable() {
         return identifier();
     }
 
