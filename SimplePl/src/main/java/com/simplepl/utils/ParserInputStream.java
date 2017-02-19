@@ -15,7 +15,7 @@ public class ParserInputStream {
     private int lastNewLineIndex = 0;
     private int currentLineCounter = 0;
     private final List<Line> lines = new ArrayList<>();
-    private int newLineSymbolCount=1;
+    private int newLineSymbolCount = 1;
 
     public ParserInputStream(String string) {
         if (string == null) {
@@ -24,17 +24,17 @@ public class ParserInputStream {
 
         this.array = string.toCharArray();
     }
-    
-    public int size(){
+
+    public int size() {
         return array.length;
     }
 
     public int getIndex() {
         return index;
     }
-    
-    public String line(int start, int end){
-        return new String(array, start, end-start);
+
+    public String line(int start, int end) {
+        return new String(array, start, end - start);
     }
 
     public char next() {
@@ -50,17 +50,17 @@ public class ParserInputStream {
         }
 
         lastIndex = index;
-        char symbol=peek(0);
+        char symbol = peek(0);
         /*if(symbol=='\r' && peek(1)=='\n'){
             newLineSymbolCount=2;
             symbol=next();
         }*/
         if (symbol == '\n') {
             int start = lastNewLineIndex;
-            int end = index-(newLineSymbolCount-1);
+            int end = index - (newLineSymbolCount - 1);
             Line line = new Line(start, end, currentLineCounter);
             lines.add(line);
-            lastNewLineIndex = index+1;
+            lastNewLineIndex = index + 1;
             currentLineCounter++;
         }
     }
@@ -91,12 +91,12 @@ public class ParserInputStream {
         return array[index];
     }
 
-    public void skip(int count){
-        for(int i=0;i<count;i++){
+    public void skip(int count) {
+        for (int i = 0; i < count; i++) {
             next();
         }
     }
-    
+
     public void skipBlank() {
         while (true) {
             char c = peek(0);
