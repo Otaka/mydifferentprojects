@@ -1,0 +1,20 @@
+fun usingOpenedFile(string fileName):@extension(File file){
+    File file=sys.open();
+    
+    fun showMessage(string message){
+        console.writeln(message);
+    }
+
+    if(file!=null){
+        extension(file);
+        sys.close(file);
+    }
+}
+
+fun userFunction(){
+    string message="hello";
+    usingOpenedFile("myFile"){
+        string line=readString(file);
+        showMessage(message);//call inner function defined in usingOpenedFile(string) with argument defined in userFunction
+    }
+}

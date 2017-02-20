@@ -1,0 +1,99 @@
+{
+    "keys": {
+        "space": {
+            "rect": {
+                "color": "black",
+                "position": "0 0 1 1"
+            }
+        },
+        "alt": {
+            "rect": {
+                "color": "#1265a0",
+                "position": "0 0 1 1"
+            }
+        },
+        "context menu": {
+            "rect": {
+                "color": "#b06545",
+                "position": "0 0 1 1"
+            }
+        },
+        "ctrl": {
+            "rect": {
+                "color": "#f056e0",
+                "position": "0 0 1 1"
+            }
+        },
+        "shift": {
+            "rect": {
+                "color": "yellow",
+                "position": "0 0 1 1"
+            }
+        },
+        "caps lock": {
+            "rect": {
+                "color": "magenta",
+                "position": "0 0 1 1"
+            }
+        },
+        "tab": {
+            "rect": {
+                "color": "dark_gray",
+                "position": "0 0 1 1"
+            }
+        },
+        "A": {
+            "rect": {
+                "color": "grey",
+                "position": "0 0 1 1"
+            }
+        },
+        "S": {
+            "rect": {
+                "color": "red",
+                "position": "0 0 1 1"
+            }
+        },
+        "D": {
+            "rect": {
+                "color": "green",
+                "position": "0 0 1 1"
+            }
+        },
+        "F": {
+            "rect": {
+                "color": "blue",
+                "position": "0 0 1 1"
+            }
+        },
+        "G": {
+            "rect": {
+                "color": "cyan",
+                "position": "0 0 0.5 0.5"
+            },
+            "rect": {
+                "color": "red",
+                "position": "0.5 0.5 0.7 0.7"
+            }
+        },
+        "H": {
+            "image": {
+                "url": "http://giftedbaby.net/wp-content/uploads/2014/04/АРБУЗ.jpg"
+                
+            }
+        },
+        "semicolon": {
+            "rect":{
+                "color":"red",
+                "position":"0.1 0.1 0.9 0.9"
+            },
+            "rect":{
+                "color":"green",
+                "position":"0.15 0.15 0.85 0.85"
+            },
+            "image": {
+                "url": "http://giftedbaby.net/wp-content/uploads/2014/04/ЖЕРЕБЁНОК.jpg"
+            }
+        }
+    }
+}

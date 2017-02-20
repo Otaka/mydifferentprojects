@@ -1,0 +1,39 @@
+{
+    "miglayoutConstraints":"flowy",
+    "panel":{
+      "width":"100%",
+      "height":"25px",
+      "moveInstrumentButton":{},
+      "activationInstrumentButton":{},
+      "connectInstrumentButton":{},
+      "addNewNodeInstrumentButton":{}
+    },
+    "panel":{
+        "width":"100%",
+        "saveButton":{
+            "text":"Сохранить"
+        },
+        "loadButton":{
+            "text":"Загрузить"
+        },
+        "fileSwitcher":{
+            "editable":true
+        },
+        "button":{
+            "text":"Обработка",
+            "action":"onProcess"
+        }
+    },
+    "panel": {
+        "titledBorder": {
+            "text": "Поле с элементами"
+        },
+        "renderPane": {
+            "minimumSize": [500, 500],
+            "width":"100%",
+            "height":"100%",
+            "background": "light_gray",
+            "opaque": true
+        }
+    }
+}
