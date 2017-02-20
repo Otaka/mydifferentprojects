@@ -9,9 +9,10 @@ import org.parboiled.Rule;
  */
 public class MainParser extends MainParserActions {
 
-    public Rule main(){
+    public Rule main() {
         return ZeroOrMore(line());
     }
+
     public Rule line() {
         return expression();
     }
@@ -306,14 +307,32 @@ public class MainParser extends MainParserActions {
                 booleanValueRule(),
                 functionCall(),
                 variable(),
-                genericStringRule(),
                 rawStringRule(),
+                genericStringRule(),
                 parens()
         );
     }
 
     public Rule variable() {
+        return FirstOf(
+                structVariable(),
+                identifier());
+    }
+
+    public Rule simpleVariable() {
         return identifier();
+    }
+
+    public Rule structVariable() {
+        return Sequence(
+                identifier(),
+                OneOrMore(
+                        Sequence(
+                                keyword("."), 
+                                identifier()
+                        )
+                )
+        );
     }
 
     public Rule booleanValueRule() {
