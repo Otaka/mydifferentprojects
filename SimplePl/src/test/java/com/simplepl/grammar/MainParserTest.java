@@ -1,6 +1,7 @@
 package com.simplepl.grammar;
 
 import java.io.IOException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MainParserTest extends BaseTest {
@@ -11,18 +12,37 @@ public class MainParserTest extends BaseTest {
         checkFileRuleSuccess(parser, parser.testFunctionRule(), "mainFunction");
     }
 
-    //@Test
+    @Test
+    @Ignore
     public void testExtensionFunction() throws IOException {
         // TODO implement extension function
         MainParser parser = createParser();
         checkFileRuleSuccess(parser, parser.testFunctionRule(), "extensionFunction");
     }
 
-    //@Test
-    public void testInnerFunction() throws IOException {
-        // TODO implement inner function
+    @Test
+    public void testStructure() throws IOException {
         MainParser parser = createParser();
-        checkFileRuleSuccess(parser, parser.testFunctionRule(), "innerFunction");
+        checkFileRuleSuccess(parser, parser.testStructure(), "structure");
+    }
+    
+    @Test
+    public void testStructureIntegrationTest() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.main(), "functionWithStructure");
+    }
+
+    @Test
+    public void testInnerFunction() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.testFunctionRule(), "innerFunctions");
+    }
+
+    @Test
+    @Ignore
+    public void testPointers() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.testFunctionRule(), "pointers");
     }
 
     @Test

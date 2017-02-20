@@ -1,0 +1,21 @@
+structure TestStructure{
+    int x;
+    int y;
+    string label;
+    InnerStructure inner;
+}
+
+structure InnerStructure{
+    int value;
+    string path;
+}
+
+fun main(string args){
+    TestStructure myVariable;
+    myVariable.x=45;
+    myVariable.y=67;
+    myVariable.label="the string";
+    string label=myVariable.label;
+    myVariable.innerValue.value=8;
+    myVariable.innerValue.path="""c:\program files\SimplePL""";
+}

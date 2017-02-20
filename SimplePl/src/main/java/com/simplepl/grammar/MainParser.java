@@ -9,8 +9,11 @@ import org.parboiled.Rule;
  */
 public class MainParser extends MainParserActions {
 
+    public Rule main(){
+        return ZeroOrMore(line());
+    }
     public Rule line() {
-        return functionRule();
+        return expression();
     }
 
     public Rule functionRule() {
@@ -61,9 +64,11 @@ public class MainParser extends MainParserActions {
 
     public Rule expression() {
         return FirstOf(
-                declareVariable(),
+                functionRule(),
+                structure(),
                 declareArray(),
                 declareVariableAndAssign(),
+                declareVariable(),
                 checkExpression()
         // actionFail("Cannot parse the expression")
         );
@@ -110,6 +115,10 @@ public class MainParser extends MainParserActions {
                 typeIdentifier(),
                 identifier()
         );
+    }
+
+    public Rule declareVariableWithSemicolon() {
+        return Sequence(declareVariable(), semicolon());
     }
 
     public Rule testDeclareArray() {
@@ -173,7 +182,7 @@ public class MainParser extends MainParserActions {
                 ZeroOrMore(
                         FirstOf(
                                 Sequence(
-                                        EOI, 
+                                        EOI,
                                         actionFail("Found end of line while reading string")),
                                 Escape(),
                                 Sequence(TestNot("\""), ANY)
@@ -182,18 +191,18 @@ public class MainParser extends MainParserActions {
                 '"'
         );
     }
-    
+
     public Rule testRawStringRule() {
         return Sequence(rawStringRule(), EOI);
     }
-    
+
     public Rule rawStringRule() {
         return Sequence(
                 "\"\"\"",
                 ZeroOrMore(
                         FirstOf(
                                 Sequence(
-                                        EOI, 
+                                        EOI,
                                         actionFail("Found end of line while reading string")
                                 ),
                                 Sequence(TestNot("\"\"\""), ANY)
@@ -292,8 +301,10 @@ public class MainParser extends MainParserActions {
     }
 
     public Rule atom() {
-        return FirstOf(number(),
+        return FirstOf(
+                number(),
                 booleanValueRule(),
+                functionCall(),
                 variable(),
                 genericStringRule(),
                 rawStringRule(),
@@ -323,6 +334,41 @@ public class MainParser extends MainParserActions {
         );
     }
 
+    public Rule testStructure() {
+        return Sequence(structure(), EOI);
+    }
+
+    public Rule structure() {
+        return Sequence(
+                keyword("structure"),
+                FirstOf(
+                        identifier(),
+                        actionFail("Expected structure name")
+                ),
+                FirstOf(
+                        openCurleyBracket(),
+                        actionFail("Expected '{' after structure name")
+                ),
+                FirstOf(
+                        elementsOfStructure(),
+                        actionFail("Expected structure elements inside structure body")
+                ),
+                FirstOf(
+                        closeCurleyBracket(),
+                        actionFail("Expected '}' at the end of the structure")
+                )
+        );
+    }
+
+    public Rule elementsOfStructure() {
+        return Sequence(
+                declareVariableWithSemicolon(),
+                ZeroOrMore(
+                        declareVariableWithSemicolon()
+                )
+        );
+    }
+
     public Rule oneSpaceCharacter() {
         return FirstOf(' ', '\t', '\r', '\n');
     }
@@ -338,9 +384,9 @@ public class MainParser extends MainParserActions {
     public Rule identifier() {
         return Sequence(
                 possibleSpace(),
-                new JavaUnicodeMatcherStartString(), 
+                new JavaUnicodeMatcherStartString(),
                 ZeroOrMore(
-                        new JavaUnicodeMatcherString()), 
+                        new JavaUnicodeMatcherString()),
                 possibleSpace()
         ).suppressSubnodes();
     }

@@ -1,0 +1,6 @@
+structure TestStructure{
+    int x;
+    int y;
+    string label;
+    InnerStructure inner;
+}

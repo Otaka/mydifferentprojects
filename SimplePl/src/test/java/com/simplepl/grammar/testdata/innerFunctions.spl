@@ -1,7 +1,7 @@
-fun outerFunction(int x){
+fun outerFunction(int x) {
     fun inc(int y){
         y+1;
-    }
+    };
     
     inc(x);
 }

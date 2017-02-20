@@ -44,6 +44,7 @@ public class MainParserActions extends BaseParser<Object> {
                 int currentIndex = context.getCurrentIndex();
                 Position position = context.getInputBuffer().getPosition(currentIndex);
                 String part = context.getInputBuffer().extract(currentIndex, currentIndex + 20);
+                part=part.replace("\n", "\\n");
                 Formatter formatter = new Formatter();
                 formatter.format(errorMessageTemplate, position.line, position.column, fullMessage, part);
                 //fullMessage = "[Line:" + position.line + " Column:" + position.column + "]" + fullMessage + " . Found \"" + part + "\"";

@@ -1,0 +1,21 @@
+struct TestStructure {
+    int value;
+    int@pointerToValue;
+}
+
+fun main(string args){
+    int@intPointer=new int;
+    @intPointer=43;
+    assert(@intPointer==43)
+    int*secondPointer=intPointer;
+    assert(secondPointer==intPointer);//they points to the same location
+    assert(@secondPointer==@intPointer);//they contains the same value
+
+    TestStructure@myStructure=new TestStructure;
+    myStructure.value=@intPointer;
+    myStructure.pointerToValue=intPointer;
+    assert(myStructure.value==myStrucure.@pointerToValue)
+
+    delete intPointer;
+    delete myStructure;
+}
