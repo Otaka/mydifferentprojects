@@ -10,7 +10,7 @@ import org.parboiled.Rule;
 public class MainParser extends MainParserActions {
 
     public Rule main() {
-        return ZeroOrMore(line());
+        return Sequence(ZeroOrMore(line()), EOI);
     }
 
     public Rule line() {
@@ -65,6 +65,8 @@ public class MainParser extends MainParserActions {
 
     public Rule expression() {
         return FirstOf(
+                newStatement(),
+                deleteStatement(),
                 functionRule(),
                 structure(),
                 declareArray(),
@@ -72,6 +74,26 @@ public class MainParser extends MainParserActions {
                 declareVariable(),
                 checkExpression()
         // actionFail("Cannot parse the expression")
+        );
+    }
+
+    public Rule newStatement() {
+        return Sequence(
+                keyword("new"),
+                FirstOf(
+                        typeIdentifier(),
+                        actionFail("Expected type after 'new'")
+                )
+        );
+    }
+
+    public Rule deleteStatement() {
+        return Sequence(
+                keyword("delete"),
+                FirstOf(
+                        variable(),
+                        actionFail("Expected pointer after 'delete'")
+                )
         );
     }
 
@@ -162,15 +184,28 @@ public class MainParser extends MainParserActions {
         return Sequence(
                 Sequence(
                         Optional('-'),
-                        OneOrMore(Digit()),
-                        Optional('.', OneOrMore(Digit()))
+                        OneOrMore(
+                                Digit()
+                        ),
+                        Optional(
+                                '.',
+                                OneOrMore(
+                                        Digit()
+                                )
+                        )
                 ),
                 possibleSpace()
         ).suppressSubnodes();
     }
 
     public Rule Digit() {
-        return Sequence(possibleSpace(), OneOrMore(CharRange('0', '9')), possibleSpace());
+        return Sequence(
+                possibleSpace(),
+                OneOrMore(
+                        CharRange('0', '9')
+                ),
+                possibleSpace()
+        );
     }
 
     public Rule testGenericStringRule() {
@@ -184,9 +219,13 @@ public class MainParser extends MainParserActions {
                         FirstOf(
                                 Sequence(
                                         EOI,
-                                        actionFail("Found end of line while reading string")),
+                                        actionFail("Found end of line while reading string")
+                                ),
                                 Escape(),
-                                Sequence(TestNot("\""), ANY)
+                                Sequence(
+                                        TestNot("\""),
+                                        ANY
+                                )
                         )
                 ).suppressSubnodes(),
                 '"'
@@ -265,7 +304,7 @@ public class MainParser extends MainParserActions {
         return Sequence(
                 sumRule(),
                 ZeroOrMore(
-                        FirstOf(keyword("!="), keyword("="), keyword(">="), keyword("<="), keyword(">"), keyword("<")),
+                        FirstOf(keyword("!="), keyword("=="), keyword("="), keyword(">="), keyword("<="), keyword(">"), keyword("<")),
                         FirstOf(
                                 sumRule(),
                                 actionFail("Expected expression after comparing operation")
@@ -316,20 +355,27 @@ public class MainParser extends MainParserActions {
     public Rule variable() {
         return FirstOf(
                 structVariable(),
-                identifier());
+                simpleVariable()
+        );
     }
 
     public Rule simpleVariable() {
-        return identifier();
+        return FirstOf(
+                Sequence(
+                        keyword(POINTER),
+                        identifier()
+                ),
+                identifier()
+        );
     }
 
     public Rule structVariable() {
         return Sequence(
-                identifier(),
+                simpleVariable(),
                 OneOrMore(
                         Sequence(
-                                keyword("."), 
-                                identifier()
+                                keyword("."),
+                                simpleVariable()
                         )
                 )
         );
@@ -393,11 +439,15 @@ public class MainParser extends MainParserActions {
     }
 
     public Rule ensureSpace() {
-        return OneOrMore(oneSpaceCharacter());
+        return OneOrMore(
+                oneSpaceCharacter()
+        );
     }
 
     public Rule possibleSpace() {
-        return ZeroOrMore(oneSpaceCharacter());
+        return ZeroOrMore(
+                oneSpaceCharacter()
+        );
     }
 
     public Rule identifier() {
@@ -405,17 +455,36 @@ public class MainParser extends MainParserActions {
                 possibleSpace(),
                 new JavaUnicodeMatcherStartString(),
                 ZeroOrMore(
-                        new JavaUnicodeMatcherString()),
+                        new JavaUnicodeMatcherString()
+                ),
                 possibleSpace()
         ).suppressSubnodes();
     }
 
     public Rule typeIdentifier() {
+        return FirstOf(
+                pointerIdentifier(),
+                simpleIdentifier()
+        );
+    }
+
+    public Rule pointerIdentifier() {
+        return Sequence(
+                identifier(),
+                keyword(POINTER)
+        );
+    }
+
+    public Rule simpleIdentifier() {
         return identifier();
     }
 
     public Rule keyword(String val) {
-        return Sequence(possibleSpace(), val, possibleSpace()).suppressSubnodes();
+        return Sequence(
+                possibleSpace(),
+                val,
+                possibleSpace()
+        ).suppressSubnodes();
     }
 
     public Rule openBracket() {
@@ -455,9 +524,15 @@ public class MainParser extends MainParserActions {
     }
 
     public Rule STR_TERMINAL(char... character) {
-        return Sequence(ZeroOrMore(NoneOf(character)), character);
+        return Sequence(
+                ZeroOrMore(
+                        NoneOf(character)
+                ),
+                character
+        );
     }
 
     public String FUN = "fun";
+    public String POINTER = "@";
 
 }

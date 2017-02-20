@@ -1,7 +1,6 @@
 package com.simplepl.grammar;
 
 import java.io.IOException;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class MainParserTest extends BaseTest {
@@ -13,11 +12,9 @@ public class MainParserTest extends BaseTest {
     }
 
     @Test
-    @Ignore
     public void testExtensionFunction() throws IOException {
-        // TODO implement extension function
         MainParser parser = createParser();
-        checkFileRuleSuccess(parser, parser.testFunctionRule(), "extensionFunction");
+        checkFileRuleSuccess(parser, parser.main(), "extensionFunction");
     }
 
     @Test
@@ -25,7 +22,7 @@ public class MainParserTest extends BaseTest {
         MainParser parser = createParser();
         checkFileRuleSuccess(parser, parser.testStructure(), "structure");
     }
-    
+
     @Test
     public void testStructureIntegrationTest() throws IOException {
         MainParser parser = createParser();
@@ -35,14 +32,25 @@ public class MainParserTest extends BaseTest {
     @Test
     public void testInnerFunction() throws IOException {
         MainParser parser = createParser();
-        checkFileRuleSuccess(parser, parser.testFunctionRule(), "innerFunctions");
+        checkFileRuleSuccess(parser, parser.main(), "innerFunctions");
     }
 
     @Test
-    @Ignore
+    public void testSimplePointers() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.testFunctionRule(), "NewDelete");
+    }
+
+    @Test
+    public void testStructureWithPointer() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.main(), "structureWithPointer");
+    }
+
+    @Test
     public void testPointers() throws IOException {
         MainParser parser = createParser();
-        checkFileRuleSuccess(parser, parser.testFunctionRule(), "pointers");
+        checkFileRuleSuccess(parser, parser.main(), "pointers");
     }
 
     @Test
