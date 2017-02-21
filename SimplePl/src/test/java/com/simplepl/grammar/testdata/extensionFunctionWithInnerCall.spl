@@ -1,14 +1,11 @@
-fun usingOpenedFile(string fileName):@extension(File file){
-    File file=sys.open();
+fun usingOpenedFile(string fileName) extension(File file){
+    File file=open();
     
     fun showMessage(string message){
-        console.writeln(message);
-    }
+        writeln(message);
+    };
 
-    if(file!=null){
-        extension(file);
-        sys.close(file);
-    }
+    extension(file);
 }
 
 fun userFunction(){
@@ -16,5 +13,5 @@ fun userFunction(){
     usingOpenedFile("myFile"){
         string line=readString(file);
         showMessage(message);//call inner function defined in usingOpenedFile(string) with argument defined in userFunction
-    }
+    };
 }

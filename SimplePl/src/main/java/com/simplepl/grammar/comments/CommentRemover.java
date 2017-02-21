@@ -23,6 +23,7 @@ public class CommentRemover {
                     sb.append("\"");
                     if (inputStream.peek(0) == '\"' && inputStream.peek(1) == '\"') {
                         sb.append("\"\"");
+                        inputStream.skip(2);
                         skipRawString(sb);
                     } else {
                         skipGenericString(sb);
@@ -51,7 +52,7 @@ public class CommentRemover {
         while (!inputStream.eof()) {
             char c = inputStream.next();
             if (c == '\"' && inputStream.peek(0) == '\"' && inputStream.peek(1) == '\"') {
-                sb.append("\"\"");
+                sb.append("\"\"\"");
                 inputStream.skip(2);
                 break;
             } else {

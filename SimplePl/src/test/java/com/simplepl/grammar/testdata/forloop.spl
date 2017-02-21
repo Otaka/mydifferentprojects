@@ -1,0 +1,5 @@
+fun function(int length){
+    for(int i=0;i<length;i=i+1){
+        printNumber(length);
+    };
+}

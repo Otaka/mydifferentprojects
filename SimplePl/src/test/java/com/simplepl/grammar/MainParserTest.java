@@ -1,6 +1,7 @@
 package com.simplepl.grammar;
 
 import java.io.IOException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MainParserTest extends BaseTest {
@@ -36,9 +37,45 @@ public class MainParserTest extends BaseTest {
     }
 
     @Test
+    public void testExtensionFunctionWithInnerCall() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.main(), "extensionFunctionWithInnerCall");
+    }
+
+    @Test
     public void testSimplePointers() throws IOException {
         MainParser parser = createParser();
         checkFileRuleSuccess(parser, parser.testFunctionRule(), "NewDelete");
+    }
+
+    @Test
+    public void testIf() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.main(), "if");
+    }
+
+    @Test
+    public void testIfElse() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.main(), "ifElse");
+    }
+
+    @Test
+    public void testIfElseIf() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.main(), "ifElseIf");
+    }
+
+    @Test
+    public void testFor() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.main(), "forLoop");
+    }
+
+    @Test
+    public void testWhile() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.main(), "whileLoop");
     }
 
     @Test
@@ -51,6 +88,25 @@ public class MainParserTest extends BaseTest {
     public void testPointers() throws IOException {
         MainParser parser = createParser();
         checkFileRuleSuccess(parser, parser.main(), "pointers");
+    }
+
+    @Test
+    public void testCast() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.main(), "cast");
+    }
+
+    @Test
+    @Ignore
+    public void testBigTest() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.main(), "bigTest");
+    }
+
+    @Test
+    public void testArithmeticTest() throws IOException {
+        MainParser parser = createParser();
+        checkFileRuleSuccess(parser, parser.main(), "arithmetic");
     }
 
     @Test

@@ -1,0 +1,4 @@
+fun function(int length){
+    long longValue=4;
+    int v= <int>(longValue);
+}

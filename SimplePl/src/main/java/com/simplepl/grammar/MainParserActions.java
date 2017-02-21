@@ -23,54 +23,37 @@ public class MainParserActions extends BaseParser<Object> {
         return enableAction;
     }
 
-    public Object error(String message) {
-        return new Action<Object>() {
-            @Override
-            public boolean run(Context<Object> context) {
-                throw new ParseException(getContext().getCurrentIndex(), message);
-            }
-        };
-    }
-
     public Action actionFail(final String message) {
-        return new Action() {
-            @Override
-            public boolean run(Context context) {
-                String fullMessage = message;
-                if (fullMessage.contains("$match")) {
-                    fullMessage = fullMessage.replace("$match", context.getMatch());
-                }
-
-                int currentIndex = context.getCurrentIndex();
-                Position position = context.getInputBuffer().getPosition(currentIndex);
-                String part = context.getInputBuffer().extract(currentIndex, currentIndex + 20);
-                part=part.replace("\n", "\\n");
-                Formatter formatter = new Formatter();
-                formatter.format(errorMessageTemplate, position.line, position.column, fullMessage, part);
-                //fullMessage = "[Line:" + position.line + " Column:" + position.column + "]" + fullMessage + " . Found \"" + part + "\"";
-                fullMessage = formatter.toString();
-                throw new ParseException(currentIndex, fullMessage);
+        return (Action) (Context context1) -> {
+            String fullMessage = message;
+            if (fullMessage.contains("$match")) {
+                fullMessage = fullMessage.replace("$match", context1.getMatch());
             }
+
+            int currentIndex = context1.getCurrentIndex();
+            Position position = context1.getInputBuffer().getPosition(currentIndex);
+            String part = context1.getInputBuffer().extract(currentIndex, currentIndex + 20);
+            part = part.replace("\n", "\\n");
+            Formatter formatter = new Formatter();
+            formatter.format(errorMessageTemplate, position.line, position.column, fullMessage, part);
+            fullMessage = formatter.toString();
+            throw new ParseException(currentIndex, fullMessage);
         };
     }
 
     public Action dbgPrint(final String message) {
-        return new Action() {
-            @Override
-            public boolean run(Context context) {
-                String m = message;
-                if (m.contains("$match")) {
-                    m = m.replace("$match", context.getMatch());
-                }
-
-                System.out.println(m);
-                return true;
+        return (Action) (Context context1) -> {
+            String m = message;
+            if (m.contains("$match")) {
+                m = m.replace("$match", context1.getMatch());
             }
+            
+            System.out.println(m);
+            return true;
         };
     }
 
     public static abstract class LangAction implements Action {
-
         @Override
         public boolean run(Context context) {
             if (!enableAction) {
@@ -207,5 +190,4 @@ public class MainParserActions extends BaseParser<Object> {
     private String lastMatch() {
         return getContext().getMatch().trim();
     }
-
 }

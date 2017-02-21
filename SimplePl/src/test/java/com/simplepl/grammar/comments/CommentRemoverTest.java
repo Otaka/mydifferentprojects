@@ -40,4 +40,9 @@ public class CommentRemoverTest {
     public void testMultilineCommentStartsInString() {
         Assert.assertEquals("Hello \"my string/*should not be r*/emoved\" \nNext line", new CommentRemover("Hello \"my string/*should not be r*/emoved\" \nNext line").process());
     }
+    
+    @Test
+    public void testRawStringComments() {
+        Assert.assertEquals("\"\"\"My \"file\"\"\"after", new CommentRemover("\"\"\"My \"file\"\"\"after").process());
+    }
 }

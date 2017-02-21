@@ -1,21 +1,17 @@
-//use provided name
-fun usingOpenedFile(string fileName):extension(File fileObj) {
+fun usingOpenedFile(string fileName) extension(File fileObj) {
     extension(file);
 }
 
-//use custom name
-fun usingOpenedFile2(string fileName):extension(File fileObj, int fileLength) {
+fun usingOpenedFile2(string fileName) extension(File fileObj, int fileLength) {
     extension(file);
 }
 
 fun user(){
-    //use fileObj name from the extension declaration
-    usingOpenedFile("1.txt") {
-        string data=io.read(fileObj);
-    }
+    usingOpenedFile("1.txt"){
+        string data=read(fileObj);//comment
+    };
 
-    //set new names for extension argument
-    usingOpenedFile2("1.txt"):myfile, fileLength {
-        string data=io.read(myfile);
-    }
+    usingOpenedFile2("1.txt") myfile, fileLength {
+        string data=read(myfile);
+    };
 }

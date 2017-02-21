@@ -2,6 +2,7 @@ package com.simplepl.grammar;
 
 import com.simplepl.Const;
 import com.simplepl.exception.ParseException;
+import com.simplepl.grammar.comments.CommentRemover;
 import java.io.IOException;
 import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
@@ -23,7 +24,6 @@ public class BaseTest {
         MainParser parser = Parboiled.createParser(MainParser.class);
         // MainParser.setEnableAction(false);
         return parser;
-
     }
 
     protected String loadFile(String fileName) throws IOException {
@@ -40,8 +40,10 @@ public class BaseTest {
     public void checkFileRuleSuccess(MainParser parser, Rule rule, String filename) throws IOException {
         try {
             ParseRunner runner = new BasicParseRunner(rule);
-            String value = loadFile(filename+Const.EXT);
-            ParsingResult<Void> articleResult = runner.run(value);
+            String text = loadFile(filename+Const.EXT);
+            CommentRemover commentRemover=new CommentRemover(text);
+            String cleanedFromComments=commentRemover.process();
+            ParsingResult<Void> articleResult = runner.run(cleanedFromComments);
             Assert.assertTrue(articleResult.matched);
         } catch (ParserRuntimeException ex) {
             if (ex.getCause() instanceof ParseException) {

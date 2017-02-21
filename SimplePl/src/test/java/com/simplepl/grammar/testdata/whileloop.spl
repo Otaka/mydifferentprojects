@@ -1,0 +1,5 @@
+fun function(int length){
+    while(true){
+        break;
+    };
+}

@@ -1,0 +1,9 @@
+fun function(int a){
+    if(a>2){
+        showMessage("yes");
+    }else if(a<2){
+        showMessage("no");
+    }else{
+        showMessage("0");
+    };
+}

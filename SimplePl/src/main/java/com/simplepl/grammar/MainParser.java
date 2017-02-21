@@ -34,20 +34,30 @@ public class MainParser extends MainParserActions {
     public Rule expressionsBlock() {
         return Sequence(
                 openCurleyBracket(),
-                expressionsEndsWithSemicolon(),
-                closeCurleyBracket()
+                FirstOf(
+                        codeBlockExpressions(),
+                        actionFail("Expected expressions in the expression block")
+                ),
+                FirstOf(
+                        closeCurleyBracket(),
+                        actionFail("Expected '}' to close the block")
+                )
         );
     }
 
-    public Rule expressionsEndsWithSemicolon() {
+    public Rule codeBlockExpressions() {
         return ZeroOrMore(
                 Sequence(
                         expression(),
-                        FirstOf(
-                                semicolon(),
-                                actionFail("Expected ';' after the expression")
-                        )
+                        expectedSemicolon()
                 )
+        );
+    }
+
+    public Rule expectedSemicolon() {
+        return FirstOf(
+                semicolon(),
+                actionFail("Expected ';' after the expression")
         );
     }
 
@@ -65,6 +75,11 @@ public class MainParser extends MainParserActions {
 
     public Rule expression() {
         return FirstOf(
+                breakStatement(),
+                continueStatement(),
+                forStatement(),
+                whileStatement(),
+                ifStatement(),
                 newStatement(),
                 deleteStatement(),
                 functionRule(),
@@ -72,14 +87,80 @@ public class MainParser extends MainParserActions {
                 declareArray(),
                 declareVariableAndAssign(),
                 declareVariable(),
+                cast(),
                 checkExpression()
-        // actionFail("Cannot parse the expression")
+        );
+    }
+
+    public Rule cast() {
+        return Sequence(
+                openCornerBracket(),
+                typeIdentifier(),
+                closeCornerBracket(),
+                FirstOf(
+                        expression(),
+                        actionFail("Expected expression to cast after the <Type>")
+                )
+        );
+    }
+
+    public Rule ifStatement() {
+        return Sequence(
+                keyword(IF),
+                FirstOf(
+                        openBracket(),
+                        actionFail("Expected if condition '(...)'")
+                ),
+                FirstOf(
+                        expression(),
+                        actionFail("Expected expression in the if condition")
+                ),
+                FirstOf(
+                        closeBracket(),
+                        actionFail("Expected ')' after the if condition")
+                ),
+                FirstOf(
+                        expressionsBlock(),
+                        actionFail("Expected expression block for 'if'")
+                ),
+                Optional(
+                        keyword(ELSE),
+                        FirstOf(
+                                expressionsBlock(),
+                                ifStatement(),
+                                actionFail("Expected 'else' code block after 'else keyword, or next chained if'")
+                        )
+                )
+        );
+    }
+
+    public Rule whileStatement() {
+        return Sequence(
+                keyword(WHILE),
+                FirstOf(openBracket(), actionFail("Expected open bracket for condition after 'while'")),
+                FirstOf(checkExpression(), actionFail("Expected condition")),
+                FirstOf(closeBracket(), actionFail("Expected ')' after condition")),
+                FirstOf(expressionsBlock(), actionFail("Expected code block {...} after the while(condition)"))
+        );
+    }
+
+    public Rule forStatement() {
+        return Sequence(
+                keyword(FOR),
+                FirstOf(openBracket(), actionFail("Expected open bracket for condition after 'for'")),
+                FirstOf(expression(), actionFail("Expected variable initialization expression")),
+                FirstOf(semicolon(), actionFail("Expected first ';' in for(init;check;increment)")),
+                FirstOf(expression(), actionFail("Expected check condition in 'for' initialization")),
+                FirstOf(semicolon(), actionFail("Expected second ';' in for(init;check;increment)")),
+                FirstOf(expression(), actionFail("Expected iteration expression in 'for' initialization")),
+                FirstOf(closeBracket(), actionFail("Expected closing bracket for initialization of 'for'")),
+                FirstOf(expressionsBlock(), actionFail("Expected code block {...} after the for(init;check;increment)"))
         );
     }
 
     public Rule newStatement() {
         return Sequence(
-                keyword("new"),
+                keyword(NEW),
                 FirstOf(
                         typeIdentifier(),
                         actionFail("Expected type after 'new'")
@@ -89,12 +170,20 @@ public class MainParser extends MainParserActions {
 
     public Rule deleteStatement() {
         return Sequence(
-                keyword("delete"),
+                keyword(DELETE),
                 FirstOf(
                         variable(),
                         actionFail("Expected pointer after 'delete'")
                 )
         );
+    }
+
+    public Rule continueStatement() {
+        return keyword(CONTINUE);
+    }
+
+    public Rule breakStatement() {
+        return keyword(BREAK);
     }
 
     public Rule testFunctionCall() {
@@ -106,7 +195,32 @@ public class MainParser extends MainParserActions {
                 identifier(),
                 openBracket(),
                 expressionsSeparatedWithComma(),
-                closeBracket()
+                closeBracket(),
+                Optional(
+                        extensionExpressionBlock()
+                )
+        );
+    }
+
+    public Rule extensionExpressionBlock() {
+        return Sequence(
+                Optional(
+                        extensionArgumentRename()
+                ),
+                expressionsBlock()
+        );
+    }
+
+    public Rule extensionArgumentRename() {
+        return Sequence(
+                identifier(),
+                ZeroOrMore(
+                        comma(),
+                        FirstOf(
+                                identifier(),
+                                actionFail("Expected identifier for the renamed argument")
+                        )
+                )
         );
     }
 
@@ -117,14 +231,30 @@ public class MainParser extends MainParserActions {
                         identifier(),
                         actionFail("Expected function name")
                 ),
+                functionArgumentWithBrackets(),
+                functionExtensionDeclaration()
+        );
+    }
+
+    public Rule functionArgumentWithBrackets() {
+        return Sequence(
                 FirstOf(
                         openBracket(),
-                        actionFail("Expected open bracket")
+                        actionFail("Expected open bracket of function arguments")
                 ),
                 argumentList(),
                 FirstOf(
                         closeBracket(),
                         actionFail("Expected close bracket")
+                )
+        );
+    }
+
+    public Rule functionExtensionDeclaration() {
+        return Optional(
+                Sequence(
+                        keyword(EXTENSION),
+                        functionArgumentWithBrackets()
                 )
         );
     }
@@ -330,8 +460,11 @@ public class MainParser extends MainParserActions {
         return Sequence(
                 atom(),
                 ZeroOrMore(
-                        FirstOf(keyword("*"), keyword("/")),
-                        pushHelperString("* or / operation"),
+                        Sequence(
+                                FirstOf(keyword("/"), keyword("*")),
+                                pushHelperString("* or / operation")
+                        ),
+                        dbgPrint("multiplication term $match"),
                         FirstOf(
                                 atom(),
                                 actionFail("Expected expression after * or /")
@@ -391,7 +524,10 @@ public class MainParser extends MainParserActions {
     public Rule parens() {
         return Sequence(
                 openBracket(),
-                checkExpression(),
+                FirstOf(
+                        checkExpression(),
+                        actionFail("Expected expression inside the (...)")
+                ),
                 FirstOf(
                         closeBracket(),
                         actionFail("Expected closing bracket")
@@ -405,7 +541,7 @@ public class MainParser extends MainParserActions {
 
     public Rule structure() {
         return Sequence(
-                keyword("structure"),
+                keyword(STRUCTURE),
                 FirstOf(
                         identifier(),
                         actionFail("Expected structure name")
@@ -491,6 +627,14 @@ public class MainParser extends MainParserActions {
         return keyword("(");
     }
 
+    public Rule openCornerBracket() {
+        return keyword("<");
+    }
+
+    public Rule closeCornerBracket() {
+        return keyword(">");
+    }
+
     public Rule closeBracket() {
         return keyword(")");
     }
@@ -519,6 +663,10 @@ public class MainParser extends MainParserActions {
         return keyword(";");
     }
 
+    public Rule colon() {
+        return keyword(":");
+    }
+
     public Rule comma() {
         return keyword(",");
     }
@@ -532,7 +680,17 @@ public class MainParser extends MainParserActions {
         );
     }
 
+    public String EXTENSION = "extension";
     public String FUN = "fun";
     public String POINTER = "@";
+    public String STRUCTURE = "structure";
+    public String NEW = "new";
+    public String DELETE = "delete";
+    public String CONTINUE = "continue";
+    public String BREAK = "break";
+    public String IF = "if";
+    public String ELSE = "else";
+    public String WHILE = "while";
+    public String FOR = "for";
 
 }

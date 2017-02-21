@@ -1,4 +1,4 @@
-struct TestStructure {
+structure TestStructure {
     int value;
     int@ pointerToValue;
 }
@@ -6,15 +6,15 @@ struct TestStructure {
 fun main(string args){
     int@ intPointer=new int;
     @intPointer=43;
-    assert(@intPointer==43)
+    assert(@intPointer==43);
     int@secondPointer=intPointer;
-    assert(secondPointer==intPointer);//they points to the same location
-    assert(@secondPointer==@intPointer);//they contains the same value
+    assert(secondPointer==intPointer);
+    assert(@secondPointer==@intPointer);
 
     TestStructure @myStructure=new TestStructure;
     myStructure.value=@intPointer;
     myStructure.pointerToValue=intPointer;
-    assert(myStructure.value==myStrucure.@pointerToValue)
+    assert(myStructure.value==myStrucure.@pointerToValue);
 
     delete intPointer;
     delete myStructure;
