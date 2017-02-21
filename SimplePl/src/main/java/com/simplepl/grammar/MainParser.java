@@ -231,6 +231,7 @@ public class MainParser extends MainParserActions {
                         identifier(),
                         actionFail("Expected function name")
                 ),
+                _pushAst_ExtractTopStringObjAndSetAsAttribute("functionDeclaration", "name"),
                 functionArgumentWithBrackets(),
                 functionExtensionDeclaration()
         );
@@ -242,10 +243,26 @@ public class MainParser extends MainParserActions {
                         openBracket(),
                         actionFail("Expected open bracket of function arguments")
                 ),
+                _pushAst("function_arguments"),
                 argumentList(),
                 FirstOf(
                         closeBracket(),
                         actionFail("Expected close bracket")
+                )
+        );
+    }
+
+    public Rule argumentList() {
+        return Optional(
+                Sequence(
+                        declareVariable(),
+                        ZeroOrMore(
+                                comma(),
+                                FirstOf(
+                                        declareVariable(),
+                                        actionFail("Expected argument declaration")
+                                )
+                        )
                 )
         );
     }
@@ -266,7 +283,8 @@ public class MainParser extends MainParserActions {
     public Rule declareVariable() {
         return Sequence(
                 typeIdentifier(),
-                identifier()
+                identifier(),
+                _pushAst_ExtractTopAstAndSetAsAttribute("var", "name","type")
         );
     }
 
@@ -389,21 +407,6 @@ public class MainParser extends MainParserActions {
         );
     }
 
-    public Rule argumentList() {
-        return Optional(
-                Sequence(
-                        declareVariable(),
-                        ZeroOrMore(
-                                comma(),
-                                FirstOf(
-                                        declareVariable(),
-                                        actionFail("Expected argument declaration")
-                                )
-                        )
-                )
-        );
-    }
-
     public Rule checkExpression() {
         return FirstOf(
                 Sequence(
@@ -420,7 +423,7 @@ public class MainParser extends MainParserActions {
                                         keyword("&&"),
                                         keyword("||")
                                 ),
-                                pushHelperString("and/or_operation"),
+                                pushMatchString("and/or_operation"),
                                 FirstOf(
                                         equalRule(),
                                         actionFail("after 'and'/'or' should be another expression")
@@ -462,7 +465,7 @@ public class MainParser extends MainParserActions {
                 ZeroOrMore(
                         Sequence(
                                 FirstOf(keyword("/"), keyword("*")),
-                                pushHelperString("* or / operation")
+                                pushMatchString("* or / operation")
                         ),
                         dbgPrint("multiplication term $match"),
                         FirstOf(
@@ -516,8 +519,8 @@ public class MainParser extends MainParserActions {
 
     public Rule booleanValueRule() {
         return FirstOf(
-                keyword("true"),
-                keyword("false")
+                keyword(TRUE),
+                keyword(FALSE)
         );
     }
 
@@ -589,10 +592,13 @@ public class MainParser extends MainParserActions {
     public Rule identifier() {
         return Sequence(
                 possibleSpace(),
-                new JavaUnicodeMatcherStartString(),
-                ZeroOrMore(
-                        new JavaUnicodeMatcherString()
+                Sequence(
+                        new JavaUnicodeMatcherStartString(),
+                        ZeroOrMore(
+                                new JavaUnicodeMatcherString()
+                        )
                 ),
+                pushMatchString("identifier name"),
                 possibleSpace()
         ).suppressSubnodes();
     }
@@ -607,12 +613,16 @@ public class MainParser extends MainParserActions {
     public Rule pointerIdentifier() {
         return Sequence(
                 identifier(),
-                keyword(POINTER)
+                keyword(POINTER),
+                _pushAst_ExtractTopStringObjAndSetAsAttribute("pointer", "type")
         );
     }
 
     public Rule simpleIdentifier() {
-        return identifier();
+        return Sequence(
+                identifier(),
+                _pushAst_ExtractTopStringObjAndSetAsAttribute("type", "type")
+        );
     }
 
     public Rule keyword(String val) {
@@ -680,6 +690,8 @@ public class MainParser extends MainParserActions {
         );
     }
 
+    public String TRUE = "true";
+    public String FALSE = "false";
     public String EXTENSION = "extension";
     public String FUN = "fun";
     public String POINTER = "@";

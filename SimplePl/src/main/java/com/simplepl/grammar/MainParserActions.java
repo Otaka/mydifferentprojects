@@ -1,6 +1,7 @@
 package com.simplepl.grammar;
 
 import com.simplepl.exception.ParseException;
+import com.simplepl.grammar.ast.Ast;
 import java.util.Formatter;
 import org.parboiled.Action;
 import org.parboiled.BaseParser;
@@ -47,13 +48,14 @@ public class MainParserActions extends BaseParser<Object> {
             if (m.contains("$match")) {
                 m = m.replace("$match", context1.getMatch());
             }
-            
+
             System.out.println(m);
             return true;
         };
     }
 
     public static abstract class LangAction implements Action {
+
         @Override
         public boolean run(Context context) {
             if (!enableAction) {
@@ -100,7 +102,7 @@ public class MainParserActions extends BaseParser<Object> {
         return stringObj.getVal();
     }
 
-    public Action pushHelperString(final String label) {
+    public Action pushMatchString(final String label) {
         return new LangAction() {
             @Override
             public boolean runAction(Context context) {
@@ -190,4 +192,65 @@ public class MainParserActions extends BaseParser<Object> {
     private String lastMatch() {
         return getContext().getMatch().trim();
     }
+
+    public Action _pushAst_ExtractTopStringObjAndSetAsAttribute(String name, String attributeName) {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast ast = new Ast(name);
+                StringObj attributeAst = (StringObj) context.getValueStack().pop();
+                ast.getAttributes().put(attributeName, attributeAst.getVal());
+                context.getValueStack().push(ast);
+                return true;
+            }
+        };
+    }
+
+    public Action _pushAst_ExtractTopAstAndSetAsAttribute(String name, String... attributeNames) {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast ast = new Ast(name);
+                for (String attributeName : attributeNames) {
+                    Object attributeAst = context.getValueStack().pop();
+                    if (attributeAst instanceof StringObj) {
+                        ast.getAttributes().put(attributeName, ((StringObj) attributeAst).getVal());
+                    } else if (attributeAst instanceof Ast) {
+                        ast.getAttributes().put(attributeName, attributeAst);
+                    } else {
+                        throw new IllegalArgumentException("Cannot convert object [" + attributeAst + "] to Ast class or to StringObj class.");
+                    }
+                }
+
+                context.getValueStack().push(ast);
+                return true;
+            }
+        };
+    }
+
+    public Action _pushAst_ExtractTopAstAndSetAsChild(String name, String childName) {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast ast = new Ast(name);
+                Ast childAst = (Ast) context.getValueStack().pop();
+                childAst.setName(childName);
+                ast.getChildren().add(childAst);
+                context.getValueStack().push(ast);
+                return true;
+            }
+        };
+    }
+
+    public Action _pushAst(String name) {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast ast = new Ast(name);
+                context.getValueStack().push(ast);
+                return true;
+            }
+        };
+    }
+
 }
