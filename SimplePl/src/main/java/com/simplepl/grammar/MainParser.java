@@ -527,6 +527,7 @@ public class MainParser extends MainParserActions {
 
     public Rule atom() {
         return FirstOf(
+                cast(),
                 number(),
                 booleanValueRule(),
                 functionCall(),

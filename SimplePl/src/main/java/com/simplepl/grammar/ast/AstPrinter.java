@@ -52,7 +52,11 @@ public class AstPrinter {
 
             level = level - tab;
             System.out.println();
-            printWithPadding("}\n", level);
+            if(ast.getChildren().isEmpty()){
+                printWithPadding("}\n", level);
+            }else{
+                printWithPadding("},\n", level);
+            }
         }
 
         if (!ast.getChildren().isEmpty()) {

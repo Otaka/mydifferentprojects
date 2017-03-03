@@ -1,8 +1,6 @@
 package com.simplepl;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.simplepl.Const;
 import com.simplepl.ast.AstTestTest;
 import com.simplepl.exception.ParseException;
 import com.simplepl.grammar.MainParser;
@@ -56,7 +54,7 @@ public class BaseTest {
             String cleanedFromComments = commentRemover.process();
             ParsingResult<Object> articleResult = runner.run(cleanedFromComments);
             Assert.assertTrue(articleResult.matched);
-           /* if (!articleResult.valueStack.isEmpty()) {
+            /* if (!articleResult.valueStack.isEmpty()) {
                 AstPrinter printer = new AstPrinter();
                 //printer.printAstTree((Ast)articleResult.valueStack.pop());
                 int x = 0;
@@ -96,7 +94,7 @@ public class BaseTest {
             throw ex;
         }
     }
-    
+
     public void testAst(String expressionToTest, String jsonAstMatcher) {
         MainParser parser = createParser();
         ParseRunner runner = new BasicParseRunner(parser.testExpression());
@@ -105,23 +103,27 @@ public class BaseTest {
         Ast ast = (Ast) articleResult.valueStack.pop();
         AstMatcher matcher = new AstMatcherParser().parse(jsonAstMatcher);
         matcher.match(ast);
-        
+
     }
-    
-    public void testAstExpressionFromFile(String expressionToTest,String file, String jsonKey) {
+
+    public void testAstExpressionFromFile(String expressionToTest, String file, String jsonKey) {
         MainParser parser = createParser();
         testAstRuleFromFile(expressionToTest, file, jsonKey, parser.testExpression());
     }
+
+    private void printAst(Ast ast){
+        new AstPrinter().printAstTree(ast);
+    }
     
-    public void testAstRuleFromFile(String expressionToTest,String file, String jsonKey, Rule rule) {
+    public void testAstRuleFromFile(String expressionToTest, String file, String jsonKey, Rule rule) {
         ParseRunner runner = new BasicParseRunner(rule);
         ParsingResult<Object> articleResult = runner.run(expressionToTest);
         Assert.assertTrue(articleResult.matched);
         Ast ast = (Ast) articleResult.valueStack.pop();
-        String filePath="/com/simplepl/ast/testdata/"+file+".json";
-        InputStream stream=AstTestTest.class.getResourceAsStream(filePath);
-        if(stream==null){
-            throw new IllegalArgumentException("Cannot find file ["+filePath+"]");
+        String filePath = "/com/simplepl/ast/testdata/" + file + ".json";
+        InputStream stream = AstTestTest.class.getResourceAsStream(filePath);
+        if (stream == null) {
+            throw new IllegalArgumentException("Cannot find file [" + filePath + "]");
         }
         String jsonText;
         try {
@@ -129,13 +131,13 @@ public class BaseTest {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-//new AstPrinter().printAstTree(ast);
-        GsonBuilder gsonBuilder=new GsonBuilder();
+//printAst(ast);
+        GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(AstValue.class, new AstDeserializer());
-        AstCollection collection=gsonBuilder.create().fromJson(jsonText, AstCollection.class);
+        AstCollection collection = gsonBuilder.create().fromJson(jsonText, AstCollection.class);
         AstMatcher matcher = collection.getCollection().get(jsonKey);
-        if(matcher==null){
-            throw new IllegalArgumentException("Cannot find ["+jsonKey+"] in  "+file);
+        if (matcher == null) {
+            throw new IllegalArgumentException("Cannot find [" + jsonKey + "] in  " + file);
         }
 
         matcher.match(ast);
