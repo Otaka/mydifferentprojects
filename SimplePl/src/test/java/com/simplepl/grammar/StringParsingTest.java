@@ -1,5 +1,6 @@
 package com.simplepl.grammar;
 
+import com.simplepl.BaseTest;
 import java.io.IOException;
 import org.junit.Test;
 

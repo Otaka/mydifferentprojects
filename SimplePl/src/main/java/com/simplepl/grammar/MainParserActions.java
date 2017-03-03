@@ -3,6 +3,7 @@ package com.simplepl.grammar;
 import com.simplepl.exception.ParseException;
 import com.simplepl.grammar.ast.Ast;
 import java.util.Formatter;
+import org.apache.commons.lang.StringUtils;
 import org.parboiled.Action;
 import org.parboiled.BaseParser;
 import org.parboiled.Context;
@@ -13,6 +14,7 @@ import org.parboiled.support.Position;
  */
 public class MainParserActions extends BaseParser<Object> {
 
+    public final static String UNKNOWN = null;
     private final String errorMessageTemplate = "[Line:%1$d Column:%2$d] %3$s. Found \"%4$s\"";
     private static boolean enableAction = true;
 
@@ -68,40 +70,7 @@ public class MainParserActions extends BaseParser<Object> {
         public abstract boolean runAction(Context context);
     }
 
-    /**
-     * Method tries to get the object from the top of the stack, and if it is
-     * not section, or the section does not equal to @sectionName, it throws an
-     * exception
-     */
-    private SectionObj popSectionFromTop(String sectionName) {
-        Object val = pop();
-        if (val == null || !(val instanceof SectionObj)) {
-            throw new RuntimeException("Expected section on the top of the stack, but found [" + val + "]");
-        }
-        SectionObj section = (SectionObj) val;
-        if (!sectionName.equals(section.getSectionName())) {
-            throw new RuntimeException("Expected section with name [" + sectionName + "], but found [" + section.getSectionName() + "]");
-        }
-        return section;
-    }
-
-    /**
-     * Method tries to get the object from the top of the stack, and if it is
-     * not stringObj, or the stringObj does not equal to @stringObjName, it
-     * throws an exception
-     */
-    private String popStringObjFromTop(String stringObjName) {
-        Object val = pop();
-        if (val == null || !(val instanceof StringObj)) {
-            throw new RuntimeException("Expected StringObj on the top of the stack, but found [" + val + "]");
-        }
-        StringObj stringObj = (StringObj) val;
-        if (!stringObjName.equals(stringObj.getLabel())) {
-            throw new RuntimeException("Expected StringObj with name [" + stringObjName + "], but found [" + stringObj.getLabel() + "]");
-        }
-        return stringObj.getVal();
-    }
-
+    /*
     public Action pushMatchString(final String label) {
         return new LangAction() {
             @Override
@@ -111,102 +80,12 @@ public class MainParserActions extends BaseParser<Object> {
                 return true;
             }
         };
-    }
-
-    public String popHelperString(String label) {
-        StringObj string = (StringObj) pop();
-        if (!string.getLabel().equals(label)) {
-            throw new RuntimeException("On the top of the stack found helperString '" + string.getLabel() + "' but expected '" + label + "'");
-        }
-
-        return string.getVal();
-    }
-
-    public Action createSectionAndPushLastMatch(final String label, final String key) {
-        return new LangAction() {
-            @Override
-            public boolean runAction(Context context) {
-                SectionObj section = new SectionObj(label);
-                push(section);
-
-                String match = context.getMatch().trim();
-                section.pushValue(key, match);
-                return true;
-            }
-        };
-    }
-
-    public Action pushValueOnTopSection(final String label, final String key, final Object value) {
-        return new LangAction() {
-            @Override
-            public boolean runAction(Context context) {
-                SectionObj section = (SectionObj) peek();
-                if (section instanceof SectionObj) {
-                    if (!section.getSectionName().equals(label)) {
-                        throw new RuntimeException("Expected section '" + label + "' on the top of the stack, but found section '" + section.getSectionName() + "'");
-                    }
-                }
-
-                section.pushValue(key, value);
-                return true;
-            }
-        };
-    }
-
-    public Action pushTopStackValueOnTopSection(final String label, final String key) {
-        return new LangAction() {
-            @Override
-            public boolean runAction(Context context) {
-                Object value = pop();
-                SectionObj section = (SectionObj) peek();
-                if (section instanceof SectionObj) {
-                    if (!section.getSectionName().equals(label)) {
-                        throw new RuntimeException("Expected section '" + label + "' on the top of the stack, but found section '" + section.getSectionName() + "'");
-                    }
-                }
-
-                section.pushValue(key, value);
-                return true;
-            }
-        };
-    }
-
-    public Action pushLastMatchOnTopSection(final String label, final String key) {
-        return new LangAction() {
-            @Override
-            public boolean runAction(Context context) {
-                String value = lastMatch();
-                SectionObj section = (SectionObj) peek();
-                if (section instanceof SectionObj) {
-                    if (!section.getSectionName().equals(label)) {
-                        throw new RuntimeException("Expected section '" + label + "' on the top of the stack, but found section '" + section.getSectionName() + "'");
-                    }
-                }
-
-                section.pushValue(key, value);
-                return true;
-            }
-        };
-    }
-
+    }*/
     private String lastMatch() {
         return getContext().getMatch().trim();
     }
 
-    public Action _pushAst_ExtractTopStringObjAndSetAsAttribute(String name, String attributeName) {
-        return new LangAction() {
-            @Override
-            public boolean runAction(Context context) {
-                Ast ast = new Ast(name);
-                StringObj attributeAst = (StringObj) context.getValueStack().pop();
-                ast.getAttributes().put(attributeName, attributeAst.getVal());
-                context.getValueStack().push(ast);
-                return true;
-            }
-        };
-    }
-
-    public Action _pushAst_ExtractTopAstAndSetAsAttribute(String name, String... attributeNames) {
+    public Action _pushAst_ExtractTopAstsAndSetAsAttributes(String name, String... attributeNames) {
         return new LangAction() {
             @Override
             public boolean runAction(Context context) {
@@ -228,15 +107,120 @@ public class MainParserActions extends BaseParser<Object> {
         };
     }
 
-    public Action _pushAst_ExtractTopAstAndSetAsChild(String name, String childName) {
+    public Action _pushAst_ExtractTopAstAndSetAsChild(String name) {
         return new LangAction() {
             @Override
             public boolean runAction(Context context) {
                 Ast ast = new Ast(name);
                 Ast childAst = (Ast) context.getValueStack().pop();
-                childAst.setName(childName);
                 ast.getChildren().add(childAst);
                 context.getValueStack().push(ast);
+                return true;
+            }
+        };
+    }
+
+    public Action _setAttributeOnLastAst(String name, Object value) {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                ((Ast) context.getValueStack().peek()).addAttribute(name, value);
+                return true;
+            }
+        };
+    }
+
+    public Action _pushVariableToArgumentList() {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast variable = (Ast) context.getValueStack().pop();
+                checkAstHasNecessaryName(variable, "var", false);
+                Ast argumentList = (Ast) context.getValueStack().peek();
+                checkAstHasNecessaryName(argumentList, "function_arguments", false);
+                argumentList.addChild(variable);
+                return true;
+            }
+        };
+    }
+
+    public Action _pushFunctionExtensionToDeclaration() {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast extensionArgumentList = (Ast) context.getValueStack().pop();
+                checkAstHasNecessaryName(extensionArgumentList, "function_arguments", false);
+                Ast function = (Ast) context.getValueStack().peek();
+                checkAstHasNecessaryName(function, "function", false);
+                function.addAttribute("extension", extensionArgumentList);
+                return true;
+            }
+        };
+    }
+
+    public Action _pushAstWithMatchedStringAsAttribute(String astName, String attributeName) {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast ast = new Ast(astName);
+                ast.addAttribute(attributeName, lastMatch());
+                context.getValueStack().push(ast);
+                return true;
+            }
+        };
+    }
+
+    public Action _pushTopStackAstToNextStackAstAsChild(String expectedChildName, String expectedParentName) {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast child = (Ast) context.getValueStack().pop();
+                if (!StringUtils.equals(expectedChildName, UNKNOWN)) {
+                    checkAstHasNecessaryName(child, expectedChildName, true);
+                }
+
+                Ast parent = (Ast) context.getValueStack().peek();
+                if (!StringUtils.equals(expectedParentName, UNKNOWN)) {
+                    checkAstHasNecessaryName(parent, expectedParentName, false);
+                }
+
+                parent.addChild(child);
+                return true;
+            }
+        };
+    }
+
+    public Action _pushTopStackAstToNextStackAstAsAttribute(String attributeName, String expectedChildName, String expectedParentName) {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast child = (Ast) context.getValueStack().pop();
+                if (!StringUtils.equals(expectedChildName, UNKNOWN)) {
+                    checkAstHasNecessaryName(child, expectedChildName, true);
+                }
+
+                Ast parent = (Ast) context.getValueStack().peek();
+                if (!StringUtils.equals(expectedParentName, UNKNOWN)) {
+                    checkAstHasNecessaryName(parent, expectedParentName, false);
+                }
+
+                parent.addAttribute(attributeName, child);
+                return true;
+            }
+        };
+    }
+
+    public Action _pushBinaryOperation() {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast rightExpression = (Ast) context.getValueStack().pop();
+
+                Ast operation = (Ast) context.getValueStack().pop();
+                Ast leftExpression = (Ast) context.getValueStack().pop();
+                operation.addChild(leftExpression);
+                operation.addChild(rightExpression);
+                context.getValueStack().push(operation);
                 return true;
             }
         };
@@ -251,6 +235,12 @@ public class MainParserActions extends BaseParser<Object> {
                 return true;
             }
         };
+    }
+
+    public void checkAstHasNecessaryName(Ast ast, String name, boolean child) {
+        if (!ast.getName().equals(name)) {
+            throw new IllegalStateException("Expected " + (child ? "child" : "parent") + " '" + name + "' ast but found '" + ast.getName() + "'");
+        }
     }
 
 }

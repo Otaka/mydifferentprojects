@@ -23,6 +23,14 @@ public class Ast {
         return children;
     }
 
+    public void addChild(Ast ast) {
+        children.add(ast);
+    }
+
+    public void addAttribute(String name, Object object) {
+        attributes.put(name, object);
+    }
+
     public String getName() {
         return name;
     }
@@ -33,7 +41,6 @@ public class Ast {
 
     @Override
     public String toString() {
-        return "Ast:"+name;
+        return "Ast:" + name;
     }
-
 }

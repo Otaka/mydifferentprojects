@@ -6,16 +6,10 @@ structure TestStructure {
 fun main(string args){
     int@ intPointer=new int;
     @intPointer=43;
-    assert(@intPointer==43);
     int@secondPointer=intPointer;
-    assert(secondPointer==intPointer);
-    assert(@secondPointer==@intPointer);
-
     TestStructure @myStructure=new TestStructure;
     myStructure.value=@intPointer;
     myStructure.pointerToValue=intPointer;
-    assert(myStructure.value==myStrucure.@pointerToValue);
-
     delete intPointer;
     delete myStructure;
 }

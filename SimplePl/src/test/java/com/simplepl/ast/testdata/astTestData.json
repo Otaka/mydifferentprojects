@@ -1,0 +1,459 @@
+{
+    "collection": {
+        "digitTest": {
+            "n": "number",
+            "attr": {
+                "value": "5"
+            }
+        },
+
+        "multipleTest": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "*"
+            }, 
+            "chldr": [
+                {
+                    "attr": {
+                        "value": "15"
+                    }
+                },
+                {
+                    "attr": {
+                        "value": "29"
+                    }
+                }
+            ]
+        },
+
+        "variableAssign": {
+            "n": "var"
+        },
+
+        "parenthesis": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "/"
+            }, 
+            "chldr": [
+                {
+                    "n": "binary_operation",
+                    "attr": {
+                        "operation": "+"
+                    }, 
+                    "chldr": [
+                        {
+                            "attr": {
+                                "value": "2"
+                            }
+                        },
+                        {
+                            "attr": {
+                                "value": "6"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "n": "binary_operation",
+                    "attr": {
+                        "operation": "*"
+                    }, 
+                    "chldr": [
+                        {
+                            "attr": {
+                                "value": "1"
+                            }
+                        },
+                        {
+                            "attr": {
+                                "value": "3"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "functionCall": {
+            "n": "function_call",
+            "attr": {
+                "name": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "myfunction"
+                    }
+                }
+            },
+            "chldr": [{
+                    "n": "expressions_list",
+                    "chldr": [{
+                            "n": "number",
+                            "attr": {
+                                "value": "1"
+                            }
+                        },
+                        {
+                            "n": "number",
+                            "attr": {
+                                "value": "2"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "functionDeclaration": {
+            "n": "function",
+            "attr": {
+                "name": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "main"
+                    }
+                }, 
+                "arguments": {
+                    "n": "function_arguments",
+                    "chldr": [{
+                            "n": "var",
+                            "attr": {
+                                "name": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "a"
+                                    }
+                                }, 
+                                "type": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "int"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "n": "var",
+                            "attr": {
+                                "name": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "b"
+                                    }
+                                }, 
+                                "type": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "int"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "chldr": [{
+                    "n": "expressions_list",
+                    "chldr": [{
+                            "n": "var",
+                            "attr": {
+                                "init_expression": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "a"
+                                    }
+                                }, 
+                                "name": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "c"
+                                    }
+                                }, 
+                                "type": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "int"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "structureFieldAssign": {
+            "n": "extractField",
+            "attr": {
+                "source": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "str"
+                    }
+                }
+            },
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "buffer"
+                    }
+                },
+                {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "length"
+                    }
+                }
+            ]
+        },
+
+        "for_loop": {
+            "n": "for_loop",
+            "attr": {
+                "for_init_increment": {
+                    "n": "binary_operation",
+                    "attr": {
+                        "operation": "="
+                    },
+                    "chldr": [{
+                            "n": "identifier",
+                            "attr": {
+                                "name": "i"
+                            }
+                        },
+                        {
+                            "n": "binary_operation",
+                            "attr": {
+                                "operation": "+"
+                            },
+                            "chldr": [{
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "i"
+                                    }
+                                },
+                                {
+                                    "n": "number",
+                                    "attr": {
+                                        "value": "1"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "for_init_condition": {
+                    "n": "binary_operation",
+                    "attr": {
+                        "operation": "<"
+                    },
+                    "chldr": [{
+                            "n": "identifier",
+                            "attr": {
+                                "name": "i"
+                            }
+                        },
+                        {
+                            "n": "number",
+                            "attr": {
+                                "value": "45"
+                            }
+                        }
+                    ]
+                }, 
+                "for_init_expression": {
+                    "n": "var",
+                    "attr": {
+                        "init_expression": {
+                            "n": "number",
+                            "attr": {
+                                "value": "0"
+                            }
+                        }, 
+                        "name": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "i"
+                            }
+                        }, 
+                        "type": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "int"
+                            }
+                        }
+                    }
+                }
+            },
+            "chldr": [{
+                    "n": "expressions_list",
+                    "chldr": [{
+                            "n": "function_call",
+                            "attr": {
+                                "name": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "print"
+                                    }
+                                }
+                            },
+                            "chldr": [{
+                                    "n": "expressions_list",
+                                    "chldr": [{
+                                            "n": "string",
+                                            "attr": {
+                                                "value": "hello"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "pointerDeclaration": {
+            "n": "var",
+            "attr": {
+                "name": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "intPointer"
+                    }
+                }, 
+                "type": {
+                    "n": "pointer",
+                    "attr": {
+                        "type": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "int"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        "pointerAssignment": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "="
+            },
+            "chldr": [{
+                    "n": "pointer",
+                    "chldr": [{
+                            "n": "identifier",
+                            "attr": {
+                                "name": "intPointer"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "n": "number",
+                    "attr": {
+                        "value": "43"
+                    }
+                }
+            ]
+        },
+
+        "pointerDeclarationAndAssignment": {
+            "n": "var",
+            "attr": {
+                "init_expression": {
+                    "n": "new",
+                    "attr": {
+                        "object_type_to_allocate": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "int"
+                            }
+                        }
+                    }
+                }, 
+                "name": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "intPointer"
+                    }
+                }, 
+                "type": {
+                    "n": "pointer",
+                    "attr": {
+                        "type": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "int"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        "varAssign": {
+            "n": "var",
+            "attr": {
+                "init_expression": {
+                    "n": "binary_operation",
+                    "attr": {
+                        "operation": "/"
+                    },
+                    "chldr": [{
+                            "n": "binary_operation",
+                            "attr": {
+                                "operation": "-"
+                            },
+                            "chldr": [{
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "a"
+                                    }
+                                },
+                                {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "b"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "n": "binary_operation",
+                            "attr": {
+                                "operation": "-"
+                            },
+                            "chldr": [{
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "b"
+                                    }
+                                },
+                                {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "a"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }, 
+                "name": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "r"
+                    }
+                }, 
+                "type": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "double"
+                    }
+                }
+            }
+        }
+    }
+}

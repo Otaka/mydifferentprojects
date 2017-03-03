@@ -27,7 +27,8 @@ public class CommentRemover {
                         skipRawString(sb);
                     } else {
                         skipGenericString(sb);
-                    }   break;
+                    }
+                    break;
                 case '/':
                     char nextChar = inputStream.peek(0);
                     if (nextChar == '/') {
@@ -38,7 +39,10 @@ public class CommentRemover {
                         inputStream.next();
                         //skip until the '*/'
                         skipUntilEndCommentReturnCount(sb);
-                    }   break;
+                    }else{
+                        sb.append(c);
+                    }
+                    break;
                 default:
                     sb.append(c);
                     break;

@@ -23,7 +23,8 @@ public class MainParser extends MainParserActions {
                 FirstOf(
                         expressionsBlock(),
                         actionFail("Expected function body {...} after function declaration")
-                )
+                ),
+                _pushTopStackAstToNextStackAstAsChild("expressions_list", "function")
         );
     }
 
@@ -46,10 +47,13 @@ public class MainParser extends MainParserActions {
     }
 
     public Rule codeBlockExpressions() {
-        return ZeroOrMore(
-                Sequence(
-                        expression(),
-                        expectedSemicolon()
+        return Sequence(
+                _pushAst("expressions_list"),
+                ZeroOrMore(
+                        Sequence(
+                                Sequence(expression(), _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "expressions_list")),//?????? last UNKNOWN should be replaced to "expressions_list"
+                                expectedSemicolon()
+                        )
                 )
         );
     }
@@ -62,15 +66,21 @@ public class MainParser extends MainParserActions {
     }
 
     public Rule expressionsSeparatedWithComma() {
-        return Optional(
-                Sequence(
-                        expression(),
-                        ZeroOrMore(
-                                comma(),
-                                expression()
+        return Sequence(
+                _pushAst("expressions_list"),
+                Optional(
+                        Sequence(
+                                Sequence(expression(), _pushTopStackAstToNextStackAstAsChild(UNKNOWN, UNKNOWN)),////?????? last UNKNOWN should be replaced to "expressions_list"
+                                ZeroOrMore(
+                                        comma(),
+                                        Sequence(expression(), _pushTopStackAstToNextStackAstAsChild(UNKNOWN, UNKNOWN))//?????? last UNKNOWN should be replaced to "expressions_list"
+                                )
                         )
-                )
-        );
+                ));
+    }
+
+    public Rule testExpression() {
+        return Sequence(expression(), EOI);
     }
 
     public Rule expression() {
@@ -95,40 +105,37 @@ public class MainParser extends MainParserActions {
     public Rule cast() {
         return Sequence(
                 openCornerBracket(),
+                _pushAst("type_conversion"),
                 typeIdentifier(),
+                _pushTopStackAstToNextStackAstAsAttribute("to_type", UNKNOWN, "type_conversion"),
                 closeCornerBracket(),
                 FirstOf(
                         expression(),
                         actionFail("Expected expression to cast after the <Type>")
-                )
+                ),
+                _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "type_conversion")
         );
     }
 
     public Rule ifStatement() {
         return Sequence(
                 keyword(IF),
-                FirstOf(
-                        openBracket(),
-                        actionFail("Expected if condition '(...)'")
-                ),
-                FirstOf(
-                        expression(),
-                        actionFail("Expected expression in the if condition")
-                ),
-                FirstOf(
-                        closeBracket(),
-                        actionFail("Expected ')' after the if condition")
-                ),
-                FirstOf(
-                        expressionsBlock(),
-                        actionFail("Expected expression block for 'if'")
-                ),
+                _pushAst("if"),
+                FirstOf(openBracket(), actionFail("Expected if condition '(...)'")),
+                FirstOf(expression(), actionFail("Expected expression in the if condition")),
+                _pushTopStackAstToNextStackAstAsAttribute("if_condition", UNKNOWN, "if"),
+                FirstOf(closeBracket(), actionFail("Expected ')' after the if condition")),
+                FirstOf(expressionsBlock(), actionFail("Expected expression block for 'if'")),
+                _pushTopStackAstToNextStackAstAsChild("expressions_list", "if"),
                 Optional(
                         keyword(ELSE),
-                        FirstOf(
-                                expressionsBlock(),
-                                ifStatement(),
-                                actionFail("Expected 'else' code block after 'else keyword, or next chained if'")
+                        Sequence(
+                                FirstOf(
+                                        expressionsBlock(),
+                                        ifStatement(),
+                                        actionFail("Expected 'else' code block after 'else keyword, or next chained if'")
+                                ),
+                                _pushTopStackAstToNextStackAstAsAttribute("else", UNKNOWN, "if")
                         )
                 )
         );
@@ -137,53 +144,65 @@ public class MainParser extends MainParserActions {
     public Rule whileStatement() {
         return Sequence(
                 keyword(WHILE),
+                _pushAst("while_loop"),
                 FirstOf(openBracket(), actionFail("Expected open bracket for condition after 'while'")),
-                FirstOf(checkExpression(), actionFail("Expected condition")),
+                FirstOf(expression(), actionFail("Expected condition")),
+                _pushTopStackAstToNextStackAstAsAttribute("while_codition_expression", UNKNOWN, "while_loop"),
                 FirstOf(closeBracket(), actionFail("Expected ')' after condition")),
-                FirstOf(expressionsBlock(), actionFail("Expected code block {...} after the while(condition)"))
+                FirstOf(expressionsBlock(), actionFail("Expected code block {...} after the while(condition)")),
+                _pushTopStackAstToNextStackAstAsChild("expressions_list", "while_loop")
         );
     }
 
     public Rule forStatement() {
         return Sequence(
                 keyword(FOR),
+                _pushAst("for_loop"),
                 FirstOf(openBracket(), actionFail("Expected open bracket for condition after 'for'")),
                 FirstOf(expression(), actionFail("Expected variable initialization expression")),
+                _pushTopStackAstToNextStackAstAsAttribute("for_init_expression", UNKNOWN, "for_loop"),
                 FirstOf(semicolon(), actionFail("Expected first ';' in for(init;check;increment)")),
                 FirstOf(expression(), actionFail("Expected check condition in 'for' initialization")),
+                _pushTopStackAstToNextStackAstAsAttribute("for_init_condition", UNKNOWN, "for_loop"),
                 FirstOf(semicolon(), actionFail("Expected second ';' in for(init;check;increment)")),
                 FirstOf(expression(), actionFail("Expected iteration expression in 'for' initialization")),
+                _pushTopStackAstToNextStackAstAsAttribute("for_init_increment", UNKNOWN, "for_loop"),
                 FirstOf(closeBracket(), actionFail("Expected closing bracket for initialization of 'for'")),
-                FirstOf(expressionsBlock(), actionFail("Expected code block {...} after the for(init;check;increment)"))
+                FirstOf(expressionsBlock(), actionFail("Expected code block {...} after the for(init;check;increment)")),
+                _pushTopStackAstToNextStackAstAsChild("expressions_list", "for_loop")
         );
     }
 
     public Rule newStatement() {
         return Sequence(
                 keyword(NEW),
+                _pushAst("new"),
                 FirstOf(
                         typeIdentifier(),
                         actionFail("Expected type after 'new'")
-                )
+                ),
+                _pushTopStackAstToNextStackAstAsAttribute("object_type_to_allocate", UNKNOWN, "new")
         );
     }
 
     public Rule deleteStatement() {
         return Sequence(
                 keyword(DELETE),
+                _pushAst("delete"),
                 FirstOf(
                         variable(),
                         actionFail("Expected pointer after 'delete'")
-                )
+                ),
+                _pushTopStackAstToNextStackAstAsAttribute("object_to_delete", UNKNOWN, "delete")
         );
     }
 
     public Rule continueStatement() {
-        return keyword(CONTINUE);
+        return Sequence(keyword(CONTINUE), _pushAst("continue"));
     }
 
     public Rule breakStatement() {
-        return keyword(BREAK);
+        return Sequence(keyword(BREAK), _pushAst("break"));
     }
 
     public Rule testFunctionCall() {
@@ -192,32 +211,39 @@ public class MainParser extends MainParserActions {
 
     public Rule functionCall() {
         return Sequence(
+                _pushAst("function_call"),
                 identifier(),
+                _pushTopStackAstToNextStackAstAsAttribute("name", "identifier", "function_call"),
                 openBracket(),
                 expressionsSeparatedWithComma(),
+                _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "function_call"),////?????? first UNKNOWN should be replaced to "expressions_list"
                 closeBracket(),
                 Optional(
-                        extensionExpressionBlock()
+                        Sequence(extensionExpressionBlock(), _pushTopStackAstToNextStackAstAsChild("function_extension", "function_call"))
                 )
         );
     }
 
     public Rule extensionExpressionBlock() {
         return Sequence(
+                _pushAst("function_extension"),
                 Optional(
-                        extensionArgumentRename()
+                        extensionArgumentRename(),
+                        _pushTopStackAstToNextStackAstAsAttribute("argument_rename", "extension_arg_rename", "function_extension")
                 ),
-                expressionsBlock()
+                expressionsBlock(),
+                _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "function_extension")//?????? first UNKNOWN should be replaced to "expressions_list"
         );
     }
 
     public Rule extensionArgumentRename() {
         return Sequence(
-                identifier(),
+                _pushAst("extension_arg_rename"),
+                Sequence(identifier(), _pushTopStackAstToNextStackAstAsChild("identifier", "extension_arg_rename")),
                 ZeroOrMore(
                         comma(),
                         FirstOf(
-                                identifier(),
+                                Sequence(identifier(), _pushTopStackAstToNextStackAstAsChild("identifier", "extension_arg_rename")),
                                 actionFail("Expected identifier for the renamed argument")
                         )
                 )
@@ -227,12 +253,14 @@ public class MainParser extends MainParserActions {
     public Rule functionDeclaration() {
         return Sequence(
                 keyword(FUN),
+                _pushAst("function"),
                 FirstOf(
                         identifier(),
                         actionFail("Expected function name")
                 ),
-                _pushAst_ExtractTopStringObjAndSetAsAttribute("functionDeclaration", "name"),
+                _pushTopStackAstToNextStackAstAsAttribute("name", "identifier", "function"),
                 functionArgumentWithBrackets(),
+                _pushTopStackAstToNextStackAstAsAttribute("arguments", "function_arguments", "function"),
                 functionExtensionDeclaration()
         );
     }
@@ -255,11 +283,11 @@ public class MainParser extends MainParserActions {
     public Rule argumentList() {
         return Optional(
                 Sequence(
-                        declareVariable(),
+                        Sequence(declareVariable(), _pushVariableToArgumentList()),
                         ZeroOrMore(
                                 comma(),
                                 FirstOf(
-                                        declareVariable(),
+                                        Sequence(declareVariable(), _pushVariableToArgumentList()),
                                         actionFail("Expected argument declaration")
                                 )
                         )
@@ -271,7 +299,8 @@ public class MainParser extends MainParserActions {
         return Optional(
                 Sequence(
                         keyword(EXTENSION),
-                        functionArgumentWithBrackets()
+                        functionArgumentWithBrackets(),
+                        _pushFunctionExtensionToDeclaration()
                 )
         );
     }
@@ -284,7 +313,7 @@ public class MainParser extends MainParserActions {
         return Sequence(
                 typeIdentifier(),
                 identifier(),
-                _pushAst_ExtractTopAstAndSetAsAttribute("var", "name","type")
+                _pushAst_ExtractTopAstsAndSetAsAttributes("var", "name", "type")
         );
     }
 
@@ -310,11 +339,12 @@ public class MainParser extends MainParserActions {
     public Rule declareVariableAndAssign() {
         return Sequence(
                 declareVariable(),
-                assign(),
+                assignSymbol(),
                 FirstOf(
                         expression(),
                         actionFail("Expected expression assigned to variable")
-                )
+                ),
+                _pushTopStackAstToNextStackAstAsAttribute("init_expression", UNKNOWN, UNKNOWN)
         );
     }
 
@@ -342,6 +372,7 @@ public class MainParser extends MainParserActions {
                                 )
                         )
                 ),
+                _pushAstWithMatchedStringAsAttribute("number", "value"),
                 possibleSpace()
         ).suppressSubnodes();
     }
@@ -376,6 +407,7 @@ public class MainParser extends MainParserActions {
                                 )
                         )
                 ).suppressSubnodes(),
+                _pushAstWithMatchedStringAsAttribute("string", "value"),
                 '"'
         );
     }
@@ -396,6 +428,7 @@ public class MainParser extends MainParserActions {
                                 Sequence(TestNot("\"\"\""), ANY)
                         )
                 ).suppressSubnodes(),
+                _pushAstWithMatchedStringAsAttribute("string", "value"),
                 "\"\"\""
         );
     }
@@ -414,7 +447,9 @@ public class MainParser extends MainParserActions {
                         FirstOf(
                                 checkExpression(),
                                 actionFail("Expected expression after 'not'")
-                        )
+                        ),
+                        _pushAst_ExtractTopAstAndSetAsChild("unary_operation"),
+                        _setAttributeOnLastAst("operation", "not")
                 ),
                 Sequence(
                         equalRule(),
@@ -423,11 +458,12 @@ public class MainParser extends MainParserActions {
                                         keyword("&&"),
                                         keyword("||")
                                 ),
-                                pushMatchString("and/or_operation"),
+                                _pushAstWithMatchedStringAsAttribute("binary_operation", "operation"),
                                 FirstOf(
                                         equalRule(),
                                         actionFail("after 'and'/'or' should be another expression")
-                                )
+                                ),
+                                _pushBinaryOperation()
                         )
                 )
         );
@@ -437,11 +473,17 @@ public class MainParser extends MainParserActions {
         return Sequence(
                 sumRule(),
                 ZeroOrMore(
-                        FirstOf(keyword("!="), keyword("=="), keyword("="), keyword(">="), keyword("<="), keyword(">"), keyword("<")),
+                        Sequence(
+                                FirstOf(
+                                        keyword("!="), keyword("=="), keyword("="), keyword(">="), keyword("<="), keyword(">"), keyword("<")
+                                ),
+                                _pushAstWithMatchedStringAsAttribute("binary_operation", "operation")
+                        ),
                         FirstOf(
                                 sumRule(),
                                 actionFail("Expected expression after comparing operation")
-                        )
+                        ),
+                        _pushBinaryOperation()
                 )
         );
     }
@@ -450,11 +492,18 @@ public class MainParser extends MainParserActions {
         return Sequence(
                 term(),
                 ZeroOrMore(
-                        FirstOf(keyword("+"), keyword("-")),
+                        Sequence(
+                                FirstOf(
+                                        keyword("+"),
+                                        keyword("-")
+                                ),
+                                _pushAstWithMatchedStringAsAttribute("binary_operation", "operation")
+                        ),
                         FirstOf(
                                 term(),
                                 actionFail("Expected expression after +/-")
-                        )
+                        ),
+                        _pushBinaryOperation()
                 )
         );
     }
@@ -465,13 +514,13 @@ public class MainParser extends MainParserActions {
                 ZeroOrMore(
                         Sequence(
                                 FirstOf(keyword("/"), keyword("*")),
-                                pushMatchString("* or / operation")
+                                _pushAstWithMatchedStringAsAttribute("binary_operation", "operation")
                         ),
-                        dbgPrint("multiplication term $match"),
                         FirstOf(
                                 atom(),
                                 actionFail("Expected expression after * or /")
-                        )
+                        ),
+                        _pushBinaryOperation()
                 )
         );
     }
@@ -497,30 +546,42 @@ public class MainParser extends MainParserActions {
 
     public Rule simpleVariable() {
         return FirstOf(
-                Sequence(
-                        keyword(POINTER),
-                        identifier()
-                ),
+                pointerVariable(),
                 identifier()
+        );
+    }
+
+    public Rule pointerVariable() {
+        return Sequence(
+                keyword(POINTER),
+                _pushAst("pointer"),
+                identifier(),
+                _pushTopStackAstToNextStackAstAsChild("identifier", "pointer")
         );
     }
 
     public Rule structVariable() {
         return Sequence(
+                _pushAst("extractField"),
                 simpleVariable(),
+                _pushTopStackAstToNextStackAstAsAttribute("source", UNKNOWN, "extractField"),
                 OneOrMore(
                         Sequence(
                                 keyword("."),
-                                simpleVariable()
+                                simpleVariable(),
+                                _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "extractField")
                         )
                 )
         );
     }
 
     public Rule booleanValueRule() {
-        return FirstOf(
-                keyword(TRUE),
-                keyword(FALSE)
+        return Sequence(
+                FirstOf(
+                        keyword(TRUE),
+                        keyword(FALSE)
+                ),
+                _pushAstWithMatchedStringAsAttribute("boolean", "value")
         );
     }
 
@@ -545,10 +606,12 @@ public class MainParser extends MainParserActions {
     public Rule structure() {
         return Sequence(
                 keyword(STRUCTURE),
+                _pushAst("structure"),
                 FirstOf(
                         identifier(),
                         actionFail("Expected structure name")
                 ),
+                _pushTopStackAstToNextStackAstAsAttribute("name", "identifier", "structure"),
                 FirstOf(
                         openCurleyBracket(),
                         actionFail("Expected '{' after structure name")
@@ -566,9 +629,9 @@ public class MainParser extends MainParserActions {
 
     public Rule elementsOfStructure() {
         return Sequence(
-                declareVariableWithSemicolon(),
+                Sequence(declareVariableWithSemicolon(), _pushTopStackAstToNextStackAstAsChild("var", "structure")),
                 ZeroOrMore(
-                        declareVariableWithSemicolon()
+                        Sequence(declareVariableWithSemicolon(), _pushTopStackAstToNextStackAstAsChild("var", "structure"))
                 )
         );
     }
@@ -598,7 +661,7 @@ public class MainParser extends MainParserActions {
                                 new JavaUnicodeMatcherString()
                         )
                 ),
-                pushMatchString("identifier name"),
+                _pushAstWithMatchedStringAsAttribute("identifier", "name"),
                 possibleSpace()
         ).suppressSubnodes();
     }
@@ -612,17 +675,15 @@ public class MainParser extends MainParserActions {
 
     public Rule pointerIdentifier() {
         return Sequence(
+                _pushAst("pointer"),
                 identifier(),
                 keyword(POINTER),
-                _pushAst_ExtractTopStringObjAndSetAsAttribute("pointer", "type")
+                _pushTopStackAstToNextStackAstAsAttribute("type", "identifier", "pointer")
         );
     }
 
     public Rule simpleIdentifier() {
-        return Sequence(
-                identifier(),
-                _pushAst_ExtractTopStringObjAndSetAsAttribute("type", "type")
-        );
+        return identifier();
     }
 
     public Rule keyword(String val) {
@@ -665,7 +726,7 @@ public class MainParser extends MainParserActions {
         return keyword("]");
     }
 
-    public Rule assign() {
+    public Rule assignSymbol() {
         return keyword("=");
     }
 
