@@ -56,12 +56,12 @@ public class BaseTest {
             String cleanedFromComments = commentRemover.process();
             ParsingResult<Object> articleResult = runner.run(cleanedFromComments);
             Assert.assertTrue(articleResult.matched);
-            if (!articleResult.valueStack.isEmpty()) {
+           /* if (!articleResult.valueStack.isEmpty()) {
                 AstPrinter printer = new AstPrinter();
-                printer.printAstTree((Ast)articleResult.valueStack.pop());
+                //printer.printAstTree((Ast)articleResult.valueStack.pop());
                 int x = 0;
                 x++;
-            }
+            }*/
         } catch (ParserRuntimeException ex) {
             if (ex.getCause() instanceof ParseException) {
                 throw (ParseException) ex.getCause();

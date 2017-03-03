@@ -2,7 +2,6 @@ package com.simplepl.grammar;
 
 import com.simplepl.BaseTest;
 import java.io.IOException;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class MainParserTest extends BaseTest {
