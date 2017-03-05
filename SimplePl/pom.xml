@@ -45,7 +45,34 @@
         </dependency>
     </dependencies>
     
+    
     <build>
+        <plugins>
+            <plugin>
+                <configuration>
+                    <excludes>
+                    <exclude>**/*Const.*</exclude>
+                    </excludes>
+                </configuration>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.9</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
