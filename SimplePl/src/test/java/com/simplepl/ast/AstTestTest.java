@@ -73,22 +73,30 @@ public class AstTestTest extends BaseTest {
     public void testStructureFieldAssign() throws IOException {
         testAstExpressionFromFile("str.buffer.length", AST_FILE_NAME, "structureFieldAssign");
     }
-    
-    
 
     @Test
     public void testFunctionDeclaration() throws IOException {
         testAstExpressionFromFile("fun main(int a, int b){int c=a;}", AST_FILE_NAME, "functionDeclaration");
     }
-    
+
     @Test
     public void testExtensionFunction() throws IOException {
         testAstExpressionFromFile("myFunc(1,2){print(a);}", AST_FILE_NAME, "functionCallWithExtension");
     }
-    
+
+    @Test
+    public void testStructure() throws IOException {
+        testAstExpressionFromFile("structure mystructure{int x; int y;}", AST_FILE_NAME, "structure");
+    }
+
     @Test
     public void testCast() throws IOException {
         testAstExpressionFromFile("x= <float>(y)", AST_FILE_NAME, "cast");
         testAstExpressionFromFile("x= <float>(sum(1,2))", AST_FILE_NAME, "castFunction");
+    }
+    
+    @Test
+    public void testNot() throws IOException {
+        testAstExpressionFromFile("x= !x", AST_FILE_NAME, "cast");
     }
 }

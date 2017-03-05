@@ -92,9 +92,7 @@ public class MainParserActions extends BaseParser<Object> {
                 Ast ast = new Ast(name);
                 for (String attributeName : attributeNames) {
                     Object attributeAst = context.getValueStack().pop();
-                    if (attributeAst instanceof StringObj) {
-                        ast.getAttributes().put(attributeName, ((StringObj) attributeAst).getVal());
-                    } else if (attributeAst instanceof Ast) {
+                    if (attributeAst instanceof Ast) {
                         ast.getAttributes().put(attributeName, attributeAst);
                     } else {
                         throw new IllegalArgumentException("Cannot convert object [" + attributeAst + "] to Ast class or to StringObj class.");

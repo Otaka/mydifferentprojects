@@ -587,6 +587,52 @@
                     ]
                 }
             ]
+        },
+        "structure": {
+            "n": "structure",
+            "attr": {
+                "name": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "mystructure"
+                    }
+                }
+            },
+            "chldr": [{
+                    "n": "var",
+                    "attr": {
+                        "name": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "x"
+                            }
+                        },
+                        "type": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "int"
+                            }
+                        }
+                    }
+                },
+                {
+                    "n": "var",
+                    "attr": {
+                        "name": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "y"
+                            }
+                        },
+                        "type": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "int"
+                            }
+                        }
+                    }
+                }
+            ]
         }
     }
 }
