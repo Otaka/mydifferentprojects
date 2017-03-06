@@ -6,7 +6,9 @@ import org.apache.commons.lang.StringUtils;
  * @author sad
  */
 public class AstPrinter {
-    private int tab=4;
+
+    private int tab = 4;
+
     public void printAstTree(Ast ast) {
         printAstTree(ast, 0, false);
     }
@@ -21,12 +23,12 @@ public class AstPrinter {
     }
 
     private void printAstTree(Ast ast, int level, boolean firstPadding) {
-        if(firstPadding){
+        if (firstPadding) {
             printWithPadding("{\n", level);
-        }else{
+        } else {
             System.out.print("{\n");
         }
-        level+=tab;
+        level += tab;
         printWithPadding("\"n\":\"" + ast.getName() + "\",\n", level);
         if (!ast.getAttributes().isEmpty()) {
             printWithPadding("\"attr\":{\n", level);
@@ -42,7 +44,7 @@ public class AstPrinter {
                 if (value instanceof String) {
                     System.out.print(" \"" + value + "\"");
                 } else if (value instanceof Ast) {
-                    printAstTree((Ast) value, level + tab,false);
+                    printAstTree((Ast) value, level + tab, false);
                 } else {
                     throw new IllegalArgumentException("Cannot print value of type " + value.getClass().getSimpleName());
                 }
@@ -52,7 +54,11 @@ public class AstPrinter {
 
             level = level - tab;
             System.out.println();
-            printWithPadding("}\n", level);
+            if (ast.getChildren().isEmpty()) {
+                printWithPadding("}\n", level);
+            } else {
+                printWithPadding("},\n", level);
+            }
         }
 
         if (!ast.getChildren().isEmpty()) {
@@ -69,7 +75,7 @@ public class AstPrinter {
             printWithPadding("]\n", level);
         }
 
-        level-=tab;
+        level -= tab;
         printWithPadding("}", level);
     }
 }

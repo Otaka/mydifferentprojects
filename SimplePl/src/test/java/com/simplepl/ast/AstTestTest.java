@@ -1,7 +1,6 @@
 package com.simplepl.ast;
 
 import com.simplepl.BaseTest;
-import com.simplepl.grammar.MainParser;
 import java.io.IOException;
 import org.junit.Test;
 
@@ -93,5 +92,26 @@ public class AstTestTest extends BaseTest {
     @Test
     public void testIfElseIf() throws IOException {
         testAstExpressionFromFile("if(a==2){print(\"qwerty\");}else if(b==3){ x=4; }", AST_FILE_NAME, "ifElseIf");
+    }
+    
+    @Test
+    public void testExtensionFunction() throws IOException {
+        testAstExpressionFromFile("myFunc(1,2){print(a);}", AST_FILE_NAME, "functionCallWithExtension");
+    }
+
+    @Test
+    public void testStructure() throws IOException {
+        testAstExpressionFromFile("structure mystructure{int x; int y;}", AST_FILE_NAME, "structure");
+    }
+
+    @Test
+    public void testCast() throws IOException {
+        testAstExpressionFromFile("x= <float>(y)", AST_FILE_NAME, "cast");
+        testAstExpressionFromFile("x= <float>(sum(1,2))", AST_FILE_NAME, "castFunction");
+    }
+    
+    @Test
+    public void testNot() throws IOException {
+        testAstExpressionFromFile("x= !x", AST_FILE_NAME, "cast");
     }
 }

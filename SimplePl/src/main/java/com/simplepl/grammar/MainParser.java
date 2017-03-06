@@ -97,7 +97,6 @@ public class MainParser extends MainParserActions {
                 declareArray(),
                 declareVariableAndAssign(),
                 declareVariable(),
-                cast(),
                 checkExpression()
         );
     }
@@ -443,7 +442,9 @@ public class MainParser extends MainParserActions {
     public Rule checkExpression() {
         return FirstOf(
                 Sequence(
+                        dbgPrint("before !"),
                         keyword("!"),
+                        dbgPrint("after !"),
                         FirstOf(
                                 checkExpression(),
                                 actionFail("Expected expression after 'not'")
@@ -527,6 +528,7 @@ public class MainParser extends MainParserActions {
 
     public Rule atom() {
         return FirstOf(
+                cast(),
                 number(),
                 booleanValueRule(),
                 functionCall(),
@@ -589,7 +591,7 @@ public class MainParser extends MainParserActions {
         return Sequence(
                 openBracket(),
                 FirstOf(
-                        checkExpression(),
+                        expression(),
                         actionFail("Expected expression inside the (...)")
                 ),
                 FirstOf(
@@ -638,12 +640,6 @@ public class MainParser extends MainParserActions {
 
     public Rule oneSpaceCharacter() {
         return FirstOf(' ', '\t', '\r', '\n');
-    }
-
-    public Rule ensureSpace() {
-        return OneOrMore(
-                oneSpaceCharacter()
-        );
     }
 
     public Rule possibleSpace() {
@@ -734,22 +730,22 @@ public class MainParser extends MainParserActions {
         return keyword(";");
     }
 
-    public Rule colon() {
+   /* public Rule colon() {
         return keyword(":");
-    }
+    }*/
 
     public Rule comma() {
         return keyword(",");
     }
 
-    public Rule STR_TERMINAL(char... character) {
+    /*public Rule STR_TERMINAL(char... character) {
         return Sequence(
                 ZeroOrMore(
                         NoneOf(character)
                 ),
                 character
         );
-    }
+    }*/
 
     public String TRUE = "true";
     public String FALSE = "false";

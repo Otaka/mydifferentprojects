@@ -28,6 +28,7 @@ public class CommentRemoverTest {
         Assert.assertEquals("1    \n       \n  456\r\n45*", commentRemover.process());
         Assert.assertEquals("/*23\n78 *78 \n*/", commentRemover.getFoundComments().get(0).getData());
         Assert.assertEquals(true, commentRemover.getFoundComments().get(0).isMultiLine());
+        Assert.assertEquals(1,commentRemover.getFoundComments().get(0).getPosition());
     }
 
     @Test
