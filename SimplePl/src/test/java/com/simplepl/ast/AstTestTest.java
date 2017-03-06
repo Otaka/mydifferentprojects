@@ -79,4 +79,19 @@ public class AstTestTest extends BaseTest {
     public void testFunctionDeclaration() throws IOException {
         testAstExpressionFromFile("fun main(int a, int b){int c=a;}", AST_FILE_NAME, "functionDeclaration");
     }
+
+    @Test
+    public void testIf() throws IOException {
+        testAstExpressionFromFile("if(a==2){print(\"qwerty\");}", AST_FILE_NAME, "if");
+    }
+    
+    @Test
+    public void testIfElse() throws IOException {
+        testAstExpressionFromFile("if(a==2){print(\"qwerty\");}else{ x=3; }", AST_FILE_NAME, "ifElse");
+    }
+    
+    @Test
+    public void testIfElseIf() throws IOException {
+        testAstExpressionFromFile("if(a==2){print(\"qwerty\");}else if(b==3){ x=4; }", AST_FILE_NAME, "ifElseIf");
+    }
 }

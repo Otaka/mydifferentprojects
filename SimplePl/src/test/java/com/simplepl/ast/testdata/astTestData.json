@@ -393,6 +393,233 @@
             }
         },
 
+        "if": {
+            "n": "if",
+            "attr": {
+                "if_condition": {
+                    "n": "binary_operation",
+                    "attr": {
+                        "operation": "=="
+                    },
+                    "chldr": [{
+                            "n": "identifier",
+                            "attr": {
+                                "name": "a"
+                            }
+                        },
+                        {
+                            "n": "number",
+                            "attr": {
+                                "value": "2"
+                            }
+                        }
+                    ]
+                }
+            },
+            "chldr": [{
+                    "n": "expressions_list",
+                    "chldr": [{
+                            "n": "function_call",
+                            "attr": {
+                                "name": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "print"
+                                    }
+                                }
+                            },
+                            "chldr": [{
+                                    "n": "expressions_list",
+                                    "chldr": [{
+                                            "n": "string",
+                                            "attr": {
+                                                "value": "qwerty"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "ifElseIf": {
+            "n": "if",
+            "attr": {
+                "else": {
+                    "n": "if",
+                    "attr": {
+                        "if_condition": {
+                            "n": "binary_operation",
+                            "attr": {
+                                "operation": "=="
+                            },
+                            "chldr": [{
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "b"
+                                    }
+                                },
+                                {
+                                    "n": "number",
+                                    "attr": {
+                                        "value": "3"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "chldr": [{
+                            "n": "expressions_list",
+                            "chldr": [{
+                                    "n": "binary_operation",
+                                    "attr": {
+                                        "operation": "="
+                                    },
+                                    "chldr": [{
+                                            "n": "identifier",
+                                            "attr": {
+                                                "name": "x"
+                                            }
+                                        },
+                                        {
+                                            "n": "number",
+                                            "attr": {
+                                                "value": "4"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }, 
+                "if_condition": {
+                    "n": "binary_operation",
+                    "attr": {
+                        "operation": "=="
+                    },
+                    "chldr": [{
+                            "n": "identifier",
+                            "attr": {
+                                "name": "a"
+                            }
+                        },
+                        {
+                            "n": "number",
+                            "attr": {
+                                "value": "2"
+                            }
+                        }
+                    ]
+                }
+            },
+            "chldr": [{
+                    "n": "expressions_list",
+                    "chldr": [{
+                            "n": "function_call",
+                            "attr": {
+                                "name": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "print"
+                                    }
+                                }
+                            },
+                            "chldr": [{
+                                    "n": "expressions_list",
+                                    "chldr": [{
+                                            "n": "string",
+                                            "attr": {
+                                                "value": "qwerty"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "ifElse": {
+            "n": "if",
+            "attr": {
+                "else": {
+                    "n": "expressions_list",
+                    "chldr": [{
+                            "n": "binary_operation",
+                            "attr": {
+                                "operation": "="
+                            },
+                            "chldr": [{
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "x"
+                                    }
+                                },
+                                {
+                                    "n": "number",
+                                    "attr": {
+                                        "value": "3"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }, 
+                "if_condition": {
+                    "n": "binary_operation",
+                    "attr": {
+                        "operation": "=="
+                    },
+                    "chldr": [{
+                            "n": "identifier",
+                            "attr": {
+                                "name": "a"
+                            }
+                        },
+                        {
+                            "n": "number",
+                            "attr": {
+                                "value": "2"
+                            }
+                        }
+                    ]
+                }
+            },
+            "chldr": [{
+                    "n": "expressions_list",
+                    "chldr": [{
+                            "n": "function_call",
+                            "attr": {
+                                "name": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "print"
+                                    }
+                                }
+                            },
+                            "chldr": [{
+                                    "n": "expressions_list",
+                                    "chldr": [{
+                                            "n": "string",
+                                            "attr": {
+                                                "value": "qwerty"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+
         "varAssign": {
             "n": "var",
             "attr": {
