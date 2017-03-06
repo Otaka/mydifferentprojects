@@ -79,6 +79,22 @@ public class MainParser extends MainParserActions {
                 ));
     }
 
+    public Rule arrayGet() {
+        return Sequence(
+                _pushAst("arrayGet"),
+                OneOrMore(
+                        openSquareBracket(),
+                        expression(),
+                        FirstOf(
+                                closeSquareBracket(),
+                                actionFail("You forget to close the array ']'")
+                        ),
+                        _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "arrayGet")
+                ),
+                _pushUnderTopStackAstToTopStackAstAsAttribute("source", UNKNOWN, "arrayGet")
+        );
+    }
+
     public Rule testExpression() {
         return Sequence(expression(), EOI);
     }
@@ -326,6 +342,7 @@ public class MainParser extends MainParserActions {
 
     public Rule declareArray() {
         return Sequence(
+                keyword("array"),
                 typeIdentifier(),
                 arrayDeclarerSquares(),
                 FirstOf(
@@ -439,19 +456,21 @@ public class MainParser extends MainParserActions {
         );
     }
 
-    public Rule checkExpression() {
-        return FirstOf(
-                Sequence(
-                        dbgPrint("before !"),
-                        keyword("!"),
-                        dbgPrint("after !"),
-                        FirstOf(
-                                checkExpression(),
-                                actionFail("Expected expression after 'not'")
-                        ),
-                        _pushAst_ExtractTopAstAndSetAsChild("unary_operation"),
-                        _setAttributeOnLastAst("operation", "not")
+    public Rule notRule() {
+        return Sequence(
+                keyword("!"),
+                FirstOf(
+                        checkExpression(),
+                        actionFail("Expected expression after 'not'")
                 ),
+                _pushAst_ExtractTopAstAndSetAsChild("unary_operation"),
+                _setAttributeOnLastAst("operation", "not")
+        );
+    }
+
+    public Rule checkExpression() {
+        return //FirstOf(
+                // notRule(),
                 Sequence(
                         equalRule(),
                         ZeroOrMore(
@@ -466,8 +485,8 @@ public class MainParser extends MainParserActions {
                                 ),
                                 _pushBinaryOperation()
                         )
-                )
-        );
+                //)
+                );
     }
 
     public Rule equalRule() {
@@ -511,14 +530,14 @@ public class MainParser extends MainParserActions {
 
     public Rule term() {
         return Sequence(
-                atom(),
+                innerAtom(),
                 ZeroOrMore(
                         Sequence(
                                 FirstOf(keyword("/"), keyword("*")),
                                 _pushAstWithMatchedStringAsAttribute("binary_operation", "operation")
                         ),
                         FirstOf(
-                                atom(),
+                                innerAtom(),
                                 actionFail("Expected expression after * or /")
                         ),
                         _pushBinaryOperation()
@@ -526,8 +545,18 @@ public class MainParser extends MainParserActions {
         );
     }
 
+    public Rule innerAtom() {
+        return Sequence(
+                atom(),
+                Optional(
+                        arrayGet()
+                )
+        );
+    }
+
     public Rule atom() {
         return FirstOf(
+                notRule(),
                 cast(),
                 number(),
                 booleanValueRule(),
@@ -730,10 +759,9 @@ public class MainParser extends MainParserActions {
         return keyword(";");
     }
 
-   /* public Rule colon() {
+    /* public Rule colon() {
         return keyword(":");
     }*/
-
     public Rule comma() {
         return keyword(",");
     }
@@ -746,7 +774,6 @@ public class MainParser extends MainParserActions {
                 character
         );
     }*/
-
     public String TRUE = "true";
     public String FALSE = "false";
     public String EXTENSION = "extension";

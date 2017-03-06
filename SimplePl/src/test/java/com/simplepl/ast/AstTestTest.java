@@ -7,6 +7,7 @@ import org.junit.Test;
 public class AstTestTest extends BaseTest {
 
     private static String AST_FILE_NAME = "astTestData";
+    private static String ARRAY_FILE_NAME = "arrayTestData";
 
     @Test
     public void testDigit() throws IOException {
@@ -83,17 +84,17 @@ public class AstTestTest extends BaseTest {
     public void testIf() throws IOException {
         testAstExpressionFromFile("if(a==2){print(\"qwerty\");}", AST_FILE_NAME, "if");
     }
-    
+
     @Test
     public void testIfElse() throws IOException {
         testAstExpressionFromFile("if(a==2){print(\"qwerty\");}else{ x=3; }", AST_FILE_NAME, "ifElse");
     }
-    
+
     @Test
     public void testIfElseIf() throws IOException {
         testAstExpressionFromFile("if(a==2){print(\"qwerty\");}else if(b==3){ x=4; }", AST_FILE_NAME, "ifElseIf");
     }
-    
+
     @Test
     public void testExtensionFunction() throws IOException {
         testAstExpressionFromFile("myFunc(1,2){print(a);}", AST_FILE_NAME, "functionCallWithExtension");
@@ -108,10 +109,43 @@ public class AstTestTest extends BaseTest {
     public void testCast() throws IOException {
         testAstExpressionFromFile("x= <float>(y)", AST_FILE_NAME, "cast");
         testAstExpressionFromFile("x= <float>(sum(1,2))", AST_FILE_NAME, "castFunction");
+        testAstExpressionFromFile("x= 1.0 + <float>(sum(1,2))", AST_FILE_NAME, "cast_binary_op");
+    }
+
+    @Test
+    public void testNot() throws IOException {
+        testAstExpressionFromFile("x= !x", AST_FILE_NAME, "notVariable");
+    }
+
+    @Test
+    public void testNotInParenthesis() throws IOException {
+        testAstExpressionFromFile("x= (!x)+(9*!x)", AST_FILE_NAME, "notVariableComplex");
+    }
+
+    @Test
+    public void testArraySimpleGet() throws IOException {
+        testAstExpressionFromFile("x= myarray[1]", ARRAY_FILE_NAME, "arraySimpleGetNumber");
+        testAstExpressionFromFile("x=2* myarray[1]", ARRAY_FILE_NAME, "arraySimpleGet");
     }
     
     @Test
-    public void testNot() throws IOException {
-        testAstExpressionFromFile("x= !x", AST_FILE_NAME, "cast");
+    public void testArrayGetExpression() throws IOException {
+        testAstExpressionFromFile("x= myarray[myfunction(45)]", ARRAY_FILE_NAME, "arrayGetExpression");
+        testAstExpressionFromFile("x= myarray[<int>(myfunction(45))]", ARRAY_FILE_NAME, "arrayGetExpressionWithCast");
+    }
+    
+    @Test
+    public void testArrayGetFromResult() throws IOException {
+        testAstExpressionFromFile("myfunction(1)[45]", ARRAY_FILE_NAME, "arrayGetFromResult");
+    }
+    
+    @Test
+    public void testArrayMultidimensional() throws IOException {
+        testAstExpressionFromFile("x=myarray[45][65]", ARRAY_FILE_NAME, "arrayMultidimensional");
+    }
+    
+    @Test
+    public void testArrayArgumentOfFunction() throws IOException {
+        testAstExpressionFromFile("myfunction(a[3])", ARRAY_FILE_NAME, "arrayArgumentOfFunction");
     }
 }

@@ -732,6 +732,161 @@
                 }
             }
         },
+
+        "cast_binary_op": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "="
+            },
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "x"
+                    }
+                },
+                {
+                    "n": "binary_operation",
+                    "attr": {
+                        "operation": "+"
+                    },
+                    "chldr": [{
+                            "n": "number",
+                            "attr": {
+                                "value": "1.0"
+                            }
+                        },
+                        {
+                            "n": "type_conversion",
+                            "attr": {
+                                "to_type": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "float"
+                                    }
+                                }
+                            },
+                            "chldr": [{
+                                    "n": "function_call",
+                                    "attr": {
+                                        "name": {
+                                            "n": "identifier",
+                                            "attr": {
+                                                "name": "sum"
+                                            }
+                                        }
+                                    },
+                                    "chldr": [{
+                                            "n": "expressions_list",
+                                            "chldr": [{
+                                                    "n": "number",
+                                                    "attr": {
+                                                        "value": "1"
+                                                    }
+                                                },
+                                                {
+                                                    "n": "number",
+                                                    "attr": {
+                                                        "value": "2"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "notVariable": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "="
+            },
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "x"
+                    }
+                },
+                {
+                    "n": "unary_operation",
+                    "attr": {
+                        "operation": "not"
+                    },
+                    "chldr": [{
+                            "n": "identifier",
+                            "attr": {
+                                "name": "x"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "notVariableComplex": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "="
+            },
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "x"
+                    }
+                },
+                {
+                    "n": "binary_operation",
+                    "attr": {
+                        "operation": "+"
+                    },
+                    "chldr": [{
+                            "n": "unary_operation",
+                            "attr": {
+                                "operation": "not"
+                            },
+                            "chldr": [{
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "x"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "n": "binary_operation",
+                            "attr": {
+                                "operation": "*"
+                            },
+                            "chldr": [{
+                                    "n": "number",
+                                    "attr": {
+                                        "value": "9"
+                                    }
+                                },
+                                {
+                                    "n": "unary_operation",
+                                    "attr": {
+                                        "operation": "not"
+                                    },
+                                    "chldr": [{
+                                            "n": "identifier",
+                                            "attr": {
+                                                "name": "x"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+
         "cast": {
             "n": "binary_operation",
             "attr": {

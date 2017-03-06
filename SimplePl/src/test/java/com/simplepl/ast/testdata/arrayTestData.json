@@ -1,0 +1,296 @@
+{
+    "collection": {
+        "arraySimpleGetNumber": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "="
+            },
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "x"
+                    }
+                },
+                {
+                    "n": "arrayGet",
+                    "attr": {
+                        "source": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "myarray"
+                            }
+                        }
+                    },
+                    "chldr": [{
+                            "n": "number",
+                            "attr": {
+                                "value": "1"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "arraySimpleGet": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "="
+            },
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "x"
+                    }
+                },
+                {
+                    "n": "binary_operation",
+                    "attr": {
+                        "operation": "*"
+                    },
+                    "chldr": [{
+                            "n": "number",
+                            "attr": {
+                                "value": "2"
+                            }
+                        },
+                        {
+                            "n": "arrayGet",
+                            "attr": {
+                                "source": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "myarray"
+                                    }
+                                }
+                            },
+                            "chldr": [{
+                                    "n": "number",
+                                    "attr": {
+                                        "value": "1"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "arrayGetExpression": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "="
+            },
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "x"
+                    }
+                },
+                {
+                    "n": "arrayGet",
+                    "attr": {
+                        "source": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "myarray"
+                            }
+                        }
+                    },
+                    "chldr": [{
+                            "n": "function_call",
+                            "attr": {
+                                "name": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "myfunction"
+                                    }
+                                }
+                            },
+                            "chldr": [{
+                                    "n": "expressions_list",
+                                    "chldr": [{
+                                            "n": "number",
+                                            "attr": {
+                                                "value": "45"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "arrayGetExpressionWithCast": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "="
+            },
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "x"
+                    }
+                },
+                {
+                    "n": "arrayGet",
+                    "attr": {
+                        "source": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "myarray"
+                            }
+                        }
+                    },
+                    "chldr": [{
+                            "n": "type_conversion",
+                            "attr": {
+                                "to_type": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "int"
+                                    }
+                                }
+                            },
+                            "chldr": [{
+                                    "n": "function_call",
+                                    "attr": {
+                                        "name": {
+                                            "n": "identifier",
+                                            "attr": {
+                                                "name": "myfunction"
+                                            }
+                                        }
+                                    },
+                                    "chldr": [{
+                                            "n": "expressions_list",
+                                            "chldr": [{
+                                                    "n": "number",
+                                                    "attr": {
+                                                        "value": "45"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "arrayGetFromResult": {
+            "n": "arrayGet",
+            "attr": {
+                "source": {
+                    "n": "function_call",
+                    "attr": {
+                        "name": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "myfunction"
+                            }
+                        }
+                    },
+                    "chldr": [{
+                            "n": "expressions_list",
+                            "chldr": [{
+                                    "n": "number",
+                                    "attr": {
+                                        "value": "1"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "chldr": [{
+                    "n": "number",
+                    "attr": {
+                        "value": "45"
+                    }
+                }
+            ]
+        },
+
+        "arrayMultidimensional": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "="
+            },
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "x"
+                    }
+                },
+                {
+                    "n": "arrayGet",
+                    "attr": {
+                        "source": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "myarray"
+                            }
+                        }
+                    },
+                    "chldr": [{
+                            "n": "number",
+                            "attr": {
+                                "value": "45"
+                            }
+                        },
+                        {
+                            "n": "number",
+                            "attr": {
+                                "value": "65"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "arrayArgumentOfFunction": {
+            "n": "function_call",
+            "attr": {
+                "name": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "myfunction"
+                    }
+                }
+            },
+            "chldr": [{
+                    "n": "expressions_list",
+                    "chldr": [{
+                            "n": "arrayGet",
+                            "attr": {
+                                "source": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "a"
+                                    }
+                                }
+                            },
+                            "chldr": [{
+                                    "n": "number",
+                                    "attr": {
+                                        "value": "3"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
