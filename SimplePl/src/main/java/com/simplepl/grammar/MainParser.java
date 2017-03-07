@@ -287,6 +287,11 @@ public class MainParser extends MainParserActions {
                 keyword(FUN),
                 _pushAst("function"),
                 FirstOf(
+                        typeIdentifier(),
+                        actionFail("Expected return type")
+                ),
+                _pushTopStackAstToNextStackAstAsAttribute("returnValue", "identifier", "function"),
+                FirstOf(
                         identifier(),
                         actionFail("Expected function name")
                 ),

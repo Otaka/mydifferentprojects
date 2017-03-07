@@ -166,12 +166,18 @@
         "functionDeclaration": {
             "n": "function",
             "attr": {
+                "returnValue": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "void"
+                    }
+                }, 
                 "name": {
                     "n": "identifier",
                     "attr": {
                         "name": "main"
                     }
-                },
+                }, 
                 "arguments": {
                     "n": "function_arguments",
                     "chldr": [{
@@ -182,7 +188,7 @@
                                     "attr": {
                                         "name": "a"
                                     }
-                                },
+                                }, 
                                 "type": {
                                     "n": "identifier",
                                     "attr": {
@@ -199,7 +205,7 @@
                                     "attr": {
                                         "name": "b"
                                     }
-                                },
+                                }, 
                                 "type": {
                                     "n": "identifier",
                                     "attr": {
@@ -221,13 +227,13 @@
                                     "attr": {
                                         "name": "a"
                                     }
-                                },
+                                }, 
                                 "name": {
                                     "n": "identifier",
                                     "attr": {
                                         "name": "c"
                                     }
-                                },
+                                }, 
                                 "type": {
                                     "n": "identifier",
                                     "attr": {
@@ -240,7 +246,6 @@
                 }
             ]
         },
-
         "structureFieldAssign": {
             "n": "extractField",
             "attr": {

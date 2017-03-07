@@ -3,7 +3,7 @@ structure TestStructure {
     int@ pointerToValue;
 }
 
-fun main(string args){
+fun int main(string args){
     int@ intPointer=new int;
     intPointer@=43;
     int@secondPointer=intPointer;

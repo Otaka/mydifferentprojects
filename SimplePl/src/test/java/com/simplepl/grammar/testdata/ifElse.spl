@@ -1,4 +1,4 @@
-fun function(int a){
+fun int function(int a){
     if(a>2){
         showMessage("yes");
     }else{

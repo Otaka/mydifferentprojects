@@ -102,7 +102,7 @@ public class AstTestTest extends BaseTest {
 
     @Test
     public void testFunctionDeclaration() throws IOException {
-        testAstExpressionFromFile("fun main(int a, int b){int c=a;}", AST_FILE_NAME, "functionDeclaration");
+        testAstExpressionFromFile("fun void main(int a, int b){int c=a;}", AST_FILE_NAME, "functionDeclaration");
     }
 
     @Test

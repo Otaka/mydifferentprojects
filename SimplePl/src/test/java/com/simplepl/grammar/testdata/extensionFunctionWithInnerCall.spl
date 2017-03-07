@@ -1,14 +1,14 @@
-fun usingOpenedFile(string fileName) extension(File file){
+fun int usingOpenedFile(string fileName) extension(File file){
     File file=open();
     
-    fun showMessage(string message){
+    fun int showMessage(string message){
         writeln(message);
     };
 
     extension(file);
 }
 
-fun userFunction(){
+fun int userFunction(){
     string message="hello";
     usingOpenedFile("myFile"){
         string line=readString(file);
