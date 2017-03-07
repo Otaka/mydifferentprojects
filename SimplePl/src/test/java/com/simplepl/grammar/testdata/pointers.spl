@@ -5,7 +5,7 @@ structure TestStructure {
 
 fun main(string args){
     int@ intPointer=new int;
-    @intPointer=43;
+    intPointer@=43;
     int@secondPointer=intPointer;
     delete intPointer;
     delete myStructure;

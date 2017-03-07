@@ -62,7 +62,12 @@ public class AstTestTest extends BaseTest {
 
     @Test
     public void testPointerAssignment() throws IOException {
-        testAstExpressionFromFile("@intPointer = 43", AST_FILE_NAME, "pointerAssignment");
+        testAstExpressionFromFile("intPointer@ = 43", AST_FILE_NAME, "pointerAssignment");
+    }
+
+    @Test
+    public void testPointerInStructure() throws IOException {
+        testAstExpressionFromFile("a.intPointer@.length@", AST_FILE_NAME, "pointerInStructure");
     }
 
     @Test
@@ -138,7 +143,7 @@ public class AstTestTest extends BaseTest {
     }
 
     @Test
-    public void testNotInParenthesis() throws IOException {
+    public void testNotInParentheses() throws IOException {
         testAstExpressionFromFile("x= (!x)+(9*!x)", AST_FILE_NAME, "notVariableComplex");
     }
 

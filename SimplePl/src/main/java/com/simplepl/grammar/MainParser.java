@@ -562,14 +562,28 @@ public class MainParser extends MainParserActions {
         );
     }
 
+    public Rule dereferencePointer(){
+        return Sequence(
+                POINTER, 
+                _pushAst("dereference"),
+                _pushUnderTopStackAstToTopStackAstAsChild(UNKNOWN, "dereference")
+                );
+    }
+    
     public Rule innerAtom() {
         return Sequence(
                 atom(),
-                Optional(arrayGet()),
+                Optional(
+                        FirstOf(
+                                arrayGet(),
+                                dereferencePointer()
+                        )
+                ),
                 ZeroOrMore(
                         structVariable(),
                         Optional(
                                 FirstOf(
+                                        dereferencePointer(),
                                         arrayGet(),
                                         functionCallWithoutIdentifier()
                                 )
@@ -596,10 +610,10 @@ public class MainParser extends MainParserActions {
     }
 
     public Rule simpleVariable() {
-        return FirstOf(
-                pointerVariable(),
-                identifier()
-        );
+        return //FirstOf(
+               // pointerVariable(),
+                identifier();
+        //);
     }
 
     public Rule pointerVariable() {

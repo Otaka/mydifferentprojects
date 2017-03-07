@@ -545,7 +545,7 @@
                 "operation": "="
             },
             "chldr": [{
-                    "n": "pointer",
+                    "n": "dereference",
                     "chldr": [{
                             "n": "identifier",
                             "attr": {
@@ -595,6 +595,43 @@
                     }
                 }
             }
+        },
+
+        "pointerInStructure": {
+            "n": "dereference",
+            "chldr": [{
+                    "n": "extractField",
+                    "attr": {
+                        "expression": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "length"
+                            }
+                        }, 
+                        "fromWhere": {
+                            "n": "dereference",
+                            "chldr": [{
+                                    "n": "extractField",
+                                    "attr": {
+                                        "expression": {
+                                            "n": "identifier",
+                                            "attr": {
+                                                "name": "intPointer"
+                                            }
+                                        }, 
+                                        "fromWhere": {
+                                            "n": "identifier",
+                                            "attr": {
+                                                "name": "a"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
         },
 
         "if": {

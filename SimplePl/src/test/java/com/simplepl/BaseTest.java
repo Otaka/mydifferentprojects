@@ -124,7 +124,7 @@ public class BaseTest {
         InputStream stream = AstTestTest.class.getResourceAsStream(filePath);
         if (stream == null) {
             System.out.println("Cannot find file [" + filePath + "]");
-            printAst(ast);
+            System.out.print("\""+jsonKey+"\": ");printAst(ast);
             throw new IllegalArgumentException("Cannot find file [" + filePath + "]");
         }
         String jsonText;
@@ -132,7 +132,7 @@ public class BaseTest {
             jsonText = IOUtils.toString(stream, "UTF-8");
         } catch (IOException ex) {
             System.out.println("Cannot read file [" + filePath + "]");
-            printAst(ast);
+            System.out.print("\""+jsonKey+"\": ");printAst(ast);
             throw new RuntimeException(ex);
         }
 //printAst(ast);
@@ -142,14 +142,14 @@ public class BaseTest {
         AstMatcher matcher = collection.getCollection().get(jsonKey);
         if (matcher == null) {
             System.out.println("Cannot find [" + jsonKey + "] in  " + file);
-            printAst(ast);
+            System.out.print("\""+jsonKey+"\": ");printAst(ast);
             throw new IllegalArgumentException("Cannot find [" + jsonKey + "] in  " + file);
         }
 
         try{
             matcher.match(ast);
         }catch(IllegalArgumentException ex){
-            printAst(ast);
+            System.out.print("\""+jsonKey+"\": ");printAst(ast);
             throw ex;
         }
     }
