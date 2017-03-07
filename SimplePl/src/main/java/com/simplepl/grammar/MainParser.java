@@ -19,7 +19,7 @@ public class MainParser extends MainParserActions {
 
     public Rule functionRule() {
         return Sequence(
-                functionDeclaration(),
+                declareFunction(),
                 FirstOf(
                         expressionsBlock(),
                         actionFail("Expected function body {...} after function declaration")
@@ -282,7 +282,7 @@ public class MainParser extends MainParserActions {
         );
     }
 
-    public Rule functionDeclaration() {
+    public Rule declareFunction() {
         return Sequence(
                 keyword(FUN),
                 _pushAst("function"),
@@ -298,7 +298,7 @@ public class MainParser extends MainParserActions {
                 _pushTopStackAstToNextStackAstAsAttribute("name", "identifier", "function"),
                 functionArgumentWithBrackets(),
                 _pushTopStackAstToNextStackAstAsAttribute("arguments", "function_arguments", "function"),
-                functionExtensionDeclaration()
+                declareFunctionExtension()
         );
     }
 
@@ -332,11 +332,18 @@ public class MainParser extends MainParserActions {
         );
     }
 
-    public Rule functionExtensionDeclaration() {
+    public Rule declareFunctionExtension() {
         return Optional(
                 Sequence(
                         keyword(EXTENSION),
-                        functionArgumentWithBrackets(),
+                        FirstOf(
+                                identifier(),
+                                actionFail("Expected extension return value")
+                        ),
+                        FirstOf(
+                                functionArgumentWithBrackets(),
+                                actionFail("Expected extension argument list")
+                        ),
                         _pushFunctionExtensionToDeclaration()
                 )
         );
@@ -567,14 +574,14 @@ public class MainParser extends MainParserActions {
         );
     }
 
-    public Rule dereferencePointer(){
+    public Rule dereferencePointer() {
         return Sequence(
-                POINTER, 
+                POINTER,
                 _pushAst("dereference"),
                 _pushUnderTopStackAstToTopStackAstAsChild(UNKNOWN, "dereference")
-                );
+        );
     }
-    
+
     public Rule innerAtom() {
         return Sequence(
                 atom(),
@@ -616,7 +623,7 @@ public class MainParser extends MainParserActions {
 
     public Rule simpleVariable() {
         return //FirstOf(
-               // pointerVariable(),
+                // pointerVariable(),
                 identifier();
         //);
     }

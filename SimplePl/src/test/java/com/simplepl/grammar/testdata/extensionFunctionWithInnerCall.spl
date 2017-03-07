@@ -1,4 +1,4 @@
-fun int usingOpenedFile(string fileName) extension(File file){
+fun int usingOpenedFile(string fileName) extension void (File file){
     File file=open();
     
     fun int showMessage(string message){

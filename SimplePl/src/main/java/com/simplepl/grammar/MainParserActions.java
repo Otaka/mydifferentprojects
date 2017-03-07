@@ -151,9 +151,13 @@ public class MainParserActions extends BaseParser<Object> {
             public boolean runAction(Context context) {
                 Ast extensionArgumentList = (Ast) context.getValueStack().pop();
                 checkAstHasNecessaryName(extensionArgumentList, "function_arguments", false);
+                
+                Ast returnValue = (Ast) context.getValueStack().pop();
                 Ast function = (Ast) context.getValueStack().peek();
                 checkAstHasNecessaryName(function, "function", false);
+                
                 function.addAttribute("extension", extensionArgumentList);
+                function.addAttribute("extensionReturnValue", returnValue);
                 return true;
             }
         };
