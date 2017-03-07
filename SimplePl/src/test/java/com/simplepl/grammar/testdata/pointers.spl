@@ -7,9 +7,6 @@ fun main(string args){
     int@ intPointer=new int;
     @intPointer=43;
     int@secondPointer=intPointer;
-    TestStructure @myStructure=new TestStructure;
-    myStructure.value=@intPointer;
-    myStructure.pointerToValue=intPointer;
     delete intPointer;
     delete myStructure;
 }

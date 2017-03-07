@@ -243,7 +243,7 @@ public class MainParserActions extends BaseParser<Object> {
 
                 Ast child = (Ast) context.getValueStack().pop();
                 if (!StringUtils.equals(expectedChildName, UNKNOWN)) {
-                    checkAstHasNecessaryName(parent, expectedChildName, true);
+                    checkAstHasNecessaryName(child, expectedChildName, true);
                 }
 
                 parent.addAttribute(attributeName, child);

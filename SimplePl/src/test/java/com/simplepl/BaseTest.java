@@ -123,12 +123,16 @@ public class BaseTest {
         String filePath = "/com/simplepl/ast/testdata/" + file + ".json";
         InputStream stream = AstTestTest.class.getResourceAsStream(filePath);
         if (stream == null) {
+            System.out.println("Cannot find file [" + filePath + "]");
+            printAst(ast);
             throw new IllegalArgumentException("Cannot find file [" + filePath + "]");
         }
         String jsonText;
         try {
             jsonText = IOUtils.toString(stream, "UTF-8");
         } catch (IOException ex) {
+            System.out.println("Cannot read file [" + filePath + "]");
+            printAst(ast);
             throw new RuntimeException(ex);
         }
 //printAst(ast);
@@ -137,9 +141,16 @@ public class BaseTest {
         AstCollection collection = gsonBuilder.create().fromJson(jsonText, AstCollection.class);
         AstMatcher matcher = collection.getCollection().get(jsonKey);
         if (matcher == null) {
+            System.out.println("Cannot find [" + jsonKey + "] in  " + file);
+            printAst(ast);
             throw new IllegalArgumentException("Cannot find [" + jsonKey + "] in  " + file);
         }
 
-        matcher.match(ast);
+        try{
+            matcher.match(ast);
+        }catch(IllegalArgumentException ex){
+            printAst(ast);
+            throw ex;
+        }
     }
 }

@@ -84,7 +84,10 @@ public class MainParser extends MainParserActions {
                 _pushAst("arrayGet"),
                 OneOrMore(
                         openSquareBracket(),
-                        expression(),
+                        FirstOf(
+                                expression(),
+                                actionFail("Expected expression as array index inside brackets")
+                        ),
                         FirstOf(
                                 closeSquareBracket(),
                                 actionFail("You forget to close the array ']'")
@@ -109,7 +112,7 @@ public class MainParser extends MainParserActions {
                 newStatement(),
                 deleteStatement(),
                 functionRule(),
-                structure(),
+                structureDeclaration(),
                 declareArray(),
                 declareVariableAndAssign(),
                 declareVariable(),
@@ -222,6 +225,20 @@ public class MainParser extends MainParserActions {
 
     public Rule testFunctionCall() {
         return Sequence(functionCall(), EOI);
+    }
+
+    public Rule functionCallWithoutIdentifier() {
+        return Sequence(
+                _pushAst("function_call"),
+                openBracket(),
+                _pushUnderTopStackAstToTopStackAstAsAttribute("name", UNKNOWN, "function_call"),
+                expressionsSeparatedWithComma(),
+                _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "function_call"),////?????? first UNKNOWN should be replaced to "expressions_list"
+                closeBracket(),
+                Optional(
+                        Sequence(extensionExpressionBlock(), _pushTopStackAstToNextStackAstAsChild("function_extension", "function_call"))
+                )
+        );
     }
 
     public Rule functionCall() {
@@ -548,10 +565,16 @@ public class MainParser extends MainParserActions {
     public Rule innerAtom() {
         return Sequence(
                 atom(),
-                Optional(
-                        arrayGet()
-                )
-        );
+                Optional(arrayGet()),
+                ZeroOrMore(
+                        structVariable(),
+                        Optional(
+                                FirstOf(
+                                        arrayGet(),
+                                        functionCallWithoutIdentifier()
+                                )
+                        )
+                ));
     }
 
     public Rule atom() {
@@ -569,10 +592,7 @@ public class MainParser extends MainParserActions {
     }
 
     public Rule variable() {
-        return FirstOf(
-                structVariable(),
-                simpleVariable()
-        );
+        return simpleVariable();
     }
 
     public Rule simpleVariable() {
@@ -591,9 +611,8 @@ public class MainParser extends MainParserActions {
         );
     }
 
-    public Rule structVariable() {
-        return Sequence(
-                _pushAst("extractField"),
+    /*
+    _pushAst("extractField"),
                 simpleVariable(),
                 _pushTopStackAstToNextStackAstAsAttribute("source", UNKNOWN, "extractField"),
                 OneOrMore(
@@ -603,6 +622,14 @@ public class MainParser extends MainParserActions {
                                 _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "extractField")
                         )
                 )
+     */
+    public Rule structVariable() {
+        return Sequence(
+                keyword("."),
+                _pushAst("extractField"),
+                _pushUnderTopStackAstToTopStackAstAsAttribute("fromWhere", UNKNOWN, "extractField"),
+                identifier(),
+                _pushTopStackAstToNextStackAstAsAttribute("expression", UNKNOWN, "extractField")
         );
     }
 
@@ -631,10 +658,10 @@ public class MainParser extends MainParserActions {
     }
 
     public Rule testStructure() {
-        return Sequence(structure(), EOI);
+        return Sequence(structureDeclaration(), EOI);
     }
 
-    public Rule structure() {
+    public Rule structureDeclaration() {
         return Sequence(
                 keyword(STRUCTURE),
                 _pushAst("structure"),
@@ -648,7 +675,7 @@ public class MainParser extends MainParserActions {
                         actionFail("Expected '{' after structure name")
                 ),
                 FirstOf(
-                        elementsOfStructure(),
+                        elementsOfStructureInDeclaration(),
                         actionFail("Expected structure elements inside structure body")
                 ),
                 FirstOf(
@@ -658,7 +685,7 @@ public class MainParser extends MainParserActions {
         );
     }
 
-    public Rule elementsOfStructure() {
+    public Rule elementsOfStructureInDeclaration() {
         return Sequence(
                 Sequence(declareVariableWithSemicolon(), _pushTopStackAstToNextStackAstAsChild("var", "structure")),
                 ZeroOrMore(

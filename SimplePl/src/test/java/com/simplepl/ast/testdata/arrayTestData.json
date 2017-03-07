@@ -258,6 +258,55 @@
             ]
         },
 
+        "arrayMultidimensionalWithStructure": {
+            "n": "binary_operation",
+            "attr": {
+                "operation": "="
+            },
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "x"
+                    }
+                },
+                {
+                    "n": "extractField",
+                    "attr": {
+                        "expression": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "length"
+                            }
+                        }, 
+                        "fromWhere": {
+                            "n": "arrayGet",
+                            "attr": {
+                                "source": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "myarray"
+                                    }
+                                }
+                            },
+                            "chldr": [{
+                                    "n": "number",
+                                    "attr": {
+                                        "value": "45"
+                                    }
+                                },
+                                {
+                                    "n": "number",
+                                    "attr": {
+                                        "value": "65"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+
         "arrayArgumentOfFunction": {
             "n": "function_call",
             "attr": {

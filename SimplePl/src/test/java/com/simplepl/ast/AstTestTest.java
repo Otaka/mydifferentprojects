@@ -76,6 +76,26 @@ public class AstTestTest extends BaseTest {
     }
 
     @Test
+    public void testFunctionInStructure() throws IOException {
+        testAstExpressionFromFile("str.myfunction(1)", AST_FILE_NAME, "functionInStructure");
+    }
+
+    @Test
+    public void testFunctionInStructureExtractStructure() throws IOException {
+        testAstExpressionFromFile("str.myfunction(1).length", AST_FILE_NAME, "functionInStructureExtractStructure");
+    }
+
+    @Test
+    public void testStructureInArray() throws IOException {
+        testAstExpressionFromFile("str[0].asd", AST_FILE_NAME, "structureInArray");
+    }
+
+    @Test
+    public void testArrayInStructure() throws IOException {
+        testAstExpressionFromFile("str.asd[3]", AST_FILE_NAME, "arrayInStructure");
+    }
+
+    @Test
     public void testFunctionDeclaration() throws IOException {
         testAstExpressionFromFile("fun main(int a, int b){int c=a;}", AST_FILE_NAME, "functionDeclaration");
     }
@@ -127,23 +147,28 @@ public class AstTestTest extends BaseTest {
         testAstExpressionFromFile("x= myarray[1]", ARRAY_FILE_NAME, "arraySimpleGetNumber");
         testAstExpressionFromFile("x=2* myarray[1]", ARRAY_FILE_NAME, "arraySimpleGet");
     }
-    
+
     @Test
     public void testArrayGetExpression() throws IOException {
         testAstExpressionFromFile("x= myarray[myfunction(45)]", ARRAY_FILE_NAME, "arrayGetExpression");
         testAstExpressionFromFile("x= myarray[<int>(myfunction(45))]", ARRAY_FILE_NAME, "arrayGetExpressionWithCast");
     }
-    
+
     @Test
     public void testArrayGetFromResult() throws IOException {
         testAstExpressionFromFile("myfunction(1)[45]", ARRAY_FILE_NAME, "arrayGetFromResult");
     }
-    
+
     @Test
     public void testArrayMultidimensional() throws IOException {
         testAstExpressionFromFile("x=myarray[45][65]", ARRAY_FILE_NAME, "arrayMultidimensional");
     }
-    
+
+    @Test
+    public void testArrayMultidimensionalWithStructure() throws IOException {
+        testAstExpressionFromFile("x=myarray[45][65].length", ARRAY_FILE_NAME, "arrayMultidimensionalWithStructure");
+    }
+
     @Test
     public void testArrayArgumentOfFunction() throws IOException {
         testAstExpressionFromFile("myfunction(a[3])", ARRAY_FILE_NAME, "arrayArgumentOfFunction");

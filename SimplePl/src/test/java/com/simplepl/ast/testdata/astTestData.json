@@ -6,6 +6,7 @@
                 "value": "5"
             }
         },
+
         "multipleTest": {
             "n": "binary_operation",
             "attr": {
@@ -24,9 +25,11 @@
                 }
             ]
         },
+
         "variableAssign": {
             "n": "var"
         },
+
         "parenthesis": {
             "n": "binary_operation",
             "attr": {
@@ -71,6 +74,7 @@
                 }
             ]
         },
+
         "functionCallWithExtension": {
             "n": "function_call",
             "attr": {
@@ -129,6 +133,7 @@
                 }
             ]
         },
+
         "functionCall": {
             "n": "function_call",
             "attr": {
@@ -157,6 +162,7 @@
                 }
             ]
         },
+
         "functionDeclaration": {
             "n": "function",
             "attr": {
@@ -234,30 +240,175 @@
                 }
             ]
         },
+
         "structureFieldAssign": {
             "n": "extractField",
             "attr": {
-                "source": {
-                    "n": "identifier",
-                    "attr": {
-                        "name": "str"
-                    }
-                }
-            },
-            "chldr": [{
-                    "n": "identifier",
-                    "attr": {
-                        "name": "buffer"
-                    }
-                },
-                {
+                "expression": {
                     "n": "identifier",
                     "attr": {
                         "name": "length"
                     }
+                }, 
+                "fromWhere": {
+                    "n": "extractField",
+                    "attr": {
+                        "expression": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "buffer"
+                            }
+                        }, 
+                        "fromWhere": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "str"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        "functionInStructureExtractStructure": {
+            "n": "extractField",
+            "attr": {
+                "expression": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "length"
+                    }
+                }, 
+                "fromWhere": {
+                    "n": "function_call",
+                    "attr": {
+                        "name": {
+                            "n": "extractField",
+                            "attr": {
+                                "expression": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "myfunction"
+                                    }
+                                }, 
+                                "fromWhere": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "str"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "chldr": [{
+                            "n": "expressions_list",
+                            "chldr": [{
+                                    "n": "number",
+                                    "attr": {
+                                        "value": "1"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+
+        "arrayInStructure": {
+            "n": "arrayGet",
+            "attr": {
+                "source": {
+                    "n": "extractField",
+                    "attr": {
+                        "expression": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "asd"
+                            }
+                        }, 
+                        "fromWhere": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "str"
+                            }
+                        }
+                    }
+                }
+            },
+            "chldr": [{
+                    "n": "number",
+                    "attr": {
+                        "value": "3"
+                    }
                 }
             ]
         },
+
+        "structureInArray": {
+            "n": "extractField",
+            "attr": {
+                "expression": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "asd"
+                    }
+                }, 
+                "fromWhere": {
+                    "n": "arrayGet",
+                    "attr": {
+                        "source": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "str"
+                            }
+                        }
+                    },
+                    "chldr": [{
+                            "n": "number",
+                            "attr": {
+                                "value": "0"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+
+        "functionInStructure": {
+            "n": "function_call",
+            "attr": {
+                "name": {
+                    "n": "extractField",
+                    "attr": {
+                        "expression": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "myfunction"
+                            }
+                        }, 
+                        "fromWhere": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "str"
+                            }
+                        }
+                    }
+                }
+            },
+            "chldr": [{
+                    "n": "expressions_list",
+                    "chldr": [{
+                            "n": "number",
+                            "attr": {
+                                "value": "1"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+
         "for_loop": {
             "n": "for_loop",
             "attr": {
@@ -364,6 +515,7 @@
                 }
             ]
         },
+
         "pointerDeclaration": {
             "n": "var",
             "attr": {
@@ -386,6 +538,7 @@
                 }
             }
         },
+
         "pointerAssignment": {
             "n": "binary_operation",
             "attr": {
@@ -409,6 +562,7 @@
                 }
             ]
         },
+
         "pointerDeclarationAndAssignment": {
             "n": "var",
             "attr": {
@@ -918,6 +1072,7 @@
                 }
             ]
         },
+
         "castFunction": {
             "n": "binary_operation",
             "attr": {
@@ -971,6 +1126,7 @@
                 }
             ]
         },
+
         "structure": {
             "n": "structure",
             "attr": {
