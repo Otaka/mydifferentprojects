@@ -316,6 +316,7 @@ public class MainParser extends MainParserActions {
         return Sequence(
                 keyword(FUN),
                 _pushAst("function"),
+                functionAnnotations(),
                 FirstOf(
                         typeIdentifier(),
                         actionFail("Expected return type")
@@ -329,6 +330,18 @@ public class MainParser extends MainParserActions {
                 functionArgumentWithBrackets(),
                 _pushTopStackAstToNextStackAstAsAttribute("arguments", "function_arguments", "function"),
                 declareFunctionExtension()
+        );
+    }
+
+    public Rule functionAnnotations() {
+        return Optional(
+                _pushAst("functionAnnotations"),
+                ZeroOrMore(
+                        keyword("@"),
+                        identifier(),
+                        _pushTopStackAstToNextStackAstAsChild("identifier", "functionAnnotations")
+                ),
+                _pushTopStackAstToNextStackAstAsAttribute("annotations", "functionAnnotations", "function")
         );
     }
 
