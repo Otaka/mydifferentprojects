@@ -111,8 +111,10 @@ public class MainParser extends MainParserActions {
                 ifStatement(),
                 newStatement(),
                 deleteStatement(),
+                importStatement(),
                 functionRule(),
                 structureDeclaration(),
+                defineNewType(),
                 declareArray(),
                 declareVariableAndAssign(),
                 declareVariable(),
@@ -212,6 +214,34 @@ public class MainParser extends MainParserActions {
                         actionFail("Expected pointer after 'delete'")
                 ),
                 _pushTopStackAstToNextStackAstAsAttribute("object_to_delete", UNKNOWN, "delete")
+        );
+    }
+
+    public Rule importStatement() {
+        return Sequence(
+                keyword(IMPORT),
+                _pushAst("import"),
+                Optional(
+                        Sequence(
+                                keyword("static"),
+                                _pushAttributeOnLastAst("static", "true")
+                        )
+                ),
+                FirstOf(
+                        identifier(),
+                        actionFail("Expected package")
+                ),
+                _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "import"),
+                ZeroOrMore(
+                        dot(),
+                        FirstOf(
+                                Sequence(
+                                        identifier(),
+                                        _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "import")
+                                ),
+                                actionFail("Expected package")
+                        )
+                )
         );
     }
 
@@ -493,7 +523,7 @@ public class MainParser extends MainParserActions {
                         actionFail("Expected expression after 'not'")
                 ),
                 _pushAst_ExtractTopAstAndSetAsChild("unary_operation"),
-                _setAttributeOnLastAst("operation", "not")
+                _pushAttributeOnLastAst("operation", "not")
         );
     }
 
@@ -637,21 +667,9 @@ public class MainParser extends MainParserActions {
         );
     }
 
-    /*
-    _pushAst("extractField"),
-                simpleVariable(),
-                _pushTopStackAstToNextStackAstAsAttribute("source", UNKNOWN, "extractField"),
-                OneOrMore(
-                        Sequence(
-                                keyword("."),
-                                simpleVariable(),
-                                _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "extractField")
-                        )
-                )
-     */
     public Rule structVariable() {
         return Sequence(
-                keyword("."),
+                dot(),
                 _pushAst("extractField"),
                 _pushUnderTopStackAstToTopStackAstAsAttribute("fromWhere", UNKNOWN, "extractField"),
                 identifier(),
@@ -685,6 +703,17 @@ public class MainParser extends MainParserActions {
 
     public Rule testStructure() {
         return Sequence(structureDeclaration(), EOI);
+    }
+
+    public Rule defineNewType() {
+        return Sequence(
+                keyword("deftype"),
+                identifier(),
+                typeIdentifier(),
+                _pushAst("defineType"),
+                _pushUnderTopStackAstToTopStackAstAsAttribute("source", UNKNOWN, "defineType"),
+                _pushUnderTopStackAstToTopStackAstAsAttribute("newType", "identifier", "defineType")
+        );
     }
 
     public Rule structureDeclaration() {
@@ -812,6 +841,10 @@ public class MainParser extends MainParserActions {
         return keyword(";");
     }
 
+    public Rule dot() {
+        return keyword(".");
+    }
+
     /* public Rule colon() {
         return keyword(":");
     }*/
@@ -841,5 +874,6 @@ public class MainParser extends MainParserActions {
     public String ELSE = "else";
     public String WHILE = "while";
     public String FOR = "for";
+    public String IMPORT = "import";
 
 }

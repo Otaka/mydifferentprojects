@@ -1214,6 +1214,47 @@
                     }
                 }
             ]
+        },
+
+        "defineNewTypeSimpleVar": {
+            "n": "defineType",
+            "attr": {
+                "newType": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "year"
+                    }
+                }, 
+                "source": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "int"
+                    }
+                }
+            }
+        },
+
+        "defineNewTypeFromPointer": {
+            "n": "defineType",
+            "attr": {
+                "newType": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "year"
+                    }
+                }, 
+                "source": {
+                    "n": "pointer",
+                    "attr": {
+                        "type": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "int"
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

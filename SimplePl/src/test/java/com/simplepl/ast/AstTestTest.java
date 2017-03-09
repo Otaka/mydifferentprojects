@@ -8,6 +8,7 @@ public class AstTestTest extends BaseTest {
 
     private static String AST_FILE_NAME = "astTestData";
     private static String ARRAY_FILE_NAME = "arrayTestData";
+    private static String IMPORT_FILE_NAME = "importTestData";
 
     @Test
     public void testDigit() throws IOException {
@@ -177,5 +178,25 @@ public class AstTestTest extends BaseTest {
     @Test
     public void testArrayArgumentOfFunction() throws IOException {
         testAstExpressionFromFile("myfunction(a[3])", ARRAY_FILE_NAME, "arrayArgumentOfFunction");
+    }
+
+    @Test
+    public void testImportSimplePackage() throws IOException {
+        testAstExpressionFromFile("import pl.io", IMPORT_FILE_NAME, "simplePackageImport");
+    }
+
+    @Test
+    public void testImportPackageStatic() throws IOException {
+        testAstExpressionFromFile("import static pl.io", IMPORT_FILE_NAME, "importPackageStatic");
+    }
+    
+    @Test
+    public void testDefineNewType() throws IOException {
+        testAstExpressionFromFile("deftype year int", AST_FILE_NAME, "defineNewTypeSimpleVar");
+    }
+    
+    @Test
+    public void testDefineNewTypeFromPointer() throws IOException {
+        testAstExpressionFromFile("deftype year int@", AST_FILE_NAME, "defineNewTypeFromPointer");
     }
 }

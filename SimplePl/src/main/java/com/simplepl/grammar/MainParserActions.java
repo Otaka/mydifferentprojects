@@ -121,7 +121,7 @@ public class MainParserActions extends BaseParser<Object> {
         };
     }
 
-    public Action _setAttributeOnLastAst(String name, Object value) {
+    public Action _pushAttributeOnLastAst(String name, Object value) {
         return new LangAction() {
             @Override
             public boolean runAction(Context context) {
