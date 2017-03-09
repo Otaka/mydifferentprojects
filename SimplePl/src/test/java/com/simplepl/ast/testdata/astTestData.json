@@ -246,6 +246,60 @@
                 }
             ]
         },
+
+        "functionDeclarationWithAnnotations": {
+            "n": "function",
+            "attr": {
+                "returnValue": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "void"
+                    }
+                }, 
+                "name": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "main"
+                    }
+                }, 
+                "annotations": {
+                    "n": "functionAnnotations",
+                    "chldr": [{
+                            "n": "identifier",
+                            "attr": {
+                                "name": "InterruptHandler"
+                            }
+                        },
+                        {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "NoProlog"
+                            }
+                        },
+                        {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "NoOptimize"
+                            }
+                        },
+                        {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "Inline"
+                            }
+                        }
+                    ]
+                }, 
+                "arguments": {
+                    "n": "function_arguments"
+                }
+            },
+            "chldr": [{
+                    "n": "expressions_list"
+                }
+            ]
+        },
+
         "structureFieldAssign": {
             "n": "extractField",
             "attr": {

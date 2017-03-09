@@ -107,6 +107,11 @@ public class AstTestTest extends BaseTest {
     }
 
     @Test
+    public void testFunctionDeclarationWithAnnotation() throws IOException {
+        testAstExpressionFromFile("fun @InterruptHandler @NoProlog @NoOptimize @Inline void main(){}", AST_FILE_NAME, "functionDeclarationWithAnnotations");
+    }
+
+    @Test
     public void testIf() throws IOException {
         testAstExpressionFromFile("if(a==2){print(\"qwerty\");}", AST_FILE_NAME, "if");
     }
