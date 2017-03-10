@@ -10,7 +10,13 @@ import org.parboiled.Rule;
 public class MainParser extends MainParserActions {
 
     public Rule main() {
-        return Sequence(ZeroOrMore(line()), EOI);
+        return Sequence(
+                _pushAst("module"),
+                ZeroOrMore(
+                        line(),
+                        _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "module")
+                ),
+                EOI);
     }
 
     public Rule line() {
@@ -312,16 +318,21 @@ public class MainParser extends MainParserActions {
         );
     }
 
+    public Rule processFunctionReturnValue() {
+        return Sequence(
+                FirstOf(
+                        typeIdentifier(),
+                        actionFail("Expected return type")
+                ),
+                _pushTopStackAstToNextStackAstAsAttribute("returnValue", UNKNOWN, "function"));
+    }
+
     public Rule declareFunction() {
         return Sequence(
                 keyword(FUN),
                 _pushAst("function"),
                 functionAnnotations(),
-                FirstOf(
-                        typeIdentifier(),
-                        actionFail("Expected return type")
-                ),
-                _pushTopStackAstToNextStackAstAsAttribute("returnValue", "identifier", "function"),
+                processFunctionReturnValue(),
                 FirstOf(
                         identifier(),
                         actionFail("Expected function name")
@@ -721,8 +732,14 @@ public class MainParser extends MainParserActions {
     public Rule defineNewType() {
         return Sequence(
                 keyword("deftype"),
-                identifier(),
-                typeIdentifier(),
+                FirstOf(
+                        identifier(),
+                        actionFail("Expected new type name after the defining new type")
+                ),
+                FirstOf(
+                        typeIdentifier(),
+                        actionFail("Expected parent type for the defining new type")
+                ),
                 _pushAst("defineType"),
                 _pushUnderTopStackAstToTopStackAstAsAttribute("source", UNKNOWN, "defineType"),
                 _pushUnderTopStackAstToTopStackAstAsAttribute("newType", "identifier", "defineType")

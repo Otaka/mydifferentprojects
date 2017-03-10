@@ -28,15 +28,20 @@ import org.parboiled.support.ParsingResult;
  * @author Dmitry
  */
 public class BaseTest {
-
+    private String basePath="/com/simplepl/grammar/testdata/";
     public MainParser createParser() {
         MainParser parser = Parboiled.createParser(MainParser.class);
-        // MainParser.setEnableAction(false);
         return parser;
     }
 
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
+    }
+    
+    
+
     protected String loadFile(String fileName) throws IOException {
-        String fullPath = "/com/simplepl/grammar/testdata/" + fileName;
+        String fullPath = basePath + fileName;
         InputStream stream = BaseTest.class.getResourceAsStream(fullPath);
         if (stream == null) {
             throw new IllegalArgumentException("Cannot find file " + fullPath);
@@ -120,6 +125,9 @@ public class BaseTest {
         ParsingResult<Object> articleResult = runner.run(expressionToTest);
         Assert.assertTrue(articleResult.matched);
         Ast ast = (Ast) articleResult.valueStack.pop();
+        if(!articleResult.valueStack.isEmpty()){
+            throw new IllegalStateException("Value stack should have only one value at the end");
+        }
         String filePath = "/com/simplepl/ast/testdata/" + file + ".json";
         InputStream stream = AstTestTest.class.getResourceAsStream(filePath);
         if (stream == null) {

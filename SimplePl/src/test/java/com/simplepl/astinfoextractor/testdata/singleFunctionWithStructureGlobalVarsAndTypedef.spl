@@ -1,0 +1,15 @@
+fun int main(){
+}
+
+structure TestStructure{
+    int x;
+    int y;
+    string label;
+    int@ somepointer;
+}
+
+int element=3
+int a
+
+deftype year int
+deftype yearpointer int@

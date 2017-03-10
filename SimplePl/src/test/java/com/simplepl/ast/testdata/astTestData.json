@@ -247,6 +247,39 @@
             ]
         },
 
+        "functionDeclarationReturnPointer": {
+            "n": "function",
+            "attr": {
+                "returnValue": {
+                    "n": "pointer",
+                    "attr": {
+                        "type": {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "int"
+                            }
+                        }
+                    }
+                }, 
+                "name": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "main"
+                    }
+                }, 
+                "annotations": {
+                    "n": "functionAnnotations"
+                }, 
+                "arguments": {
+                    "n": "function_arguments"
+                }
+            },
+            "chldr": [{
+                    "n": "expressions_list"
+                }
+            ]
+        },
+
         "functionDeclarationWithAnnotations": {
             "n": "function",
             "attr": {

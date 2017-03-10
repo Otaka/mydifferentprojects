@@ -105,6 +105,11 @@ public class AstTestTest extends BaseTest {
     public void testFunctionDeclaration() throws IOException {
         testAstExpressionFromFile("fun void main(int a, int b){int c=a;}", AST_FILE_NAME, "functionDeclaration");
     }
+    
+    @Test
+    public void testFunctionDeclarationReturnPointer() throws IOException {
+        testAstExpressionFromFile("fun int@ main(){}", AST_FILE_NAME, "functionDeclarationReturnPointer");
+    }
 
     @Test
     public void testFunctionDeclarationWithAnnotation() throws IOException {

@@ -1,0 +1,4 @@
+fun int@ main(string args){
+    string name;
+    int x=3+6;
+}

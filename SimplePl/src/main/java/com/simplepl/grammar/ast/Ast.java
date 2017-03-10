@@ -15,6 +15,10 @@ public class Ast {
         this.name = name;
     }
 
+    public Ast getAttributeAst(String name){
+        return (Ast) attributes.get(name);
+    }
+    
     public Map<String, Object> getAttributes() {
         return attributes;
     }
