@@ -1,3 +1,5 @@
+import com.test.utils
+
 fun int main(){
 }
 
@@ -11,5 +13,5 @@ structure TestStructure{
 int element=3
 int a
 
-deftype year int
 deftype yearpointer int@
+deftype year int

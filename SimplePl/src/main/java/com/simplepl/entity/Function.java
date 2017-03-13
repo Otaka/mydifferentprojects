@@ -40,5 +40,11 @@ public class Function {
     public Type getReturnValue() {
         return returnValue;
     }
+
+    @Override
+    public String toString() {
+        return returnValue+" "+name;
+    }
+    
     
 }

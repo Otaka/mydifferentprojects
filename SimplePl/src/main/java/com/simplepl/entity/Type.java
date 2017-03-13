@@ -49,4 +49,11 @@ public class Type {
         this.packagePath = packagePath;
     }
 
+    @Override
+    public String toString() {
+        if(isPointer()){
+            return name+"@";
+        }
+        return name;
+    }
 }

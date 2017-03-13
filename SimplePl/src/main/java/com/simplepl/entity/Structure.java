@@ -23,4 +23,10 @@ public class Structure {
         return fields;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    
 }
