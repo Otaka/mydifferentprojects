@@ -73,13 +73,15 @@
                 <includes>
                     <include>**/*.spl</include>
                     <include>**/*.json</include>
+                    <include>**/*.zip</include>
                 </includes>
             </resource>
             <resource>
                 <directory>src/test/java</directory>
                 <includes>
-                    <include>**/*.spl</include>
+                    <include>**/*.*</include>
                     <include>**/*.json</include>
+                    <include>**/*.zip</include>
                 </includes>
             </resource>
         </resources>
