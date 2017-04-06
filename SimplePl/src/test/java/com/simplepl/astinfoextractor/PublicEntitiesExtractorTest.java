@@ -99,11 +99,12 @@ public class PublicEntitiesExtractorTest extends BaseTest {
         if (!articleResult.matched) {
             Assert.fail("Cannot compile source");
         }
+
         Ast ast = (Ast) articleResult.valueStack.pop();
         if (!articleResult.valueStack.isEmpty()) {
             throw new IllegalStateException("Value stack at the end should contain only one value");
         }
+
         return ast;
     }
-
 }

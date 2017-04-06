@@ -54,7 +54,7 @@ public class BaseTest {
     public void checkFileRuleSuccess(MainParser parser, Rule rule, String filename) throws IOException {
         try {
             ParseRunner runner = new BasicParseRunner(rule);
-            String text = loadFile(filename + Const.EXT);
+            String text = loadFile(filename +"."+ Const.EXT);
             CommentRemover commentRemover = new CommentRemover(text);
             String cleanedFromComments = commentRemover.process();
             ParsingResult<Object> articleResult = runner.run(cleanedFromComments);
