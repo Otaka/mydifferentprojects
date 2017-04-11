@@ -1,4 +1,5 @@
-import com.test.utils
+import static com.test.utils
+import com.test.data
 
 fun int main(){
 }

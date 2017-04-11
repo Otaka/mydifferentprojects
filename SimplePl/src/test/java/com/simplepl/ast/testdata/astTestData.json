@@ -247,6 +247,61 @@
             ]
         },
 
+        "functionInner": {
+            "n": "function",
+            "attr": {
+                "returnValue": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "void"
+                    }
+                }, 
+                "name": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "main"
+                    }
+                }, 
+                "annotations": {
+                    "n": "functionAnnotations"
+                }, 
+                "arguments": {
+                    "n": "function_arguments"
+                }
+            },
+            "chldr": [{
+                    "n": "expressions_list",
+                    "chldr": [{
+                            "n": "function",
+                            "attr": {
+                                "returnValue": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "int"
+                                    }
+                                }, 
+                                "name": {
+                                    "n": "identifier",
+                                    "attr": {
+                                        "name": "inner"
+                                    }
+                                }, 
+                                "annotations": {
+                                    "n": "functionAnnotations"
+                                }, 
+                                "arguments": {
+                                    "n": "function_arguments"
+                                }
+                            },
+                            "chldr": [{
+                                    "n": "expressions_list"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
         "functionDeclarationReturnPointer": {
             "n": "function",
             "attr": {

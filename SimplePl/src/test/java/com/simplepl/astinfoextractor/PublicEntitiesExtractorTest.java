@@ -14,7 +14,6 @@ import org.parboiled.parserunners.ParseRunner;
 import org.parboiled.support.ParsingResult;
 
 /**
- *
  * @author sad
  */
 public class PublicEntitiesExtractorTest extends BaseTest {
@@ -62,6 +61,14 @@ public class PublicEntitiesExtractorTest extends BaseTest {
 
         //package
         Assert.assertEquals("com.test", fileInfo.getPackagePath());
+
+        //imports        
+        Assert.assertEquals(2, fileInfo.getImports().size());
+
+        Assert.assertEquals("com.test.utils", fileInfo.getImports().get(0).getPath());
+        Assert.assertEquals(true, fileInfo.getImports().get(0).isStatic());
+        Assert.assertEquals("com.test.data", fileInfo.getImports().get(1).getPath());
+        Assert.assertEquals(false, fileInfo.getImports().get(1).isStatic());
 
         //global vars
         Assert.assertEquals(2, fileInfo.getGlobalVariables().size());

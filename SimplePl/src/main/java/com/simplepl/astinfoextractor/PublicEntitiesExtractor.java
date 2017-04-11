@@ -49,9 +49,28 @@ public class PublicEntitiesExtractor {
         }
     }
 
-    private void parseImport(FileInfo fileInfo, Ast functionAst) {
-        Import importObject = new Import();
+    private void parseImport(FileInfo fileInfo, Ast importAst) {
+        String path = importAstToPath(importAst);
+        boolean isStatic=false;
+        if(importAst.getAttributeBoolean("static", false)){
+            isStatic=true;
+        }
+
+        Import importObject = new Import(path, isStatic);
         fileInfo.getImports().add(importObject);
+    }
+
+    private String importAstToPath(Ast importAst) {
+        StringBuilder sb=new StringBuilder();
+        boolean first=true;
+        for(Ast ast:importAst.getChildren()){
+            if(first==false){
+                sb.append(".");
+            }
+            sb.append(extractIdentifier(ast));
+            first=false;
+        }
+        return sb.toString();
     }
 
     private void parseFunction(FileInfo fileInfo, Ast functionAst) {

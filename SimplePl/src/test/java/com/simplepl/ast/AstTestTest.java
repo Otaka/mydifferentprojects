@@ -115,6 +115,11 @@ public class AstTestTest extends BaseTest {
     public void testFunctionDeclarationWithAnnotation() throws IOException {
         testAstExpressionFromFile("fun @InterruptHandler @NoProlog @NoOptimize @Inline void main(){}", AST_FILE_NAME, "functionDeclarationWithAnnotations");
     }
+    
+    @Test
+    public void testInnerFunctions() throws IOException {
+        testAstExpressionFromFile("fun void main(){fun int inner(){};}", AST_FILE_NAME, "functionInner");
+    }
 
     @Test
     public void testIf() throws IOException {
