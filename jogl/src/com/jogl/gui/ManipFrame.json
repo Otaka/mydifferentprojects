@@ -1,0 +1,14 @@
+{
+    "fileList":{
+        "width":"50%",
+        "height":"100%",
+        "mouseClicked":"fileListClicked"
+    },
+    "scroll":{
+        "width":"50%",
+        "height":"100%",
+        "contentPanel":{
+            
+        }
+    }
+}
