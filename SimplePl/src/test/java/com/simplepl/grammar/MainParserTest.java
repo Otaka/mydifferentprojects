@@ -131,8 +131,8 @@ public class MainParserTest extends BaseTest {
     @Test
     public void testArrayDeclaration() throws IOException {
         MainParser parser = createParser();
-        checkTextRuleSuccess(parser, parser.testDeclareArray(), "int[ ]age ");
-        checkTextRuleSuccess(parser, parser.testDeclareArray(), " int [][ ] age");
+        checkTextRuleSuccess(parser, parser.testDeclareArray(), "array int[ ]age ");
+        checkTextRuleSuccess(parser, parser.testDeclareArray(), "array  int [][ ] age");
 
         checkTextRuleFailure(parser, parser.testDeclareArray(), "intage");
         checkTextRuleFailure(parser, parser.testDeclareArray(), "int[age");

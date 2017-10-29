@@ -45,10 +45,13 @@ public class MainParserActions extends BaseParser<Object> {
     }
 
     public Action dbgPrint(final String message) {
-        return (Action) (Context context1) -> {
+        return (Action) (Context context) -> {
             String m = message;
             if (m.contains("$match")) {
-                m = m.replace("$match", context1.getMatch());
+                m = m.replace("$match", context.getMatch());
+            }
+            if (m.contains("$current")) {
+                m = m.replace("$current", ""+context.getCurrentIndex()+":"+context.getCurrentChar());
             }
 
             System.out.println(m);
@@ -118,7 +121,7 @@ public class MainParserActions extends BaseParser<Object> {
         };
     }
 
-    public Action _setAttributeOnLastAst(String name, Object value) {
+    public Action _pushAttributeOnLastAst(String name, Object value) {
         return new LangAction() {
             @Override
             public boolean runAction(Context context) {
@@ -148,9 +151,13 @@ public class MainParserActions extends BaseParser<Object> {
             public boolean runAction(Context context) {
                 Ast extensionArgumentList = (Ast) context.getValueStack().pop();
                 checkAstHasNecessaryName(extensionArgumentList, "function_arguments", false);
+                
+                Ast returnValue = (Ast) context.getValueStack().pop();
                 Ast function = (Ast) context.getValueStack().peek();
                 checkAstHasNecessaryName(function, "function", false);
+                
                 function.addAttribute("extension", extensionArgumentList);
+                function.addAttribute("extensionReturnValue", returnValue);
                 return true;
             }
         };
@@ -187,8 +194,8 @@ public class MainParserActions extends BaseParser<Object> {
             }
         };
     }
-
-    public Action _pushTopStackAstToNextStackAstAsAttribute(String attributeName, String expectedChildName, String expectedParentName) {
+    
+     public Action _pushTopStackAstToNextStackAstAsAttribute(String attributeName, String expectedChildName, String expectedParentName) {
         return new LangAction() {
             @Override
             public boolean runAction(Context context) {
@@ -207,6 +214,50 @@ public class MainParserActions extends BaseParser<Object> {
             }
         };
     }
+    
+    public Action _pushUnderTopStackAstToTopStackAstAsChild(String expectedChildName, String expectedParentName) {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast parent = (Ast) context.getValueStack().pop();
+                if (!StringUtils.equals(expectedParentName, UNKNOWN)) {
+                    checkAstHasNecessaryName(parent, expectedParentName, false);
+                }
+
+                Ast child = (Ast) context.getValueStack().pop();
+                if (!StringUtils.equals(expectedChildName, UNKNOWN)) {
+                    checkAstHasNecessaryName(child, expectedChildName, true);
+                }
+
+                parent.addChild(child);
+                context.getValueStack().push(parent);
+                return true;
+            }
+        };
+    }
+    
+    public Action _pushUnderTopStackAstToTopStackAstAsAttribute(String attributeName, String expectedChildName, String expectedParentName) {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast parent = (Ast) context.getValueStack().pop();
+                if (!StringUtils.equals(expectedParentName, UNKNOWN)) {
+                    checkAstHasNecessaryName(parent, expectedParentName, false);
+                }
+
+                Ast child = (Ast) context.getValueStack().pop();
+                if (!StringUtils.equals(expectedChildName, UNKNOWN)) {
+                    checkAstHasNecessaryName(child, expectedChildName, true);
+                }
+
+                parent.addAttribute(attributeName, child);
+                context.getValueStack().push(parent);
+                return true;
+            }
+        };
+    }
+
+   
 
     public Action _pushBinaryOperation() {
         return new LangAction() {

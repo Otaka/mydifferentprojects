@@ -1,12 +1,12 @@
-fun usingOpenedFile(string fileName) extension(File fileObj) {
+fun int usingOpenedFile(string fileName) extension int(File fileObj) {
     extension(file);
 }
 
-fun usingOpenedFile2(string fileName) extension(File fileObj, int fileLength) {
+fun int usingOpenedFile2(string fileName) extension void(File fileObj, int fileLength) {
     extension(file);
 }
 
-fun user(){
+fun int user(){
     usingOpenedFile("1.txt"){
         string data=read(fileObj);//comment
     };

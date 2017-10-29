@@ -15,6 +15,29 @@ public class Ast {
         this.name = name;
     }
 
+    public Ast getAttributeAst(String name) {
+        return (Ast) attributes.get(name);
+    }
+
+    public boolean getAttributeBoolean(String name) {
+        return (Boolean) attributes.get(name);
+    }
+
+    public boolean getAttributeBoolean(String name, boolean defaultValue) {
+        Object value = attributes.get(name);
+        if (value == null) {
+            return defaultValue;
+        }
+        if (value instanceof String) {
+            return Boolean.parseBoolean((String)value);
+        }
+        if (value instanceof Boolean) {
+            return (Boolean) value;
+        }
+
+        throw new IllegalArgumentException("Cannot convert [" + value.getClass().getSimpleName() + "] to boolean for attribute [" + name + "]");
+    }
+
     public Map<String, Object> getAttributes() {
         return attributes;
     }

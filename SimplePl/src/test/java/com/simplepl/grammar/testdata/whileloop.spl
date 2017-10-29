@@ -1,4 +1,4 @@
-fun function(int length){
+fun int function(int length){
     while(true){
         break;
     };

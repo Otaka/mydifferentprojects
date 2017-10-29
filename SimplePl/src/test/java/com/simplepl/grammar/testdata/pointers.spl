@@ -3,13 +3,10 @@ structure TestStructure {
     int@ pointerToValue;
 }
 
-fun main(string args){
+fun int main(string args){
     int@ intPointer=new int;
-    @intPointer=43;
+    intPointer@=43;
     int@secondPointer=intPointer;
-    TestStructure @myStructure=new TestStructure;
-    myStructure.value=@intPointer;
-    myStructure.pointerToValue=intPointer;
     delete intPointer;
     delete myStructure;
 }

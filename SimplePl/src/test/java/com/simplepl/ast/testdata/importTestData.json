@@ -1,0 +1,39 @@
+{
+    "collection": {
+        "simplePackageImport": {
+            "n": "import",
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "pl"
+                    }
+                },
+                {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "io"
+                    }
+                }
+            ]
+        },
+        "importPackageStatic": {
+            "n": "import",
+            "attr": {
+                "static": "true"
+            },
+            "chldr": [{
+                    "n": "identifier",
+                    "attr": {
+                        "name": "pl"
+                    }
+                },
+                {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "io"
+                    }
+                }
+            ]
+        }
+    }
+}

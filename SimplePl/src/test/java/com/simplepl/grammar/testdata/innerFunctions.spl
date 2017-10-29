@@ -1,5 +1,5 @@
-fun outerFunction(int x) {
-    fun inc(int y){
+fun int outerFunction(int x) {
+    fun int inc(int y){
         y+1;
     };
     

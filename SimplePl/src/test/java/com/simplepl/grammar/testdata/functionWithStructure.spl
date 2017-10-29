@@ -10,7 +10,7 @@ structure InnerStructure{
     string path;
 }
 
-fun main(string args){
+fun void main(string args){
     TestStructure myVariable;
     myVariable.x=45;
     myVariable.y=67;

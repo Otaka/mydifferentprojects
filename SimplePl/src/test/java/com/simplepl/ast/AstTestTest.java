@@ -7,6 +7,8 @@ import org.junit.Test;
 public class AstTestTest extends BaseTest {
 
     private static String AST_FILE_NAME = "astTestData";
+    private static String ARRAY_FILE_NAME = "arrayTestData";
+    private static String IMPORT_FILE_NAME = "importTestData";
 
     @Test
     public void testDigit() throws IOException {
@@ -61,7 +63,12 @@ public class AstTestTest extends BaseTest {
 
     @Test
     public void testPointerAssignment() throws IOException {
-        testAstExpressionFromFile("@intPointer = 43", AST_FILE_NAME, "pointerAssignment");
+        testAstExpressionFromFile("intPointer@ = 43", AST_FILE_NAME, "pointerAssignment");
+    }
+
+    @Test
+    public void testPointerInStructure() throws IOException {
+        testAstExpressionFromFile("a.intPointer@.length@", AST_FILE_NAME, "pointerInStructure");
     }
 
     @Test
@@ -75,8 +82,58 @@ public class AstTestTest extends BaseTest {
     }
 
     @Test
+    public void testFunctionInStructure() throws IOException {
+        testAstExpressionFromFile("str.myfunction(1)", AST_FILE_NAME, "functionInStructure");
+    }
+
+    @Test
+    public void testFunctionInStructureExtractStructure() throws IOException {
+        testAstExpressionFromFile("str.myfunction(1).length", AST_FILE_NAME, "functionInStructureExtractStructure");
+    }
+
+    @Test
+    public void testStructureInArray() throws IOException {
+        testAstExpressionFromFile("str[0].asd", AST_FILE_NAME, "structureInArray");
+    }
+
+    @Test
+    public void testArrayInStructure() throws IOException {
+        testAstExpressionFromFile("str.asd[3]", AST_FILE_NAME, "arrayInStructure");
+    }
+
+    @Test
     public void testFunctionDeclaration() throws IOException {
-        testAstExpressionFromFile("fun main(int a, int b){int c=a;}", AST_FILE_NAME, "functionDeclaration");
+        testAstExpressionFromFile("fun void main(int a, int b){int c=a;}", AST_FILE_NAME, "functionDeclaration");
+    }
+    
+    @Test
+    public void testFunctionDeclarationReturnPointer() throws IOException {
+        testAstExpressionFromFile("fun int@ main(){}", AST_FILE_NAME, "functionDeclarationReturnPointer");
+    }
+
+    @Test
+    public void testFunctionDeclarationWithAnnotation() throws IOException {
+        testAstExpressionFromFile("fun @InterruptHandler @NoProlog @NoOptimize @Inline void main(){}", AST_FILE_NAME, "functionDeclarationWithAnnotations");
+    }
+    
+    @Test
+    public void testInnerFunctions() throws IOException {
+        testAstExpressionFromFile("fun void main(){fun int inner(){};}", AST_FILE_NAME, "functionInner");
+    }
+
+    @Test
+    public void testIf() throws IOException {
+        testAstExpressionFromFile("if(a==2){print(\"qwerty\");}", AST_FILE_NAME, "if");
+    }
+
+    @Test
+    public void testIfElse() throws IOException {
+        testAstExpressionFromFile("if(a==2){print(\"qwerty\");}else{ x=3; }", AST_FILE_NAME, "ifElse");
+    }
+
+    @Test
+    public void testIfElseIf() throws IOException {
+        testAstExpressionFromFile("if(a==2){print(\"qwerty\");}else if(b==3){ x=4; }", AST_FILE_NAME, "ifElseIf");
     }
 
     @Test
@@ -93,10 +150,68 @@ public class AstTestTest extends BaseTest {
     public void testCast() throws IOException {
         testAstExpressionFromFile("x= <float>(y)", AST_FILE_NAME, "cast");
         testAstExpressionFromFile("x= <float>(sum(1,2))", AST_FILE_NAME, "castFunction");
+        testAstExpressionFromFile("x= 1.0 + <float>(sum(1,2))", AST_FILE_NAME, "cast_binary_op");
+    }
+
+    @Test
+    public void testNot() throws IOException {
+        testAstExpressionFromFile("x= !x", AST_FILE_NAME, "notVariable");
+    }
+
+    @Test
+    public void testNotInParentheses() throws IOException {
+        testAstExpressionFromFile("x= (!x)+(9*!x)", AST_FILE_NAME, "notVariableComplex");
+    }
+
+    @Test
+    public void testArraySimpleGet() throws IOException {
+        testAstExpressionFromFile("x= myarray[1]", ARRAY_FILE_NAME, "arraySimpleGetNumber");
+        testAstExpressionFromFile("x=2* myarray[1]", ARRAY_FILE_NAME, "arraySimpleGet");
+    }
+
+    @Test
+    public void testArrayGetExpression() throws IOException {
+        testAstExpressionFromFile("x= myarray[myfunction(45)]", ARRAY_FILE_NAME, "arrayGetExpression");
+        testAstExpressionFromFile("x= myarray[<int>(myfunction(45))]", ARRAY_FILE_NAME, "arrayGetExpressionWithCast");
+    }
+
+    @Test
+    public void testArrayGetFromResult() throws IOException {
+        testAstExpressionFromFile("myfunction(1)[45]", ARRAY_FILE_NAME, "arrayGetFromResult");
+    }
+
+    @Test
+    public void testArrayMultidimensional() throws IOException {
+        testAstExpressionFromFile("x=myarray[45][65]", ARRAY_FILE_NAME, "arrayMultidimensional");
+    }
+
+    @Test
+    public void testArrayMultidimensionalWithStructure() throws IOException {
+        testAstExpressionFromFile("x=myarray[45][65].length", ARRAY_FILE_NAME, "arrayMultidimensionalWithStructure");
+    }
+
+    @Test
+    public void testArrayArgumentOfFunction() throws IOException {
+        testAstExpressionFromFile("myfunction(a[3])", ARRAY_FILE_NAME, "arrayArgumentOfFunction");
+    }
+
+    @Test
+    public void testImportSimplePackage() throws IOException {
+        testAstExpressionFromFile("import pl.io", IMPORT_FILE_NAME, "simplePackageImport");
+    }
+
+    @Test
+    public void testImportPackageStatic() throws IOException {
+        testAstExpressionFromFile("import static pl.io", IMPORT_FILE_NAME, "importPackageStatic");
     }
     
     @Test
-    public void testNot() throws IOException {
-        testAstExpressionFromFile("x= !x", AST_FILE_NAME, "cast");
+    public void testDefineNewType() throws IOException {
+        testAstExpressionFromFile("deftype year int", AST_FILE_NAME, "defineNewTypeSimpleVar");
+    }
+    
+    @Test
+    public void testDefineNewTypeFromPointer() throws IOException {
+        testAstExpressionFromFile("deftype year int@", AST_FILE_NAME, "defineNewTypeFromPointer");
     }
 }

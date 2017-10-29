@@ -5,5 +5,5 @@ package com.simplepl;
  */
 public class Const {
 
-    public static final String EXT = ".spl";
+    public static final String EXT = "spl";
 }
