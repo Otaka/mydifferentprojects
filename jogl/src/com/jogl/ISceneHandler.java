@@ -10,7 +10,7 @@ public abstract class ISceneHandler {
         
     }
     
-    public void onDisplay(){
+    public void onDisplay(MainWithEngine engine){
     
     }
 }

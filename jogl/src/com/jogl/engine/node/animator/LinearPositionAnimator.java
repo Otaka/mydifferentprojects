@@ -1,5 +1,6 @@
-package com.jogl;
+package com.jogl.engine.node.animator;
 
+import com.jogl.*;
 import com.jogl.engine.math.Vector3;
 import com.jogl.engine.node.Node;
 import java.util.ArrayList;
@@ -9,12 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * @author Dmitry
  */
-public class LinearPositionAnimator {
+public class LinearPositionAnimator implements Animator {
 
     private Node node;
     private boolean run = false;
-
-    private float dx, dy, dz;
 
     private float startTime = 0f;
     private float endTime = 0;
@@ -23,17 +22,30 @@ public class LinearPositionAnimator {
     private PositionAnimationData currentAnimation;
     private TimeScale timeScale;
 
-    public LinearPositionAnimator(Node node, TimeScale timeScale) {
+    @Override
+    public void setNode(Node node) {
         this.node = node;
+    }
+
+    @Override
+    public void setTimeScale(TimeScale timeScale) {
         this.timeScale = timeScale;
+    }
+
+    public Node getNode() {
+        return node;
+    }
+
+    public TimeScale getTimeScale() {
+        return timeScale;
     }
 
     public void addAnimationLinePosition(String line) {
         String[] lines = StringUtils.split(line, " ");
         float tEndTime = Float.parseFloat(lines[0]);
-        float x = -Float.parseFloat(lines[1]);
-        float y = -Float.parseFloat(lines[2]);
-        float z = -Float.parseFloat(lines[3]);
+        float x = Float.parseFloat(lines[1]);
+        float y = Float.parseFloat(lines[2]);
+        float z = Float.parseFloat(lines[3]);
         float tStartTime;
         Vector3 startPosition;
         if (animations.isEmpty()) {
@@ -78,31 +90,32 @@ public class LinearPositionAnimator {
         throw new IllegalArgumentException("Cannot find animation for time [" + time + "] max time =" + animations.get(animations.size() - 1).endTime);
     }
 
+    @Override
     public void tick() {
-        float currentTime = (timeScale.getCurrentTime() - startMilliseconds) / 1000.f;
-        currentTime = currentTime % endTime;
-        /* if (currentTime >= endTime) {
+        if (endTime <= 0.000001f) {
+            PositionAnimationData p = animations.get(0);
+            node.setPosition(p.startPosition.getX(), p.startPosition.getY(), p.startPosition.getZ());
+        } else {
+            float currentTime = (timeScale.getCurrentTime() - startMilliseconds) / 1000.f;
+            currentTime = currentTime % endTime;
+            /* if (currentTime >= endTime) {
             currentTime = 0;
         }*/
 
-        PositionAnimationData data = findAnimationData(currentTime);
-        float frameLength = data.endTime - data.startTime;
+            PositionAnimationData data = findAnimationData(currentTime);
+            float frameLength = data.endTime - data.startTime;
 
-        Vector3 animPosition;
-        if (frameLength <= 0.000001f) {
-            animPosition = data.startPosition;
-        } else {
-            float t = currentTime - data.startTime;
-            float animTimePosition = t / frameLength;
-            animPosition = lerp(data.startPosition, data.endPosition, animTimePosition);
+            Vector3 animPosition;
+            if (frameLength <= 0.000001f) {
+                animPosition = data.startPosition;
+            } else {
+                float t = currentTime - data.startTime;
+                float animTimePosition = t / frameLength;
+                animPosition = lerp(data.startPosition, data.endPosition, animTimePosition);
+            }
+
+            node.setPosition(animPosition.getX(), animPosition.getY(), animPosition.getZ());
         }
-
-        node.move(-dx, -dy, -dz);
-        dx = animPosition.getX();
-        dy = animPosition.getY();
-        dz = animPosition.getZ();
-        node.move(dx, dy, dz);
-
     }
 
     public void stop() {
@@ -125,6 +138,7 @@ public class LinearPositionAnimator {
 
     public float lerp(float x1, float x2, float t) {
         return (1 - t) * x1 + t * x2;
+
     }
 
     private static class PositionAnimationData {

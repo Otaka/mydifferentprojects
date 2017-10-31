@@ -7,6 +7,7 @@ import com.jogl.engine.SceneManager;
 import com.jogl.engine.mesh.loader.impl.*;
 import com.jogl.engine.node.Camera;
 import com.jogl.engine.node.Node;
+import com.jogl.engine.node.animator.AnimationChannel;
 import com.jogl.engine.utils.io.JoglFileInputStream;
 import com.jogl.gui.ManipFrame;
 import com.jogl.gui.OnLoadFile;
@@ -32,7 +33,9 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
 
     public Camera camera;
     public File fileToLoad = null;
-    public List<LinearPositionAnimator> animators = new ArrayList<>();
+    //public List<LinearPositionAnimator> positionAnimators = new ArrayList<>();
+    //public List<LinearRotationAnimator> rotationAnimators = new ArrayList<>();
+    protected AnimationChannel currentChannel;
     public TimeScale timeScale = new TimeScale(0);
     public static Frame frame;
     public ISceneHandler iSceneHandler = new RotationAnimatorTestSceneHandler();
@@ -94,6 +97,7 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
                 public void run() {
                     ManipFrame manipFrame = new ManipFrame();
                     manipFrame.pack();
+                    manipFrame.setSize(200, 600);
                     manipFrame.setVisible(true);
                     manipFrame.setOnLoadFile(new OnLoadFile() {
                         @Override
@@ -111,6 +115,7 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
             //camera.setPositionAndLook(0, 0, 0.1f, 0, 0, 0, 0, 1, 0);
             sceneManager.setActiveCamera(camera);
             iSceneHandler.init(this);
+            timeScale.addCurrentTime(-50);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -118,7 +123,6 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        timeScale.setCurrentTime(System.currentTimeMillis());
         if (fileToLoad != null) {
             sceneManager.getNodes().clear();
             AsciiMdlLoader loader = new AsciiMdlLoader();
@@ -143,21 +147,15 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
             counter++;
         }
 
-        if (addToTimeScale > 0) {
-            timeScale.addCurrentTime(addToTimeScale);
-            addToTimeScale = 0;
-            System.out.println("Time = " + timeScale.getCurrentTime());
-        }
-        iSceneHandler.onDisplay();
-
-        if (keySet.get(KeyEvent.VK_BACK_SPACE)) {
-            timeScale.addCurrentTime(10);
-        }
-
-        for (int i = 0; i < animators.size(); i++) {
-
-            LinearPositionAnimator animator = animators.get(i);
-            animator.tick();
+        iSceneHandler.onDisplay(this);
+        
+        if (isKeyPressed(KeyEvent.VK_BACK_SPACE)) {
+            timeScale.addCurrentTime(50);
+            if (currentChannel != null) {
+                for (com.jogl.engine.node.animator.Animator animator : currentChannel.getAnimators()) {
+                    animator.tick();
+                }
+            }
         }
 
         float speed = 0.1f;
@@ -199,29 +197,39 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
         if (keySet.get(KeyEvent.VK_X)) {
             camera.rotateZ(-0.01f);
         }
-
+        /*
         if (keySet.get(KeyEvent.VK_J)) {
             partNode.rotateZ(speed);
-            System.out.println("rz=" + partNode.getRotationZ());
+
         }
         if (keySet.get(KeyEvent.VK_L)) {
             partNode.rotateZ(-speed);
-            System.out.println("rz=" + partNode.getRotationZ());
+
         }
         if (keySet.get(KeyEvent.VK_I)) {
             partNode.rotateX(speed);
-            System.out.println("rx=" + partNode.getRotationX());
+
         }
         if (keySet.get(KeyEvent.VK_K)) {
             partNode.rotateX(-speed);
-            System.out.println("rx=" + partNode.getRotationX());
-        }
+
+        }*/
 
         sceneManager.clear();
         sceneManager.render();
     }
 
     private long addToTimeScale = 0;
+
+    public boolean isKeyDown(int key) {
+        return keySet.get(key);
+    }
+
+    public boolean isKeyPressed(int key) {
+        boolean result = keySet.get(key);
+        keySet.set(key, false);
+        return result;
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {

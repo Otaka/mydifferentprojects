@@ -5,13 +5,20 @@ import com.jogl.engine.SceneManager;
 import com.jogl.engine.exceptions.JoglException;
 import com.jogl.engine.material.ShaderMaterial;
 import com.jogl.engine.mesh.loader.MeshLoader;
+import com.jogl.engine.node.AnimationNode;
 import com.jogl.engine.node.Node;
+import com.jogl.engine.node.animator.AnimationChannel;
+import com.jogl.engine.node.animator.Animator;
+import com.jogl.engine.node.animator.LinearPositionAnimator;
+import com.jogl.engine.node.animator.LinearRotationAnimator;
 import com.jogl.engine.node.geometry.IndexedGeometry;
 import com.jogl.engine.texture.Texture;
 import com.jogl.engine.utils.io.JoglFileInputStream;
 import java.io.*;
 import java.text.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +32,7 @@ public class AsciiMdlLoader extends MeshLoader {
     private final DecimalFormat format;
     private final Map<String, Node> nodes = new HashMap<>();
     private File directory;
+    private Map<String, AnimationChannel> animators = new HashMap<>();
 
     public AsciiMdlLoader() {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -62,14 +70,6 @@ public class AsciiMdlLoader extends MeshLoader {
         }
     }
 
-    private double parseDouble(String value) {
-        try {
-            return format.parse(value).doubleValue();
-        } catch (ParseException ex) {
-            throw new RuntimeException("Error while trying to parse float value " + value, ex);
-        }
-    }
-
     @Override
     public Node load(SceneManager sceneManager, File file, JoglFileInputStream fileInputStream) throws IOException {
         BufferedReader stream = new BufferedReader(new InputStreamReader(fileInputStream));
@@ -93,10 +93,93 @@ public class AsciiMdlLoader extends MeshLoader {
             }
 
             if (token.equals("newanim")) {
+                loadAnimation(values[1], stream);
+            }
+        }
+
+        if (node != null) {
+            ((AnimationNode) node).setAnimators(animators);
+        }
+
+        return node;
+    }
+
+    private void loadAnimation(String animationName, BufferedReader stream) throws IOException {
+        String line;
+        AnimationChannel currentAnimationChannel = new AnimationChannel();
+        currentAnimationChannel.setName(animationName);
+
+        while ((line = stream.readLine()) != null) {
+            line = line.trim();
+            String[] values = StringUtils.split(line, ' ');
+            String token = values[0];
+            if (token.equalsIgnoreCase("length")) {
+                currentAnimationChannel.setLength(Float.parseFloat(values[1]));
+            } else if (token.equalsIgnoreCase("node")) {
+                String nodeName = values[2];
+                List<Animator> animatorsList = parseNodeAnimators(nodeName, stream);
+                if (animatorsList != null && !animatorsList.isEmpty()) {
+                    currentAnimationChannel.getAnimators().addAll(animatorsList);
+                }
+            } else if (token.equalsIgnoreCase("doneanim")) {
                 break;
             }
         }
-        return node;
+
+        animators.put(animationName, currentAnimationChannel);
+    }
+
+    private Node getNodeByName(String name) {
+        Node n = nodes.get(name);
+        if (n == null) {
+            throw new IllegalArgumentException("Cannot find node with name [" + name + "]");
+        }
+        return n;
+    }
+
+    private List<Animator> parseNodeAnimators(String nodeName, BufferedReader stream) throws IOException {
+        List<Animator> animatorList = new ArrayList<>();
+        String line;
+        while ((line = stream.readLine()) != null) {
+            line = line.trim();
+            String[] values = StringUtils.split(line, ' ');
+            String token = values[0];
+            if (token.equals("positionkey")) {
+                String positionString;
+                LinearPositionAnimator animator = new LinearPositionAnimator();
+                animator.setNode(getNodeByName(nodeName));
+                while ((positionString = stream.readLine()) != null) {
+                    positionString = positionString.trim();
+                    if (positionString.equals("endlist")) {
+                        break;
+                    }
+
+                    animator.addAnimationLinePosition(positionString);
+                }
+                animatorList.add(animator);
+            } else {
+                if (token.equals("orientationkey")) {
+                    String rotationString;
+                    LinearRotationAnimator animator = new LinearRotationAnimator();
+                    animator.setNode(getNodeByName(nodeName));
+                    while ((rotationString = stream.readLine()) != null) {
+                        rotationString = rotationString.trim();
+                        if (rotationString.equals("endlist")) {
+                            break;
+                        }
+
+                        animator.addAnimationLineRotation(rotationString);
+                    }
+                    animatorList.add(animator);
+                } else {
+                    if (token.equals("endnode")) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return animatorList;
     }
 
     private Node loadGeometry(SceneManager sceneManager, BufferedReader stream) throws IOException {
@@ -144,14 +227,14 @@ public class AsciiMdlLoader extends MeshLoader {
                     } else if (nodeType.equals("emitter")) {
                         //skip until endnode
                         System.out.println("Skip emitter");
-                        while(true){
-                            line=stream.readLine();
-                            if(line.equals("endnode")){
+                        while (true) {
+                            line = stream.readLine();
+                            if (line.equals("endnode")) {
                                 break;
                             }
                         }
                         continue;
-                    }else{
+                    } else {
                         Node child = loadNode(sceneManager, stream);
                         child.setName(name);
                         nodes.put(name, child);
@@ -213,7 +296,7 @@ public class AsciiMdlLoader extends MeshLoader {
             parent = nodes.get(parentName);
         }
 
-        Node node = new Node(sceneManager, parent);
+        Node node = new AnimationNode(sceneManager, parent);
         if (parent != null) {
             parent.addChild(node);
         }
@@ -227,9 +310,7 @@ public class AsciiMdlLoader extends MeshLoader {
             float y = orientation[1];
             float z = orientation[2];
             float angle = orientation[3];
-            //q.rotateByAngleNormalAxis(angle, x, y, z);
-            //q.toEuler(orientation);
-            node.setRotationAxisAngle(x, y, z, angle);
+            node.setRotationFromAxisAngle(x, y, z, angle);
         }
 
         node.setVisible(false);
@@ -281,9 +362,9 @@ public class AsciiMdlLoader extends MeshLoader {
                     shininess = parseFloat(values[1]);
                     break;
                 case "render":
-                    if(values[1].equalsIgnoreCase("normal")){
-                        render=true;
-                    }else{
+                    if (values[1].equalsIgnoreCase("normal")) {
+                        render = true;
+                    } else {
                         render = Integer.parseInt(values[1]) == 1;
                     }
                     break;
@@ -334,7 +415,7 @@ public class AsciiMdlLoader extends MeshLoader {
             parent = nodes.get(parentName);
         }
 
-        Node node = new Node(sceneManager, parent);
+        Node node = new AnimationNode(sceneManager, parent);
         if (parent != null) {
             parent.addChild(node);
         }
@@ -352,8 +433,8 @@ public class AsciiMdlLoader extends MeshLoader {
             float angle = orientation[3];
             // q.rotateByAngleNormalAxis(angle, x, y, z);
             //q.toEuler(orientation);
-            //node.setRotationAxisAngle(orientation[0], orientation[1], orientation[2]);
-            node.setRotationAxisAngle(x, y, z, angle);
+            //node.setRotationFromAxisAngle(orientation[0], orientation[1], orientation[2]);
+            node.setRotationFromAxisAngle(x, y, z, angle);
         }
 
         node.setVisible(render);

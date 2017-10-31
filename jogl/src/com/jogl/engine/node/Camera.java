@@ -29,7 +29,7 @@ public class Camera extends Node {
 
     public Camera(SceneManager sceneManager) {
         super(sceneManager);
-        projectionCamera(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+        projectionCamera(45.0f, 4.0f / 3.0f, 0.1f, 1000.0f);
     }
 
     private void projectionCamera(float fov, float aspect, float near, float far) {
