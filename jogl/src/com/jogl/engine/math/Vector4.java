@@ -23,6 +23,40 @@ public class Vector4 {
             buffer[3] = initial[3];
         }
     }
+    
+    public void mul(Vector4 vector){
+        buffer[0]*=vector.buffer[0];
+        buffer[1]*=vector.buffer[1];
+        buffer[2]*=vector.buffer[2];
+        buffer[3]*=vector.buffer[3];
+    }
+    
+    public void div(Vector4 vector){
+        buffer[0]/=vector.buffer[0];
+        buffer[1]/=vector.buffer[1];
+        buffer[2]/=vector.buffer[2];
+        buffer[3]/=vector.buffer[3];
+    }
+    
+    public void set(float x, float y, float z){
+        buffer[0]=x;
+        buffer[1]=y;
+        buffer[2]=z;
+    }
+    
+    public void set(float x, float y, float z,float w){
+        buffer[0]=x;
+        buffer[1]=y;
+        buffer[2]=z;
+        buffer[3]=w;
+    }
+    
+    public void set(Vector4 v){
+        buffer[0]=v.buffer[0];
+        buffer[1]=v.buffer[1];
+        buffer[2]=v.buffer[2];
+        buffer[3]=v.buffer[3];
+    }
 
     /**
      * Quaternion

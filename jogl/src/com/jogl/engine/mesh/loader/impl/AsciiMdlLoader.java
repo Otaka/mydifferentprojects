@@ -144,7 +144,7 @@ public class AsciiMdlLoader extends MeshLoader {
             line = line.trim();
             String[] values = StringUtils.split(line, ' ');
             String token = values[0];
-            if (token.equals("positionkey")) {
+            if (token.equals("positionkey")||token.equals("positionbezierkey")) {
                 String positionString;
                 LinearPositionAnimator animator = new LinearPositionAnimator();
                 animator.setNode(getNodeByName(nodeName));
@@ -154,7 +154,11 @@ public class AsciiMdlLoader extends MeshLoader {
                         break;
                     }
 
-                    animator.addAnimationLinePosition(positionString);
+                    if(token.equals("positionbezierkey")){
+                        animator.addAnimationBezierLinePosition(positionString);
+                    }else{
+                        animator.addAnimationLinePosition(positionString);
+                    }
                 }
                 animatorList.add(animator);
             } else {

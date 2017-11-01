@@ -12,6 +12,12 @@ public class Vector3 {
     public Vector3() {
         buffer = new float[3];
     }
+    
+    public void set(float x, float y, float z){
+        buffer[0]=x;
+        buffer[1]=y;
+        buffer[2]=z;
+    }
 
     public Vector3(float[] initial, boolean useBuffer) {
         if (useBuffer) {

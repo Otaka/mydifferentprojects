@@ -40,6 +40,29 @@ public class LinearPositionAnimator implements Animator {
         return timeScale;
     }
 
+    public void addAnimationBezierLinePosition(String line) {
+        String[] lines = StringUtils.split(line, " ");
+        float tEndTime = Float.parseFloat(lines[0]);
+        float x = -Float.parseFloat(lines[1]);
+        float y = -Float.parseFloat(lines[2]);
+        float z = -Float.parseFloat(lines[3]);
+        float tStartTime;
+        Vector3 startPosition;
+        if (animations.isEmpty()) {
+            tStartTime = 0;
+            startPosition = new Vector3(x, y, z);
+        } else {
+            tStartTime = animations.get(animations.size() - 1).endTime;
+            startPosition = animations.get(animations.size() - 1).endPosition;
+        }
+
+        PositionAnimationData data = new PositionAnimationData(tStartTime, tEndTime, startPosition, new Vector3(x, y, z));
+        if (this.endTime < tEndTime) {
+            this.endTime = tEndTime;
+        }
+        animations.add(data);
+    }
+    
     public void addAnimationLinePosition(String line) {
         String[] lines = StringUtils.split(line, " ");
         float tEndTime = Float.parseFloat(lines[0]);

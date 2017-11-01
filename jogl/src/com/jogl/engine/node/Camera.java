@@ -42,7 +42,7 @@ public class Camera extends Node {
         Matrix cameraModelMatrix = null;
         if (getParent() == null) {
             if (dirty) {
-                cameraModelMatrix = getTransformation();
+                cameraModelMatrix = getLocalTransform();
                 shouldRecalculate = true;
                 dirty = false;
             }
@@ -64,7 +64,7 @@ public class Camera extends Node {
     }
 
     /*public void setPositionAndLook(float x, float y, float z, float targetX, float targetY, float targetZ, float upX, float upY, float upZ) {
-     transformation.lookAt(x, y, z, targetX, targetY, targetZ, upX, upY, upZ);
+     localTransform.lookAt(x, y, z, targetX, targetY, targetZ, upX, upY, upZ);
      dirty = true;
      }*/
 }

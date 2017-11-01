@@ -16,7 +16,8 @@ public class RotationAnimatorTestSceneHandler extends ISceneHandler {
     @Override
     public void init(MainWithEngine engine) throws IOException {
         AsciiMdlLoader loader = new AsciiMdlLoader();
-        File file = new File("G:\\kotor_Extracted\\ascii_model_testing\\c_drdmkfour.mdl.ascii");
+       // File file = new File("G:\\kotor_Extracted\\ascii_model_testing\\c_drdmkfour.mdl.ascii");
+        File file = new File("G:\\kotor_Extracted\\ascii_model_testing\\dor_lda01_ascii.mdl.ascii");
         engine.node = loader.load(engine.sceneManager, file, new JoglFileInputStream(file));
         engine.sceneManager.getNodes().add(engine.node);
         engine.partNode = engine.node;
@@ -30,7 +31,7 @@ public class RotationAnimatorTestSceneHandler extends ISceneHandler {
             }
         }
 
-        engine.currentChannel = animationNode.getAnimators().get("whirlwind");
+        engine.currentChannel = animationNode.getAnimators().get("opening1");
     }
 
     @Override
