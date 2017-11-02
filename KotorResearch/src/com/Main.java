@@ -18,7 +18,7 @@ public class Main {
 
     private static void tryToExtractTextures(String archiveName) throws IOException {
         FileReaderErf erfReader = new FileReaderErf();
-        File file = new File("h:\\Games\\Games\\StarWarsKnightsOfTheOldRepublic\\TexturePacks\\" + archiveName);
+        File file = new File("h:\\Games\\Games\\Star Wars Knights of the Old Republic\\TexturePacks\\" + archiveName);
         Erf erf = erfReader.loadFile(new FileInputStream(file), file);
         FileReaderTpc readerTpc = new FileReaderTpc();
         int i = -1;
