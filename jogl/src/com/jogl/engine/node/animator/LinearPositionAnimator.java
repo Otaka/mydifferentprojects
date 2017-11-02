@@ -117,7 +117,7 @@ public class LinearPositionAnimator implements Animator {
     public void tick() {
         if (endTime <= 0.000001f) {
             PositionAnimationData p = animations.get(0);
-            node.setPosition(p.startPosition.getX(), p.startPosition.getY(), p.startPosition.getZ());
+            node.setLocalPosition(p.startPosition.getX(), p.startPosition.getY(), p.startPosition.getZ());
         } else {
             float currentTime = (timeScale.getCurrentTime() - startMilliseconds) / 1000.f;
             currentTime = currentTime % endTime;
@@ -137,7 +137,7 @@ public class LinearPositionAnimator implements Animator {
                 animPosition = lerp(data.startPosition, data.endPosition, animTimePosition);
             }
 
-            node.setPosition(animPosition.getX(), animPosition.getY(), animPosition.getZ());
+            node.setLocalPosition(animPosition.getX(), animPosition.getY(), animPosition.getZ());
         }
     }
 

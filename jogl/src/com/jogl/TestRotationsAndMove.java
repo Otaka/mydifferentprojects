@@ -1,5 +1,6 @@
 package com.jogl;
 
+import com.jogl.engine.math.Vector4;
 import com.jogl.engine.mesh.loader.impl.AsciiMdlLoader;
 import com.jogl.engine.utils.io.JoglFileInputStream;
 import java.awt.event.KeyEvent;
@@ -20,7 +21,7 @@ public class TestRotationsAndMove extends ISceneHandler {
         engine.node = loader.load(engine.sceneManager, file, new JoglFileInputStream(file));
         engine.sceneManager.getNodes().add(engine.node);
         engine.partNode = engine.sceneManager.getObjectByName("DOR_LDA01");
-        engine.node.moveZ(5);
+        engine.node.move(0, 0, 5);
         //engine.node.moveY(-1);
 
         //engine.node.rotateX((float) Math.toRadians(-90));
@@ -47,13 +48,11 @@ public class TestRotationsAndMove extends ISceneHandler {
             if (null != manipType) {
                 switch (manipType) {
                     case MOVE:
-                        engine.node.moveZ(0.5f);
+                        engine.node.move(0, 0, 0.5f);
+                        ;
                         break;
                     case ROTATE:
-                        engine.node.rotateZ(0.05f);
-                        break;
-                    case SCALE:
-                        engine.node.scaleZ(0.9f);
+                        engine.node.turn(0, 0, 0.5f, false);
                         break;
                     default:
                         break;
@@ -64,13 +63,10 @@ public class TestRotationsAndMove extends ISceneHandler {
             if (null != manipType) {
                 switch (manipType) {
                     case MOVE:
-                        engine.node.moveZ(-0.5f);
+                        engine.node.move(0, 0, -0.5f);
                         break;
                     case ROTATE:
-                        engine.node.rotateZ(-0.05f);
-                        break;
-                    case SCALE:
-                        engine.node.scaleZ(1.1f);
+                        engine.node.turn(0, 0, -0.05f, false);
                         break;
                     default:
                         break;
@@ -81,13 +77,10 @@ public class TestRotationsAndMove extends ISceneHandler {
             if (null != manipType) {
                 switch (manipType) {
                     case MOVE:
-                        engine.node.moveX(0.5f);
+                        engine.node.move(0.5f, 0, 0);
                         break;
                     case ROTATE:
-                        engine.node.rotateX(0.05f);
-                        break;
-                    case SCALE:
-                        engine.node.scaleX(0.9f);
+                        engine.node.turn(0.05f, 0, 0, false);
                         break;
                     default:
                         break;
@@ -99,13 +92,10 @@ public class TestRotationsAndMove extends ISceneHandler {
             if (null != manipType) {
                 switch (manipType) {
                     case MOVE:
-                        engine.node.moveY(-0.5f);
+                        engine.node.move(0, -0.5f, 0);
                         break;
                     case ROTATE:
-                        engine.node.rotateY(-0.05f);
-                        break;
-                    case SCALE:
-                        engine.node.scaleY(0.9f);
+                        engine.node.turn(0, -0.05f, 0, false);
                         break;
                     default:
                         break;
@@ -117,13 +107,10 @@ public class TestRotationsAndMove extends ISceneHandler {
             if (null != manipType) {
                 switch (manipType) {
                     case MOVE:
-                        engine.node.moveX(-0.5f);
+                        engine.node.move(-0.5f, 0, 0);
                         break;
                     case ROTATE:
-                        engine.node.rotateX(-0.05f);
-                        break;
-                    case SCALE:
-                        engine.node.scaleX(1.1f);
+                        engine.node.turn(0, -0.05f, 0, false);
                         break;
                     default:
                         break;
@@ -134,13 +121,10 @@ public class TestRotationsAndMove extends ISceneHandler {
             if (null != manipType) {
                 switch (manipType) {
                     case MOVE:
-                        engine.node.moveY(0.5f);
+                        engine.node.move(0, 0.5f, 0);
                         break;
                     case ROTATE:
-                        engine.node.rotateY(0.05f);
-                        break;
-                    case SCALE:
-                        engine.node.scaleY(1.1f);
+                        engine.node.turn(0, 0.05f, 0, false);
                         break;
                     default:
                         break;
@@ -153,8 +137,8 @@ public class TestRotationsAndMove extends ISceneHandler {
     }
 
     private void processPositionCommand(MainWithEngine engine) {
-        String line = JOptionPane.showInputDialog(engine.frame,"Enter command(template:  m/r/s x/y/z value )","");
-        if (line==null||line.isEmpty()) {
+        String line = JOptionPane.showInputDialog(engine.frame, "Enter command(template:  m/r/s x/y/z value )", "");
+        if (line == null || line.isEmpty()) {
             System.out.println("You entered empty command");
             return;
         }
@@ -184,41 +168,32 @@ public class TestRotationsAndMove extends ISceneHandler {
             case MOVE:
                 switch (axis) {
                     case "x":
-                        engine.node.setX(value);
+                        Vector4 pos = engine.node.getLocalPosition();
+                        engine.node.setLocalPosition(value, pos.getY(), pos.getZ());
                         break;
                     case "y":
-                        engine.node.setY(value);
+                        Vector4 pos2 = engine.node.getLocalPosition();
+                        engine.node.setLocalPosition(pos2.getX(), value, pos2.getZ());
                         break;
                     case "z":
-                        engine.node.setZ(value);
+                        Vector4 pos3 = engine.node.getLocalPosition();
+                        engine.node.setLocalPosition(pos3.getX(), pos3.getY(), value);
                         break;
                 }
                 break;
             case ROTATE:
                 switch (axis) {
                     case "x":
-                        engine.node.setRotation(value, 0, 0);
+                        engine.node.setLocalRotation(value, 0, 0);
                         break;
                     case "y":
-                        engine.node.setRotation(0, value, 0);
+                        engine.node.setLocalRotation(0, value, 0);
                         break;
                     case "z":
-                        engine.node.setRotation(0, 0, value);
+                        engine.node.setLocalRotation(0, 0, value);
                         break;
                 }
-                break;
-            case SCALE:
-                switch (axis) {
-                    case "x":
-                        engine.node.setScale(value, 1, 1);
-                        break;
-                    case "y":
-                        engine.node.setScale(1, value, 1);
-                        break;
-                    case "z":
-                        engine.node.setScale(1, 1, value);
-                        break;
-                }
+
                 break;
         }
     }

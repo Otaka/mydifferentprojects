@@ -144,7 +144,7 @@ public class AsciiMdlLoader extends MeshLoader {
             line = line.trim();
             String[] values = StringUtils.split(line, ' ');
             String token = values[0];
-            if (token.equals("positionkey")||token.equals("positionbezierkey")) {
+            if (token.equals("positionkey") || token.equals("positionbezierkey")) {
                 String positionString;
                 LinearPositionAnimator animator = new LinearPositionAnimator();
                 animator.setNode(getNodeByName(nodeName));
@@ -154,9 +154,9 @@ public class AsciiMdlLoader extends MeshLoader {
                         break;
                     }
 
-                    if(token.equals("positionbezierkey")){
+                    if (token.equals("positionbezierkey")) {
                         animator.addAnimationBezierLinePosition(positionString);
-                    }else{
+                    } else {
                         animator.addAnimationLinePosition(positionString);
                     }
                 }
@@ -306,7 +306,7 @@ public class AsciiMdlLoader extends MeshLoader {
         }
 
         if (position != null) {
-            node.setPosition(position[0], position[1], position[2]);
+            node.setLocalPosition(position[0], position[1], position[2]);
         }
 
         if (orientation != null) {
@@ -314,7 +314,9 @@ public class AsciiMdlLoader extends MeshLoader {
             float y = orientation[1];
             float z = orientation[2];
             float angle = orientation[3];
-            node.setRotationFromAxisAngle(x, y, z, angle);
+            Quaternion quaternion = new Quaternion();
+            quaternion.setFromAngleAxis(angle, new float[]{x, y, z}, new float[3]);
+            node.setLocalRotation(quaternion);
         }
 
         node.setVisible(false);
@@ -425,20 +427,17 @@ public class AsciiMdlLoader extends MeshLoader {
         }
 
         if (position != null) {
-            node.setPosition(position[0], position[1], position[2]);
+            node.setLocalPosition(position[0], position[1], position[2]);
         }
 
         if (orientation != null) {
-            Quaternion q = new Quaternion();
-            q.setIdentity();
             float x = orientation[0];
             float y = orientation[1];
             float z = orientation[2];
             float angle = orientation[3];
-            // q.rotateByAngleNormalAxis(angle, x, y, z);
-            //q.toEuler(orientation);
-            //node.setRotationFromAxisAngle(orientation[0], orientation[1], orientation[2]);
-            node.setRotationFromAxisAngle(x, y, z, angle);
+            Quaternion q = new Quaternion();
+            q.setFromAngleAxis(angle, new float[]{x, y, z}, new float[3]);
+            node.setLocalRotation(q);
         }
 
         node.setVisible(render);

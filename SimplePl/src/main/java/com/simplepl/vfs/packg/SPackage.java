@@ -1,13 +1,13 @@
 package com.simplepl.vfs.packg;
 
 import com.simplepl.vfs.AbstractFile;
-import com.simplepl.vfs.NamedPackageObject;
 import java.util.List;
+import com.simplepl.vfs.NamedModuleObject;
 
 /**
  * @author sad
  */
-public abstract class SPackage implements NamedPackageObject{
+public abstract class SPackage implements NamedModuleObject{
 
     private SPackage parent;
     private String name;

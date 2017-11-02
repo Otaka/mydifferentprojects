@@ -20,7 +20,8 @@ public class Node {
 
     protected List<Geometry> geometryList;
     protected List<Node> children;
-    protected boolean dirty;
+    protected boolean localTransformDirty;
+    protected boolean worldTransformDirty;
     protected boolean visible;
 
     protected Vector4 localPosition = new Vector4(0, 0, 0, 1);
@@ -44,7 +45,7 @@ public class Node {
         pvmMatrix = new Matrix();
         geometryList = new ArrayList<>();
         children = new ArrayList<>();
-        dirty = true;
+        localTransformDirty = true;
         visible = true;
     }
 
@@ -68,12 +69,8 @@ public class Node {
         this.name = name;
     }
 
-    public boolean isDirty() {
-        return dirty;
-    }
-
-    public void setDirty(boolean dirty) {
-        this.dirty = dirty;
+    public boolean isLocalTransformDirty() {
+        return localTransformDirty;
     }
 
     public void setParent(Node parent) {
@@ -104,9 +101,9 @@ public class Node {
 
     public void positionNode(float x, float y, float z, boolean global) {
 
-        dirty = true;
+        setDirty();
     }
-
+/*
     public void setRotationFromQuaternion(Quaternion q) {
         //restore rotation
         localRotation.invert();
@@ -115,7 +112,7 @@ public class Node {
         //rotate to necessary angle
         localTransform.rotate(q);
         localRotation.set(q);
-        dirty = true;
+        setDirty();
     }
 
     public void setRotation(float x, float y, float z) {
@@ -125,7 +122,7 @@ public class Node {
         localRotation.setFromEuler(x, y, z);
         //rotate to necessary angle
         localTransform.rotate(localRotation);
-        dirty = true;
+        setDirty();
     }
 
     public void setRotationFromAxisAngle(float x, float y, float z, float angle) {
@@ -136,30 +133,30 @@ public class Node {
         //rotate to angle axis
         localRotation.setFromAngleAxis(angle, new float[]{x, y, z}, new float[3]);
         localTransform.rotate(localRotation);
-        dirty = true;
-    }
+        setDirty();
+    }*/
 
     public void renderNode(GL3 gl, Matrix pvMatrix, Matrix parentMatrix, boolean parentDirty) {
         renderInternal(gl, pvMatrix, parentMatrix, parentDirty);
         if (!children.isEmpty()) {
             for (Node node : children) {
-                node.renderNode(gl, pvMatrix, worldTransform, dirty);
+                node.renderNode(gl, pvMatrix, worldTransform, localTransformDirty);
             }
         }
 
-        dirty = false;
+        setDirty();
     }
 
     private void renderInternal(GL3 gl, Matrix pvMatrix, Matrix parentMatrix, boolean parentDirty) {
-        if (dirty || parentDirty) {
+        if (localTransformDirty || parentDirty) {
             if (parentMatrix != null) {
                 worldTransform.loadFromMatrix(parentMatrix);
             } else {
                 worldTransform.loadIdentity();
             }
 
-            dirty = true;
             worldTransform.multMatrix(localTransform);
+            localTransformDirty = false;
         }
 
         pvmMatrix.loadFromMatrix(pvMatrix);
@@ -196,7 +193,7 @@ public class Node {
 
     public void setLocalPosition(float x, float y, float z) {
         localPosition.set(x, y, z);
-        dirty = true;
+        setDirty();
     }
 
     public Vector4 getLocalPosition() {
@@ -210,9 +207,56 @@ public class Node {
         return worldPosition;
     }
 
+    /**
+        Move in local space, take into account the orientation of the node
+     */
+    public void move(float x, float y, float z) {
+        Vector4 tLocalPosition = getLocalPosition();
+        tvector1.set(tLocalPosition);
+        tvector1.rotateByQuaternion(getLocalRotation());
+        tvector1.sum(x, y, z, 0);
+        localPosition.set(tvector1);
+        setDirty();
+    }
+
+    /**
+        Move in local/global space, do not take into account the orientation of the node
+     */
+    public void translate(float x, float y, float z, boolean global) {
+        if (global) {
+            tvector1.set(getWorldPosition());
+            tvector1.sum(x, y, z, 0);
+            setWorldPosition(tvector1.getX(), tvector1.getY(), tvector1.getZ());
+        } else {
+            localPosition.sum(x, y, z, 0);
+            setDirty();
+        }
+    }
+
+    public void turn(float x, float y, float z, boolean global) {
+        if(global){
+            tempQuaternion2.setFromEuler(x, y, z);
+            tempQuaternion2.mult(getWorldRotation());
+            setWorldRotation(tempQuaternion2);
+        }else{
+            tempQuaternion.set(getLocalRotation());
+            tempQuaternion2.setFromEuler(x,y,z);
+            tempQuaternion.mult(tempQuaternion2);
+            setLocalRotation(tempQuaternion);
+        }
+    }
+
+    /**
+    Set local rotation from euler angles
+     */
+    public void setLocalRotation(float x, float y, float z) {
+        this.localRotation.setFromEuler(x, y, z);
+        setDirty();
+    }
+
     public void setLocalRotation(Quaternion quaternion) {
         this.localRotation.set(quaternion).normalize();
-        dirty = true;
+        setDirty();
     }
 
     public void setWorldRotation(Quaternion quaternion) {
@@ -230,6 +274,7 @@ public class Node {
     }
 
     private Quaternion tempQuaternion = new Quaternion();
+    private Quaternion tempQuaternion2 = new Quaternion();
 
     public Quaternion getWorldRotation() {
         if (parent != null) {
@@ -258,8 +303,13 @@ public class Node {
     }
 
     public void setLocalScale(Vector4 localScale) {
-        this.localScale = localScale;
-        dirty = true;
+        this.localScale.set(localScale);
+        setDirty();
+    }
+    
+    public void setLocalScale(float x, float y, float z) {
+        this.localScale.set(x, y, z);
+        setDirty();
     }
 
     public void setWorldScale(Vector4 worldScale) {
@@ -273,17 +323,34 @@ public class Node {
     }
 
     public Matrix getLocalTransform() {
-        if(dirty){
+        if (localTransformDirty) {
             localTransform.loadIdentity();
-            localTransform.scale(localScale.getX(),localScale.getY(),localScale.getZ());
+            localTransform.scale(localScale.getX(), localScale.getY(), localScale.getZ());
             localTransform.rotate(tempQuaternion);
             localTransform.translate(localPosition.getX(), localPosition.getY(), localPosition.getZ());
-            dirty=false;
+            localTransformDirty = false;
         }
+
         return localTransform;
     }
 
     public Matrix getWorldTransform() {
+        if (worldTransformDirty) {
+            if (parent == null) {
+                worldTransform.loadFromMatrix(getLocalTransform());
+            } else {
+                worldTransform.loadFromMatrix(parent.getWorldTransform());
+                worldTransform.multMatrix(getLocalTransform());
+            }
+
+            worldTransformDirty = false;
+        }
+
         return worldTransform;
+    }
+
+    private void setDirty() {
+        localTransformDirty = true;
+        worldTransformDirty = true;
     }
 }

@@ -1,4 +1,4 @@
-fun @inline int main(string args){
+fun @inline int main(string args, string@ output){
     string name;
     int x=3+6;
 }

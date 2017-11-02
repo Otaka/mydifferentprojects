@@ -23,13 +23,29 @@ public class Ast {
         return (Boolean) attributes.get(name);
     }
 
+    public String getAttributeString(String name) {
+        if (!attributes.containsKey(name)) {
+            throw new IllegalArgumentException("Ast [" + this.name + " does not contain attribute [" + name + "]");
+        }
+
+        return (String) attributes.get(name);
+    }
+
+    public String getAttributeString(String name, String defaultValue) {
+        if (!attributes.containsKey(name)) {
+            return defaultValue;
+        }
+
+        return (String) attributes.get(name);
+    }
+
     public boolean getAttributeBoolean(String name, boolean defaultValue) {
         Object value = attributes.get(name);
         if (value == null) {
             return defaultValue;
         }
         if (value instanceof String) {
-            return Boolean.parseBoolean((String)value);
+            return Boolean.parseBoolean((String) value);
         }
         if (value instanceof Boolean) {
             return (Boolean) value;

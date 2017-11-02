@@ -1,0 +1,6 @@
+import com.utils.student
+
+structure group{
+    student s1;
+    student s2;
+}

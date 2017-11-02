@@ -64,8 +64,8 @@ public class SrcRootTest {
     public void testFindObjectByPkgPath() {
         Context context = new Context();
         SrcRoot srcRoot = context.getSrcRoot()
-                .addFileSystemRoot(root, context)
-                .addFileSystemRoot(root2, context);
+                .addFileSystemRoot(root)
+                .addFileSystemRoot(root2);
 
         List<AbstractFile> files = srcRoot.getAbstractFiles("com.simplepl.network.NetUtils");
         assertEquals(1, files.size());

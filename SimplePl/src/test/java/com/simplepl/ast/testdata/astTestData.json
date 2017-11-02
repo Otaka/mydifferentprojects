@@ -743,7 +743,33 @@
                 }
             }
         },
-
+        "typeWithPackage": {
+            "n": "var",
+            "attr": {
+                "name": {
+                    "n": "identifier",
+                    "attr": {
+                        "name": "var"
+                    }
+                }, 
+                "type": {
+                    "n": "identifierWithPackage",
+                    "chldr": [{
+                            "n": "identifier",
+                            "attr": {
+                                "name": "mypackage"
+                            }
+                        },
+                        {
+                            "n": "identifier",
+                            "attr": {
+                                "name": "innertype"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
         "pointerInStructure": {
             "n": "dereference",
             "chldr": [{

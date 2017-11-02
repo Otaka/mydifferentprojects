@@ -1,13 +1,15 @@
 package com.simplepl.vfs;
 
 import com.simplepl.Const;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import org.apache.commons.io.IOUtils;
 
 /**
  * @author sad
  */
-public abstract class AbstractFile implements NamedPackageObject {
+public abstract class AbstractFile implements NamedModuleObject {
 
     /**
     Get name of the file without extension
@@ -26,5 +28,14 @@ public abstract class AbstractFile implements NamedPackageObject {
 
     public boolean isSource() {
         return getRawName().toLowerCase().endsWith(Const.EXT);
+    }
+
+    public String readToString() {
+        try {
+            return IOUtils.toString(getInputStream(), "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
     }
 }

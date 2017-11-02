@@ -1,0 +1,7 @@
+structure date{
+    long timestamp;
+}
+
+fun date createDate(int day, int month, int year){
+    
+}

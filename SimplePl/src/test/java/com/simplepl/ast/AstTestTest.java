@@ -55,6 +55,11 @@ public class AstTestTest extends BaseTest {
     public void testPointerDeclaration() throws IOException {
         testAstExpressionFromFile("int@ intPointer", AST_FILE_NAME, "pointerDeclaration");
     }
+    
+    @Test
+    public void testTypeWithPackage() throws IOException {
+        testAstExpressionFromFile("mypackage.innertype var", AST_FILE_NAME, "typeWithPackage");
+    }
 
     @Test
     public void testPointerDeclarationAndAssignment() throws IOException {

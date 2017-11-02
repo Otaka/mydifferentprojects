@@ -36,7 +36,7 @@ public class LocalFile extends AbstractFile {
             throw new IllegalStateException("File [" + file.getAbsolutePath() + "] not found");
         }
     }
-    
+
     @Override
     public InputStream getInputStream() {
         try {
@@ -53,9 +53,6 @@ public class LocalFile extends AbstractFile {
 
     @Override
     public String toString() {
-        return getRawName()+":"+getName();
+        return getRawName() + ":" + getName();
     }
-
-    
-
 }
