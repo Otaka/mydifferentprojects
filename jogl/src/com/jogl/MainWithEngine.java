@@ -10,7 +10,6 @@ import com.jogl.engine.node.Node;
 import com.jogl.engine.node.animator.AnimationChannel;
 import com.jogl.engine.utils.io.JoglFileInputStream;
 import com.jogl.gui.ManipFrame;
-import com.jogl.gui.OnLoadFile;
 import com.swingson.SwingsonGuiBuilder;
 import java.awt.Frame;
 import java.awt.event.*;
@@ -64,12 +63,9 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
                 // Run this on another thread than the AWT event queue to
                 // make sure the call to Animator.stop() completes before
                 // exiting
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        sceneAnimator.stop();
-                        System.exit(0);
-                    }
+                new Thread(() -> {
+                    sceneAnimator.stop();
+                    System.exit(0);
                 }).start();
             }
         });
@@ -91,21 +87,14 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
     @Override
     public void init(GLAutoDrawable drawable) {
         try {
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    ManipFrame manipFrame = new ManipFrame();
-                    manipFrame.pack();
-                    manipFrame.setSize(200, 600);
-                    manipFrame.setVisible(true);
-                    manipFrame.setOnLoadFile(new OnLoadFile() {
-                        @Override
-                        public void load(File file) {
-                            loadNewFile(file);
-                        }
-                    });
-                }
+            SwingUtilities.invokeLater(() -> {
+                ManipFrame manipFrame = new ManipFrame();
+                manipFrame.pack();
+                manipFrame.setSize(200, 600);
+                manipFrame.setVisible(true);
+                manipFrame.setOnLoadFile((File file) -> {
+                    loadNewFile(file);
+                });
             });
 
             GL3 gl = (GL3) drawable.getGL();
@@ -129,8 +118,8 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
             try {
                 node = loader.load(sceneManager, fileToLoad, new JoglFileInputStream(fileToLoad));
                 sceneManager.getNodes().add(node);
-                node.moveZ(10);
-                node.rotateX((float) Math.toRadians(-90));
+                node.move(0, 0, 10.f);
+                node.turn((float) Math.toRadians(-90), 0, 0, false);
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -148,7 +137,7 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
         }
 
         iSceneHandler.onDisplay(this);
-        
+
         if (isKeyPressed(KeyEvent.VK_BACK_SPACE)) {
             timeScale.addCurrentTime(50);
             if (currentChannel != null) {
@@ -160,42 +149,42 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
 
         float speed = 0.1f;
         if (keySet.get(KeyEvent.VK_UP)) {
-            camera.moveZ(speed);
+            camera.move(0, 0, speed);
         }
         if (keySet.get(KeyEvent.VK_DOWN)) {
-            camera.moveZ(-speed);
+            camera.move(0, 0, -speed);
         }
         if (keySet.get(KeyEvent.VK_LEFT)) {
-            camera.moveX(speed);
+            camera.move(speed, 0, 0);
         }
         if (keySet.get(KeyEvent.VK_RIGHT)) {
-            camera.moveX(-speed);
+            camera.move(-speed, 0, 0);
         }
         if (keySet.get(KeyEvent.VK_PAGE_UP)) {
-            camera.moveY(speed);
+            camera.move(0, speed, 0);
         }
         if (keySet.get(KeyEvent.VK_PAGE_DOWN)) {
-            camera.moveY(-speed);
+            camera.move(0, -speed, 0);
         }
 
         if (keySet.get(KeyEvent.VK_A)) {
-            camera.rotateY(0.05f);
+            camera.turn(0, 0.05f, 0, false);
         }
         if (keySet.get(KeyEvent.VK_D)) {
-            camera.rotateY(-0.05f);
+            camera.turn(0, -0.05f, 0, false);
         }
         if (keySet.get(KeyEvent.VK_W)) {
-            camera.rotateX(-0.05f);
+            camera.turn(-0.05f, 0, 0, false);
         }
         if (keySet.get(KeyEvent.VK_S)) {
-            camera.rotateX(0.05f);
+            camera.turn(0.05f, 0, 0, false);
         }
 
         if (keySet.get(KeyEvent.VK_Z)) {
-            camera.rotateZ(0.01f);
+            camera.turn(0, 0, 0.01f, false);
         }
         if (keySet.get(KeyEvent.VK_X)) {
-            camera.rotateZ(-0.01f);
+            camera.turn(0, 0, -0.01f, false);
         }
         /*
         if (keySet.get(KeyEvent.VK_J)) {

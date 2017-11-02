@@ -41,10 +41,10 @@ public class Camera extends Node {
         boolean shouldRecalculate = false;
         Matrix cameraModelMatrix = null;
         if (getParent() == null) {
-            if (dirty) {
+            if (localTransformDirty) {
                 cameraModelMatrix = getLocalTransform();
                 shouldRecalculate = true;
-                dirty = false;
+                localTransformDirty = false;
             }
         } else {
             throw new RuntimeException("Camera should not be attached to parent");
@@ -54,7 +54,8 @@ public class Camera extends Node {
             cameraModelMatrix.multVectorOnMatrix(cameraTarget, currentCameraTarget);
             cameraModelMatrix.multVectorOnMatrix(cameraUp, currentCameraUp);
             Matrix camModel = new Matrix();
-            camModel.lookAt(getX(), getY(), getZ(), currentCameraTarget.getX(), currentCameraTarget.getY(), currentCameraTarget.getZ(), currentCameraUp.getX(), currentCameraUp.getY(), currentCameraUp.getZ());
+            Vector4 pos=getLocalPosition();
+            camModel.lookAt(pos.getX(), pos.getY(), pos.getZ(), currentCameraTarget.getX(), currentCameraTarget.getY(), currentCameraTarget.getZ(), currentCameraUp.getX(), currentCameraUp.getY(), currentCameraUp.getZ());
             pv.loadIdentity();
             pv.multMatrix(projection);
             pv.multMatrix(camModel);
@@ -65,6 +66,6 @@ public class Camera extends Node {
 
     /*public void setPositionAndLook(float x, float y, float z, float targetX, float targetY, float targetZ, float upX, float upY, float upZ) {
      localTransform.lookAt(x, y, z, targetX, targetY, targetZ, upX, upY, upZ);
-     dirty = true;
+     localTransformDirty = true;
      }*/
 }

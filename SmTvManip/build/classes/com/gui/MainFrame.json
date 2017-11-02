@@ -1,0 +1,20 @@
+{
+    "label": {
+        "text": "Categories"
+    },
+    "label": {
+        "text": "Data",
+        "mig": "wrap"
+    },
+    "categoriesList": {
+        "height": "100%",
+        "width": "400px"
+    },
+    "scroll": {
+        "height": "100%",
+        "width": "100%",
+        "editor": {
+        }
+    }
+
+}

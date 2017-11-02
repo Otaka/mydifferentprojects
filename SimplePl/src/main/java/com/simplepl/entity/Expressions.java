@@ -10,8 +10,7 @@ import java.util.List;
 public class Expressions {
 
     private List<Ast> expressions = new ArrayList<>();
-    private List<Variable>variables=new ArrayList<>();
-    private List<Structure>strucures=new ArrayList<>();
+  
     public List<Ast> getExpressions() {
         return expressions;
     }

@@ -91,8 +91,8 @@ public class LinearRotationAnimator implements Animator {
 
     @Override
     public void tick() {
-        if(endTime<=0.000001f){
-            node.setRotationFromQuaternion(animations.get(0).startPosition);
+        if (endTime <= 0.000001f) {
+            node.setLocalRotation(animations.get(0).startPosition);
             return;
         }
         float currentTime = (timeScale.getCurrentTime() - startMilliseconds) / 1000.f;
@@ -110,7 +110,7 @@ public class LinearRotationAnimator implements Animator {
             tempQuaternion.setSlerp(data.startPosition, data.endPosition, animTimePosition);
         }
 
-        node.setRotationFromQuaternion(tempQuaternion);
+        node.setLocalRotation(tempQuaternion);
     }
 
     public void stop() {

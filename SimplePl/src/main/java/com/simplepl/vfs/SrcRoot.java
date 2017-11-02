@@ -14,7 +14,12 @@ import java.util.stream.Collectors;
  * @author sad
  */
 public class SrcRoot {
+    private Context context;
 
+    public SrcRoot(Context context) {
+        this.context = context;
+    }
+    
     private List<SPackage> rootPackages = new ArrayList<>();
 
     public SrcRoot addNewRoot(SPackage pkg) {
@@ -22,7 +27,7 @@ public class SrcRoot {
         return this;
     }
 
-    public SrcRoot addFileSystemRoot(File directory, Context context) {
+    public SrcRoot addFileSystemRoot(File directory) {
         if (directory == null) {
             throw new IllegalArgumentException("File system root cannot be null");
         }
@@ -43,28 +48,28 @@ public class SrcRoot {
         return rootPackages;
     }
 
-    public List<SPackage> getChildPackages(String pkgPath) {
-        List<NamedPackageObject> found = findObjectsByPkgPath(pkgPath);
+    public List<SPackage> getChildPackages(String modulePath) {
+        List<NamedModuleObject> found = findObjectsByModulePath(modulePath);
         return (List) found.stream().filter(n -> n instanceof SPackage).collect(Collectors.toList());
     }
 
-    public List<AbstractFile> getAbstractFiles(String pkgPath) {
-        List<NamedPackageObject> found = findObjectsByPkgPath(pkgPath);
+    public List<AbstractFile> getAbstractFiles(String modulePath) {
+        List<NamedModuleObject> found = findObjectsByModulePath(modulePath);
         return (List) found.stream().filter(n -> n instanceof AbstractFile).collect(Collectors.toList());
     }
 
-    public AbstractFile getAbstractFile(String pkgPath) {
-        List<NamedPackageObject> found = findObjectsByPkgPath(pkgPath);
+    public AbstractFile getAbstractFile(String modulePath) {
+        List<NamedModuleObject> found = findObjectsByModulePath(modulePath);
         List<AbstractFile> files = (List) found.stream().filter(n -> n instanceof AbstractFile).collect(Collectors.toList());
         if (files.isEmpty()) {
-            throw new SourceNotFoundException("Source not found by this path " + pkgPath);
+            throw new SourceNotFoundException("Source file not found by this path " + modulePath);
         }
 
         return files.get(0);
     }
 
-    public NamedPackageObject findObjectByPkgPath(String pkgPath) {
-        List<NamedPackageObject> result = findObjectsByPkgPath(pkgPath);
+    public NamedModuleObject findObjectByPkgPath(String modulePath) {
+        List<NamedModuleObject> result = findObjectsByModulePath(modulePath);
         if (result.isEmpty()) {
             return null;
         }
@@ -72,44 +77,44 @@ public class SrcRoot {
         return result.get(0);
     }
 
-    private List<NamedPackageObject> findObjectsByPkgPath(String pkgPath) {
-        String[] pkgParts = pkgPath.split("\\.");
-        List<NamedPackageObject> packageCandidates = new ArrayList<>(getRootPackages());
+    private List<NamedModuleObject> findObjectsByModulePath(String modulePath) {
+        String[] modulePathParts = modulePath.split("\\.");
+        List<NamedModuleObject> moduleCandidates = new ArrayList<>(getRootPackages());
 
-        for (int i = 0; i < pkgParts.length; i++) {
-            boolean lastPart = (pkgParts.length - 1 == i);
-            String pkgPart = pkgParts[i];
-            List<NamedPackageObject> filteredPackageObjects = new ArrayList<>();
-            for (NamedPackageObject pkgObject : packageCandidates) {
+        for (int i = 0; i < modulePathParts.length; i++) {
+            boolean lastPart = (modulePathParts.length - 1 == i);
+            String pkgPart = modulePathParts[i];
+            List<NamedModuleObject> filteredModuleObjects = new ArrayList<>();
+            for (NamedModuleObject pkgObject : moduleCandidates) {
                 if (pkgObject instanceof SPackage) {
                     SPackage sPackage = (SPackage) pkgObject;
-                    List<NamedPackageObject> filtered = filterPackages((List) sPackage.getChildPackages(), pkgPart);
-                    filtered.addAll(filterPackages((List) sPackage.getContent(), pkgPart));
+                    List<NamedModuleObject> filtered = filterModules((List) sPackage.getChildPackages(), pkgPart);
+                    filtered.addAll(filterModules((List) sPackage.getContent(), pkgPart));
                     if (!filtered.isEmpty()) {
-                        filteredPackageObjects.addAll(filtered);
+                        filteredModuleObjects.addAll(filtered);
                         if (lastPart) {
-                            return filteredPackageObjects;
+                            return filteredModuleObjects;
                         }
                     }
                 } else if (pkgObject instanceof AbstractFile) {
                     if (lastPart) {
-                        filteredPackageObjects.add(pkgObject);
-                        return filteredPackageObjects;
+                        filteredModuleObjects.add(pkgObject);
+                        return filteredModuleObjects;
                     }
                 } else {
                     throw new IllegalArgumentException("NamedPart should be SPackage or AbstractFile, but it is [" + pkgObject.getClass().getSimpleName() + "]");
                 }
             }
 
-            packageCandidates = filteredPackageObjects;
+            moduleCandidates = filteredModuleObjects;
         }
 
         return Collections.EMPTY_LIST;
     }
 
-    private List<NamedPackageObject> filterPackages(List<NamedPackageObject> pkgObjects, String expectedName) {
-        List<NamedPackageObject> result = new ArrayList<>();
-        for (NamedPackageObject pkgObject : pkgObjects) {
+    private List<NamedModuleObject> filterModules(List<NamedModuleObject> pkgObjects, String expectedName) {
+        List<NamedModuleObject> result = new ArrayList<>();
+        for (NamedModuleObject pkgObject : pkgObjects) {
             if (pkgObject.getName().equals(expectedName)) {
                 result.add(pkgObject);
             }

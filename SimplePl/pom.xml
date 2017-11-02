@@ -82,6 +82,7 @@
                     <include>**/*.*</include>
                     <include>**/*.json</include>
                     <include>**/*.zip</include>
+                    <include>**/*.spl</include>
                 </includes>
             </resource>
         </resources>

@@ -112,7 +112,7 @@ public class MainParser extends MainParserActions {
         return FirstOf(
                 breakStatement(),
                 continueStatement(),
-                forStatement(),
+                forStatement(),continueStatement(),
                 whileStatement(),
                 ifStatement(),
                 newStatement(),
@@ -234,7 +234,7 @@ public class MainParser extends MainParserActions {
                         )
                 ),
                 FirstOf(
-                        identifier(),
+                        singleIdentifier(),
                         actionFail("Expected package")
                 ),
                 _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "import"),
@@ -242,7 +242,7 @@ public class MainParser extends MainParserActions {
                         dot(),
                         FirstOf(
                                 Sequence(
-                                        identifier(),
+                                        singleIdentifier(),
                                         _pushTopStackAstToNextStackAstAsChild(UNKNOWN, "import")
                                 ),
                                 actionFail("Expected package")
@@ -280,7 +280,7 @@ public class MainParser extends MainParserActions {
     public Rule functionCall() {
         return Sequence(
                 _pushAst("function_call"),
-                identifier(),
+                singleIdentifier(),
                 _pushTopStackAstToNextStackAstAsAttribute("name", "identifier", "function_call"),
                 openBracket(),
                 expressionsSeparatedWithComma(),
@@ -307,11 +307,11 @@ public class MainParser extends MainParserActions {
     public Rule extensionArgumentRename() {
         return Sequence(
                 _pushAst("extension_arg_rename"),
-                Sequence(identifier(), _pushTopStackAstToNextStackAstAsChild("identifier", "extension_arg_rename")),
+                Sequence(singleIdentifier(), _pushTopStackAstToNextStackAstAsChild("identifier", "extension_arg_rename")),
                 ZeroOrMore(
                         comma(),
                         FirstOf(
-                                Sequence(identifier(), _pushTopStackAstToNextStackAstAsChild("identifier", "extension_arg_rename")),
+                                Sequence(singleIdentifier(), _pushTopStackAstToNextStackAstAsChild("identifier", "extension_arg_rename")),
                                 actionFail("Expected identifier for the renamed argument")
                         )
                 )
@@ -334,7 +334,7 @@ public class MainParser extends MainParserActions {
                 functionAnnotations(),
                 processFunctionReturnValue(),
                 FirstOf(
-                        identifier(),
+                        singleIdentifier(),
                         actionFail("Expected function name")
                 ),
                 _pushTopStackAstToNextStackAstAsAttribute("name", "identifier", "function"),
@@ -349,7 +349,7 @@ public class MainParser extends MainParserActions {
                 _pushAst("functionAnnotations"),
                 ZeroOrMore(
                         keyword("@"),
-                        identifier(),
+                        singleIdentifier(),
                         _pushTopStackAstToNextStackAstAsChild("identifier", "functionAnnotations")
                 ),
                 _pushTopStackAstToNextStackAstAsAttribute("annotations", "functionAnnotations", "function")
@@ -391,7 +391,7 @@ public class MainParser extends MainParserActions {
                 Sequence(
                         keyword(EXTENSION),
                         FirstOf(
-                                identifier(),
+                                singleIdentifier(),
                                 actionFail("Expected extension return value")
                         ),
                         FirstOf(
@@ -410,7 +410,7 @@ public class MainParser extends MainParserActions {
     public Rule declareVariable() {
         return Sequence(
                 typeIdentifier(),
-                identifier(),
+                singleIdentifier(),
                 _pushAst_ExtractTopAstsAndSetAsAttributes("var", "name", "type")
         );
     }
@@ -429,7 +429,7 @@ public class MainParser extends MainParserActions {
                 typeIdentifier(),
                 arrayDeclarerSquares(),
                 FirstOf(
-                        identifier(),
+                        singleIdentifier(),
                         actionFail("Expected variable name of the array")
                 )
         );
@@ -678,7 +678,7 @@ public class MainParser extends MainParserActions {
     public Rule simpleVariable() {
         return //FirstOf(
                 // pointerVariable(),
-                identifier();
+                singleIdentifier();
         //);
     }
 
@@ -686,7 +686,7 @@ public class MainParser extends MainParserActions {
         return Sequence(
                 keyword(POINTER),
                 _pushAst("pointer"),
-                identifier(),
+                singleIdentifier(),
                 _pushTopStackAstToNextStackAstAsChild("identifier", "pointer")
         );
     }
@@ -696,7 +696,7 @@ public class MainParser extends MainParserActions {
                 dot(),
                 _pushAst("extractField"),
                 _pushUnderTopStackAstToTopStackAstAsAttribute("fromWhere", UNKNOWN, "extractField"),
-                identifier(),
+                singleIdentifier(),
                 _pushTopStackAstToNextStackAstAsAttribute("expression", UNKNOWN, "extractField")
         );
     }
@@ -733,7 +733,7 @@ public class MainParser extends MainParserActions {
         return Sequence(
                 keyword("deftype"),
                 FirstOf(
-                        identifier(),
+                        singleIdentifier(),
                         actionFail("Expected new type name after the defining new type")
                 ),
                 FirstOf(
@@ -751,7 +751,7 @@ public class MainParser extends MainParserActions {
                 keyword(STRUCTURE),
                 _pushAst("structure"),
                 FirstOf(
-                        identifier(),
+                        singleIdentifier(),
                         actionFail("Expected structure name")
                 ),
                 _pushTopStackAstToNextStackAstAsAttribute("name", "identifier", "structure"),
@@ -789,7 +789,7 @@ public class MainParser extends MainParserActions {
         );
     }
 
-    public Rule identifier() {
+    public Rule singleIdentifier() {
         return Sequence(
                 possibleSpace(),
                 Sequence(
@@ -803,24 +803,50 @@ public class MainParser extends MainParserActions {
         ).suppressSubnodes();
     }
 
+    /*public Rule identifierWithPossiblePackage() {
+        return Sequence(
+                possibleSpace(),
+                Sequence(
+                        new JavaUnicodeMatcherStartString(),
+                        ZeroOrMore(
+                                new JavaUnicodeMatcherString()
+                        )
+                ),
+                _pushAstWithMatchedStringAsAttribute("identifier", "name"),
+                possibleSpace()
+        ).suppressSubnodes();
+    }*/
     public Rule typeIdentifier() {
         return FirstOf(
                 pointerIdentifier(),
+                typeWithPackageIdentifier(),
                 simpleIdentifier()
         );
     }
 
-    public Rule pointerIdentifier() {
+    public Rule typeWithPackageIdentifier() {
         return Sequence(
-                _pushAst("pointer"),
-                identifier(),
+                _pushAst("identifierWithPackage"),
+                simpleIdentifier(),
+                _pushTopStackAstToNextStackAstAsChild("identifier", "identifierWithPackage"),
+                OneOrMore(
+                        dot(),
+                        simpleIdentifier(),
+                        _pushTopStackAstToNextStackAstAsChild("identifier", "identifierWithPackage")
+                )
+        );
+    }
+
+    public Rule pointerIdentifier() {
+        return Sequence(_pushAst("pointer"),
+                singleIdentifier(),
                 keyword(POINTER),
                 _pushTopStackAstToNextStackAstAsAttribute("type", "identifier", "pointer")
         );
     }
 
     public Rule simpleIdentifier() {
-        return identifier();
+        return singleIdentifier();
     }
 
     public Rule keyword(String val) {

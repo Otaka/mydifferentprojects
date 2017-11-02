@@ -4,6 +4,6 @@ package com.simplepl.vfs;
  *
  * @author sad
  */
-public interface NamedPackageObject {
+public interface NamedModuleObject {
     public String getName();
 }

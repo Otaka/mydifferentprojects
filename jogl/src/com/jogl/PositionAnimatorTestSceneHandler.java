@@ -25,9 +25,8 @@ public class PositionAnimatorTestSceneHandler extends ISceneHandler{
             if (trans != null) {
                 trans.setVisible(false);
             }
-            engine.node.moveZ(10);
-            engine.node.rotateX((float) Math.toRadians(-90));
-
+            engine.node.move(0,0,-10);
+            engine.node.turn((float) Math.toRadians(-90), 0, 0, true);
             engine.timeScale.setCurrentTime(System.currentTimeMillis());
             
             //opening

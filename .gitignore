@@ -37,3 +37,5 @@ hs_err_pid*
 /smos/compiler_java/CompilerJava/dist/
 /SimplePl/target/
 /SimplePl/nbproject/
+/jogl/build/
+/jogl/dist/
