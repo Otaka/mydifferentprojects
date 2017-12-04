@@ -17,7 +17,7 @@ public class NesEmulator {
     public static void main(String[] args) throws IOException {
         System.out.println(AluUtils.lhTo16Bit((byte) -128, (byte) -16));
         RomReader romreader = new RomReader();
-        Rom rom = romreader.createRom(new File("d:\\temp\\nes\\SMBASM\\smb.nes"));
+        Rom rom = romreader.createRom(new File("f:\\Учебник\\всякая всячина\\Эмулятор\\FCE Ultra 0.96\\gameinfo\\Duck Tales 2 (USA).nes"));
         runFile(rom);
     }
 
