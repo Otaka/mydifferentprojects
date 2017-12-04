@@ -1,0 +1,21 @@
+title:
+Simple query from table
+
+table:tableA
+id#int, name#string
+0,John
+1,Harry
+2,Ann
+3,Maria
+
+
+sql:
+select * from tableA order by id desc
+
+
+expectedResult:
+id,name
+3,Maria
+2,Ann
+1,Harry
+0,John
