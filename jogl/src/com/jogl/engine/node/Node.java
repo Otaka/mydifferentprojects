@@ -277,7 +277,7 @@ public class Node {
     private Quaternion tempQuaternion2 = new Quaternion();
 
     public Quaternion getWorldRotation() {
-        if (parent != null) {
+        if (parent == null) {
             return localRotation;
         }
 
