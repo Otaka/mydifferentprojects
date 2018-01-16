@@ -1,0 +1,30 @@
+title:
+Simple query from table
+
+
+table:users
+id#int, name#string
+0,John
+1,Harry
+2,Ann
+3,Maria
+
+
+table:age
+user_id#int,age#int
+0,24
+1,25
+2,26
+3,27
+
+
+sql:
+select * from users u,age a where u.id=a.user_id
+
+
+expectedResult:
+id,name,user_id,age
+0,John,0,24
+1,Harry,1,25
+2,Ann,2,26
+3,Maria,3,27
