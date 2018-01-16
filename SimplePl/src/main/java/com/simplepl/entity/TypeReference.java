@@ -9,17 +9,11 @@ public class TypeReference {
 
     private String typeName;
     private Type type;
-    private TypeReference pointer;
-    private boolean isPointer;
+    private boolean pointer;
 
     public TypeReference(String typeName) {
         this.typeName = typeName;
-        isPointer = false;
-    }
-
-    public TypeReference(TypeReference pointer) {
-        this.pointer = pointer;
-        isPointer = true;
+        pointer = false;
     }
 
     public Type getType() {
@@ -31,11 +25,19 @@ public class TypeReference {
     }
 
     public boolean isPointer() {
-        return isPointer;
-    }
-
-    public TypeReference getPointer() {
         return pointer;
     }
 
+    public void setPointer(boolean isPointer) {
+        this.pointer = isPointer;
+    }
+
+    @Override
+    public String toString() {
+        if (pointer) {
+            return "pointer[" + typeName + "]";
+        } else {
+            return typeName;
+        }
+    }
 }

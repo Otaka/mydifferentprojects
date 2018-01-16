@@ -4,7 +4,10 @@ import com.simplepl.entity.Argument;
 import com.simplepl.entity.FunctionInfo;
 import com.simplepl.entity.ModuleInfo;
 import com.simplepl.entity.Import;
+import com.simplepl.entity.StructureField;
+import com.simplepl.entity.StructureInfo;
 import com.simplepl.entity.TypeReference;
+import com.simplepl.exception.ParseException;
 import com.simplepl.grammar.ast.Ast;
 
 /**
@@ -12,6 +15,18 @@ import com.simplepl.grammar.ast.Ast;
  */
 public class PublicEntitiesExtractor {
 
+    void x(){
+     int a=5;
+     a=a+1;
+     y();
+    }
+    
+    void y(){
+     int a=5;
+     a=a+1;
+    }
+    
+    
     public ModuleInfo processAst(Ast ast, String modulePath) {
         if (!ast.getName().equals("module")) {
             throw new IllegalArgumentException("Expected 'module' ast, but received");
@@ -33,18 +48,34 @@ public class PublicEntitiesExtractor {
             case "function":
                 parseFunction(moduleInfo, statement);
                 break;
-            /*case "structure":
+            case "structure":
                 parseStructure(moduleInfo, statement);
                 break;
             case "var":
-                parseGlobalVariable(moduleInfo, statement);
+                // parseGlobalVariable(moduleInfo, statement);
                 break;
             case "defineType":
-                parseDefineType(moduleInfo, statement);
-                break;*/
+                //parseDefineType(moduleInfo, statement);
+                break;
             default:
                 throw new IllegalArgumentException("Not implemented parsing '" + statement.getName() + "'");
         }
+    }
+
+    private void parseStructure(ModuleInfo moduleInfo, Ast statement) {
+        StructureInfo structure = new StructureInfo(extractIdentifier(statement.getAttributeAst("name")));
+        if (statement.getChildren().isEmpty()) {
+            throw new ParseException(statement, "Structure [" + structure.getName() + "] should have at least one field");
+        }
+
+        for (Ast field : statement.getChildren()) {
+            String fieldName = extractIdentifier(field.getAttributeAst("name"));
+            TypeReference fieldType = parseType(field.getAttributeAst("type"));
+            StructureField structureField = new StructureField(fieldName, fieldType);
+            structure.getFields().add(structureField);
+        }
+
+        moduleInfo.getStructures().add(structure);
     }
 
     private void parseFunction(ModuleInfo moduleInfo, Ast statement) {
@@ -56,10 +87,21 @@ public class PublicEntitiesExtractor {
             Argument argumentObject = new Argument(type, name);
             function.getArguments().add(argumentObject);
         }
+        function.setReturnType(parseType(statement.getAttributeAst("returnValue")));
+        moduleInfo.getFunctionList().add(function);
     }
 
     private TypeReference parseType(Ast astType) {
-        return new TypeReference("");
+        if (astType.getName().equals("identifier")) {
+            TypeReference typeReference = new TypeReference(astType.getAttributeString("name"));
+            return typeReference;
+        } else if (astType.getName().equals("pointer")) {
+            TypeReference typeReference = parseType(astType.getAttributeAst("type"));
+            typeReference.setPointer(true);
+            return typeReference;
+        } else {
+            throw new IllegalStateException("Expected ast type [identifier] or [pointer], but found [" + astType.getName() + "]");
+        }
     }
 
     private void parseImport(ModuleInfo moduleInfo, Ast importAst) {

@@ -9,7 +9,6 @@ import java.util.List;
 public class FunctionInfo {
 
     private String name;
-    private List<Annotation> annotations = new ArrayList<Annotation>();
     private Expressions expressions = new Expressions();
     private TypeReference returnType;
     private List<Argument> arguments = new ArrayList<>();
@@ -30,10 +29,6 @@ public class FunctionInfo {
         this.name = name;
     }
 
-    public List<Annotation> getAnnotations() {
-        return annotations;
-    }
-
     public Expressions getExpressions() {
         return expressions;
     }
@@ -41,5 +36,4 @@ public class FunctionInfo {
     public String getName() {
         return name;
     }
-
 }
