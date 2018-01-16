@@ -37,7 +37,7 @@ public class MainWithEngine extends KeyAdapter implements GLEventListener {
     protected AnimationChannel currentChannel;
     public TimeScale timeScale = new TimeScale(0);
     public static Frame frame;
-    public ISceneHandler iSceneHandler = new RotationAnimatorTestSceneHandler();
+    public ISceneHandler iSceneHandler = new TestTransformationSceneHandler();
 
     public static void main(String[] args) {
         System.out.println("Start application");

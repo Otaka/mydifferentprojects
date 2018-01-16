@@ -17,14 +17,13 @@ public class RotationAnimatorTestSceneHandler extends ISceneHandler {
     public void init(MainWithEngine engine) throws IOException {
         AsciiMdlLoader loader = new AsciiMdlLoader();
        // File file = new File("G:\\kotor_Extracted\\ascii_model_testing\\c_drdmkfour.mdl.ascii");
-        //File file = new File("G:\\kotor_Extracted\\ascii_model_testing\\dor_lda01_ascii.mdl.ascii");
-        File file = new File("d:\\temp\\ktr\\ascii_model_testing\\dor_lda01_ascii.mdl.ascii");
+        File file = new File("G:\\kotor_Extracted\\ascii_model_testing\\dor_lda01_ascii.mdl.ascii");
         engine.node = loader.load(engine.sceneManager, file, new JoglFileInputStream(file));
         engine.sceneManager.getNodes().add(engine.node);
         engine.partNode = engine.node;
-        //engine.node.moveZ(10);
-        //engine.node.moveY(-1);
-        engine.node.turn((float) Math.toRadians(-90), 0, 0, true);
+        engine.node.setLocalPosition(0,0,20);
+        
+       // engine.node.turn((float) Math.toRadians(-90), 0, 0, true);
         AnimationNode animationNode = (AnimationNode) engine.node;
         for (AnimationChannel animationChannel : animationNode.getAnimators().values()) {
             for (Animator animator : animationChannel.getAnimators()) {

@@ -124,8 +124,8 @@ public class BaseReader {
     }
 
     public static long readLong(InputStream inputStream) throws IOException {
-        return (inputStream.read() & 0xFF) | ((inputStream.read() & 0xFF) << 8) | ((inputStream.read() & 0xFF) << 16) | ((inputStream.read() & 0xFF) << 24)
-                | ((inputStream.read() & 0xFF) << 32) | ((inputStream.read() & 0xFF) << 40) | ((inputStream.read() & 0xFF) << 48) | ((inputStream.read() & 0xFF) << 56);
+        return (inputStream.read() & 0xFF) | (((long)inputStream.read() & 0xFF) << 8) | ((inputStream.read() & 0xFF) << 16) | ((inputStream.read() & 0xFF) << 24)
+                | (((long)inputStream.read() & 0xFF) << 32) | (((long)inputStream.read() & 0xFF) << 40) | (((long)inputStream.read() & 0xFF) << 48) | (((long)inputStream.read() & 0xFF) << 56);
     }
 
     public static short readShort(InputStream inputStream) throws IOException {

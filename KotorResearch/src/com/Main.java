@@ -5,7 +5,7 @@ import com.nwn.data.biff.BiffEntry;
 import com.nwn.data.erf.Erf;
 import com.nwn.data.key.ResourceType;
 import com.nwn.data.tpc.TpcTexture;
-import com.nwn.utils.Tpc2Tga;
+import com.nwn.utils.TpcConverter;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class Main {
 
     private static void tryToExtractTextures(String archiveName) throws IOException {
         FileReaderErf erfReader = new FileReaderErf();
-        File file = new File("h:\\Games\\Games\\Star Wars Knights of the Old Republic\\TexturePacks\\" + archiveName);
+        File file = new File("h:\\Games\\Games\\SteamLibrary\\steamapps\\common\\swkotor\\TexturePacks\\" + archiveName);
         Erf erf = erfReader.loadFile(new FileInputStream(file), file);
         FileReaderTpc readerTpc = new FileReaderTpc();
         int i = -1;
@@ -34,8 +34,8 @@ public class Main {
                     try {
                         inputStream.getChannel().position(biffEntry.getOffset());
                         TpcTexture texture = readerTpc.loadFile(inputStream, biffEntry.getSize(), name);
-                        output = new File("g:\\kotor_Extracted\\testTextures3\\" + name + "_" + texture.getOriginalFormat() + ".png");
-                        new Tpc2Tga().saveTpc(texture, output);
+                        output = new File("g:\\kotor_Extracted\\convertedTextures\\" + name + ".png");
+                        new TpcConverter().saveTpcAsPng(texture, output);
                     } catch (Exception ex) {
                         System.out.println("Exception while process texture " + name + ".tpc");
                         ex.printStackTrace(System.out);
@@ -76,10 +76,10 @@ public class Main {
          }
          inputStream.close();*/
 
-        /* FileReaderTpc readerTpc = new FileReaderTpc();
+ /* FileReaderTpc readerTpc = new FileReaderTpc();
          File file = new File("g:\\kotor_Extracted\\textures\\LMG_Water01B.tpc");
          TpcTexture texture = readerTpc.loadFile(new FileInputStream(file), (int) file.length(), file.getName());
-         new Tpc2Tga().saveTpc(texture, new File("g:\\kotor_Extracted\\textures\\LMG_Water01B.png"));*/
+         new TpcConverter().saveTpc(texture, new File("g:\\kotor_Extracted\\textures\\LMG_Water01B.png"));*/
         //BufferedImage image = ImageIO.read(new File("F:/1.png"));
         //ImageShower.show(image);
 //FileReaderGff readerGff = new FileReaderGff();

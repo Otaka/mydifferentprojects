@@ -103,38 +103,6 @@ public class Node {
 
         setDirty();
     }
-/*
-    public void setRotationFromQuaternion(Quaternion q) {
-        //restore rotation
-        localRotation.invert();
-        localTransform.rotate(localRotation);
-
-        //rotate to necessary angle
-        localTransform.rotate(q);
-        localRotation.set(q);
-        setDirty();
-    }
-
-    public void setRotation(float x, float y, float z) {
-        //restore rotation
-        localRotation.invert();
-        localTransform.rotate(localRotation);
-        localRotation.setFromEuler(x, y, z);
-        //rotate to necessary angle
-        localTransform.rotate(localRotation);
-        setDirty();
-    }
-
-    public void setRotationFromAxisAngle(float x, float y, float z, float angle) {
-        //restore rotation
-        localRotation.invert();
-        localTransform.rotate(localRotation);
-
-        //rotate to angle axis
-        localRotation.setFromAngleAxis(angle, new float[]{x, y, z}, new float[3]);
-        localTransform.rotate(localRotation);
-        setDirty();
-    }*/
 
     public void renderNode(GL3 gl, Matrix pvMatrix, Matrix parentMatrix, boolean parentDirty) {
         renderInternal(gl, pvMatrix, parentMatrix, parentDirty);
@@ -155,7 +123,7 @@ public class Node {
                 worldTransform.loadIdentity();
             }
 
-            worldTransform.multMatrix(localTransform);
+            worldTransform.multMatrix(getLocalTransform());
             localTransformDirty = false;
         }
 
@@ -211,11 +179,9 @@ public class Node {
         Move in local space, take into account the orientation of the node
      */
     public void move(float x, float y, float z) {
-        Vector4 tLocalPosition = getLocalPosition();
-        tvector1.set(tLocalPosition);
+        tvector1.set(x,y,z);
         tvector1.rotateByQuaternion(getLocalRotation());
-        tvector1.sum(x, y, z, 0);
-        localPosition.set(tvector1);
+        getLocalPosition().sum(tvector1);
         setDirty();
     }
 
@@ -277,7 +243,7 @@ public class Node {
     private Quaternion tempQuaternion2 = new Quaternion();
 
     public Quaternion getWorldRotation() {
-        if (parent != null) {
+        if (parent == null) {
             return localRotation;
         }
 
@@ -325,9 +291,9 @@ public class Node {
     public Matrix getLocalTransform() {
         if (localTransformDirty) {
             localTransform.loadIdentity();
-            localTransform.scale(localScale.getX(), localScale.getY(), localScale.getZ());
-            localTransform.rotate(tempQuaternion);
             localTransform.translate(localPosition.getX(), localPosition.getY(), localPosition.getZ());
+            localTransform.rotate(localRotation);
+            localTransform.scale(localScale.getX(), localScale.getY(), localScale.getZ());
             localTransformDirty = false;
         }
 

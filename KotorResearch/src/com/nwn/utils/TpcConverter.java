@@ -10,9 +10,10 @@ import javax.imageio.ImageIO;
 /**
  * @author Dmitry
  */
-public class Tpc2Tga {
-    public void saveTpc(TpcTexture texture, File outputFile) throws IOException {
-        if (texture.getMipMaps().size() < 1) {
+public class TpcConverter {
+    
+    public BufferedImage convertToBufferedImage(TpcTexture texture){
+    if (texture.getMipMaps().size() < 1) {
             throw new IllegalArgumentException("TpcTexture [" + texture.getName() + "] has empty mipmap list. Cannot create tga");
         }
         BufferedImage image = new BufferedImage(texture.getWidth(), texture.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
@@ -28,7 +29,13 @@ public class Tpc2Tga {
 
             raster.setPixels(0, j, texture.getWidth(), 1, array);
         }
-
-        ImageIO.write(image, "png", outputFile);
+        return image;
     }
+    
+    public void saveTpcAsPng(TpcTexture texture, File outputFile) throws IOException {
+        BufferedImage convertedTpc=convertToBufferedImage(texture);
+        ImageIO.write(convertedTpc, "png", outputFile);
+    }
+    
+    
 }
