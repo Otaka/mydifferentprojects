@@ -12,7 +12,7 @@ structure TestStructure{
 }
 
 int element=3
-int a
+int@ a
 
 deftype yearpointer int@
 deftype year int

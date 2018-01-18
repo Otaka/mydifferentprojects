@@ -1,7 +1,8 @@
-package com.simplepl.astinfoextractor;
+package com.simplepl.tests;
 
 import com.simplepl.entity.ModuleInfo;
 import com.simplepl.BaseTest;
+import com.simplepl.astinfoextractor.PublicEntitiesExtractor;
 import com.simplepl.entity.FunctionInfo;
 import com.simplepl.entity.StructureInfo;
 import com.simplepl.grammar.MainParser;
@@ -51,30 +52,29 @@ public class PublicEntitiesExtractorTest extends BaseTest {
         Assert.assertEquals(true, fileInfo.getFunctionList().get(0).getReturnType().isPointer());
     }
 
-    
     @Test
     public void testSingleFunctionWithStructureGlobalVarsAndTypedef() throws IOException {
         ModuleInfo fileInfo = parseValue("singleFunctionWithStructureGlobalVarsAndTypedef.spl", "com.test");
         //function
-        FunctionInfo f=fileInfo.getFunctionList().get(0);
+        FunctionInfo f = fileInfo.getFunctionList().get(0);
         Assert.assertEquals("main", f.getName());
         Assert.assertEquals("int", f.getReturnType().getTypeName());
         Assert.assertEquals(false, f.getReturnType().isPointer());
 
         //structures
-        Assert.assertEquals(1, fileInfo.getStructures().size());
-        StructureInfo s = fileInfo.getStructures().get(0);
+        Assert.assertEquals(1, fileInfo.getStructuresList().size());
+        StructureInfo s = fileInfo.getStructuresList().get(0);
         Assert.assertEquals("TestStructure", s.getName());
         Assert.assertEquals(4, s.getFields().size());
-        
+
         Assert.assertEquals("x", s.getFields().get(0).getName());
         Assert.assertEquals("int", s.getFields().get(0).getType().getTypeName());
         Assert.assertEquals(false, s.getFields().get(0).getType().isPointer());
-        
+
         Assert.assertEquals("y", s.getFields().get(1).getName());
         Assert.assertEquals("int", s.getFields().get(1).getType().getTypeName());
         Assert.assertEquals(false, s.getFields().get(1).getType().isPointer());
-        
+
         Assert.assertEquals("int", s.getFields().get(3).getType().getTypeName());
         Assert.assertEquals("somepointer", s.getFields().get(3).getName());
         Assert.assertEquals(true, s.getFields().get(3).getType().isPointer());
@@ -90,26 +90,25 @@ public class PublicEntitiesExtractorTest extends BaseTest {
         Assert.assertEquals("com.test.data", fileInfo.getImports().get(1).getPath());
         Assert.assertEquals(false, fileInfo.getImports().get(1).isStatic());
 
+        //def types
+        Assert.assertEquals(2, fileInfo.getDeftypesList().size());
+        Assert.assertEquals("yearpointer", fileInfo.getDeftypesList().get(0).getName());
+        Assert.assertEquals("int", fileInfo.getDeftypesList().get(0).getTypeReference().getTypeName());
+        Assert.assertEquals(true, fileInfo.getDeftypesList().get(0).getTypeReference().isPointer());
+
+        Assert.assertEquals("year", fileInfo.getDeftypesList().get(1).getName());
+        Assert.assertEquals("int", fileInfo.getDeftypesList().get(1).getTypeReference().getTypeName());
+        Assert.assertEquals(false, fileInfo.getDeftypesList().get(1).getTypeReference().isPointer());
+
         //global vars
-        /*Assert.assertEquals(2, fileInfo.getGlobalVariables().size());
-        Assert.assertEquals("element", fileInfo.getGlobalVariables().get(0).getName());
-        Assert.assertEquals("int", fileInfo.getGlobalVariables().get(0).getType().getName());
-        Assert.assertEquals("a", fileInfo.getGlobalVariables().get(1).getName());
-        Assert.assertEquals("int", fileInfo.getGlobalVariables().get(1).getType().getName());
-
-        //type
-        Assert.assertEquals(2, fileInfo.getDefTypes().size());
-        Assert.assertEquals("com.test.yearpointer", fileInfo.getDefTypes().get(0).getFullPath());
-        Assert.assertEquals("yearpointer", fileInfo.getDefTypes().get(0).getName());
-        Assert.assertEquals("int", fileInfo.getDefTypes().get(0).getParent().getName());
-        Assert.assertEquals(true, fileInfo.getDefTypes().get(0).getParent().isPointer());
-
-        Assert.assertEquals("com.test.year", fileInfo.getDefTypes().get(1).getFullPath());
-        Assert.assertEquals("year", fileInfo.getDefTypes().get(1).getName());
-        Assert.assertEquals("int", fileInfo.getDefTypes().get(1).getParent().getName());
-        Assert.assertEquals(false, fileInfo.getDefTypes().get(1).getParent().isPointer());*/
+        Assert.assertEquals(2, fileInfo.getGlobalVariablesList().size());
+        Assert.assertEquals("element", fileInfo.getGlobalVariablesList().get(0).getName());
+        Assert.assertEquals("int", fileInfo.getGlobalVariablesList().get(0).getType().getTypeName());
+        Assert.assertEquals("a", fileInfo.getGlobalVariablesList().get(1).getName());
+        Assert.assertEquals("int", fileInfo.getGlobalVariablesList().get(1).getType().getTypeName());
+        Assert.assertEquals(true, fileInfo.getGlobalVariablesList().get(1).getType().isPointer());
     }
-     
+
     private ModuleInfo parseValue(String fileName, String packagePath) throws IOException {
         Ast ast = parseTestFile(fileName);
         PublicEntitiesExtractor extractor = new PublicEntitiesExtractor();
