@@ -27,7 +27,7 @@ public class AstManager {
         this.context = context;
     }
 
-    public Ast getModuleAst(String modulePath) {
+    private Ast getModuleAst(String modulePath) {
         Ast ast = parsedSourceFiles.get(modulePath.toLowerCase());
         if (ast != null) {
             return ast;

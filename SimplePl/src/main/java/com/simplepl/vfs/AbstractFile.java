@@ -32,7 +32,9 @@ public abstract class AbstractFile implements NamedModuleObject {
 
     public String readToString() {
         try {
-            return IOUtils.toString(getInputStream(), "UTF-8");
+            try (InputStream stream = getInputStream()) {
+                return IOUtils.toString(stream, "UTF-8");
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex);

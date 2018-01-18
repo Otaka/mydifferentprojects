@@ -1,7 +1,7 @@
 import static com.test.utils
-import com.test.data
 
 fun int main(){
+    int a=add(1,2);
 }
 
 structure TestStructure{
