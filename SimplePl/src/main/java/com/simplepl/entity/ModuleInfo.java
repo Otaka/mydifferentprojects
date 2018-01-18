@@ -12,9 +12,19 @@ public class ModuleInfo {
     private List<Import> imports = new ArrayList<>();
     private List<FunctionInfo> functionList = new ArrayList<>();
     private List<StructureInfo> structuresList = new ArrayList<>();
+    private List<DefTypeInfo> deftypesList = new ArrayList<>();
+    private List<GlobalVariableInfo> globalVariablesList = new ArrayList<>();
     private boolean typesProcessed = false;
 
-    public List<StructureInfo> getStructures() {
+    public List<GlobalVariableInfo> getGlobalVariablesList() {
+        return globalVariablesList;
+    }
+
+    public List<DefTypeInfo> getDeftypesList() {
+        return deftypesList;
+    }
+
+    public List<StructureInfo> getStructuresList() {
         return structuresList;
     }
 

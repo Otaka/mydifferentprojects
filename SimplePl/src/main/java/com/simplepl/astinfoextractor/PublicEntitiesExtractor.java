@@ -1,7 +1,9 @@
 package com.simplepl.astinfoextractor;
 
 import com.simplepl.entity.Argument;
+import com.simplepl.entity.DefTypeInfo;
 import com.simplepl.entity.FunctionInfo;
+import com.simplepl.entity.GlobalVariableInfo;
 import com.simplepl.entity.ModuleInfo;
 import com.simplepl.entity.Import;
 import com.simplepl.entity.StructureField;
@@ -15,18 +17,6 @@ import com.simplepl.grammar.ast.Ast;
  */
 public class PublicEntitiesExtractor {
 
-    void x(){
-     int a=5;
-     a=a+1;
-     y();
-    }
-    
-    void y(){
-     int a=5;
-     a=a+1;
-    }
-    
-    
     public ModuleInfo processAst(Ast ast, String modulePath) {
         if (!ast.getName().equals("module")) {
             throw new IllegalArgumentException("Expected 'module' ast, but received");
@@ -52,14 +42,28 @@ public class PublicEntitiesExtractor {
                 parseStructure(moduleInfo, statement);
                 break;
             case "var":
-                // parseGlobalVariable(moduleInfo, statement);
+                parseGlobalVariable(moduleInfo, statement);
                 break;
             case "defineType":
-                //parseDefineType(moduleInfo, statement);
+                parseDefineType(moduleInfo, statement);
                 break;
             default:
                 throw new IllegalArgumentException("Not implemented parsing '" + statement.getName() + "'");
         }
+    }
+
+    private void parseGlobalVariable(ModuleInfo moduleInfo, Ast statement) {
+        GlobalVariableInfo globalVariableInfo = new GlobalVariableInfo(
+                extractIdentifier(statement.getAttributeAst("name")),
+                parseType(statement.getAttributeAst("type")));
+        moduleInfo.getGlobalVariablesList().add(globalVariableInfo);
+    }
+
+    private void parseDefineType(ModuleInfo moduleInfo, Ast statement) {
+        String newTypeName = extractIdentifier(statement.getAttributeAst("newType"));
+        TypeReference typeReference = parseType(statement.getAttributeAst("source"));
+        DefTypeInfo defTypeInfo = new DefTypeInfo(newTypeName, typeReference);
+        moduleInfo.getDeftypesList().add(defTypeInfo);
     }
 
     private void parseStructure(ModuleInfo moduleInfo, Ast statement) {
@@ -75,7 +79,7 @@ public class PublicEntitiesExtractor {
             structure.getFields().add(structureField);
         }
 
-        moduleInfo.getStructures().add(structure);
+        moduleInfo.getStructuresList().add(structure);
     }
 
     private void parseFunction(ModuleInfo moduleInfo, Ast statement) {
