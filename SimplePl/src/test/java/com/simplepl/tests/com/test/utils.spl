@@ -1,3 +1,8 @@
-fun add(int a, int b){
-    a+b
+fun i32 add(){
+    a+b;
+}
+
+structure UtilsStructure{
+    i32 a;
+    i16 b;
 }
