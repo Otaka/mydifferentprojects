@@ -1,7 +1,7 @@
 import static com.test.utils
-import com.test.data
 
 fun int main(){
+    int a=add(1,2);
 }
 
 structure TestStructure{
@@ -12,7 +12,7 @@ structure TestStructure{
 }
 
 int element=3
-int a
+int@ a
 
 deftype yearpointer int@
 deftype year int
