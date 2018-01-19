@@ -1,13 +1,18 @@
 package com.simplepl.astinfoextractor;
 
 import com.simplepl.entity.Context;
+import com.simplepl.entity.Import;
 import com.simplepl.entity.ModuleInfo;
+import com.simplepl.entity.StructureInfo;
+import com.simplepl.entity.types.Type;
 import com.simplepl.exception.ParseException;
 import com.simplepl.grammar.MainParser;
 import com.simplepl.grammar.ast.Ast;
 import com.simplepl.vfs.AbstractFile;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import org.parboiled.Parboiled;
 import org.parboiled.errors.ParseError;
 import org.parboiled.parserunners.BasicParseRunner;
@@ -66,7 +71,7 @@ public class AstManager {
         return parser;
     }
 
-    public ModuleInfo getModuleInfo(String module) {
+    protected ModuleInfo getModuleInfoWithoutPreprocess(String module) {
         ModuleInfo moduleInfo = moduleInfoMap.get(module.toLowerCase());
         if (moduleInfo == null) {
             Ast moduleAst = getModuleAst(module);
@@ -76,5 +81,45 @@ public class AstManager {
         }
 
         return moduleInfo;
+    }
+
+    public ModuleInfo getModuleInfo(String module) {
+        ModuleInfo moduleInfo = getModuleInfoWithoutPreprocess(module);
+        if (moduleInfo.isTypesProcessed() == false) {
+            postProcessTypes(moduleInfo);
+        }
+
+        return moduleInfo;
+    }
+
+    public void postProcessTypes(ModuleInfo moduleInfo) {
+        Set<ModuleInfo> allNotProcessedModuleInfos = new HashSet<>();
+        collectAllNotProcessedModuleInfos(moduleInfo, allNotProcessedModuleInfos);
+        collectTypes(allNotProcessedModuleInfos);
+    }
+
+    private void collectAllNotProcessedModuleInfos(ModuleInfo moduleInfo, Set<ModuleInfo> collectedModuleInfos) {
+        collectedModuleInfos.add(moduleInfo);
+        for (Import importObject : moduleInfo.getImports()) {
+            ModuleInfo importedModuleInfo = getModuleInfoWithoutPreprocess(importObject.getPath());
+            if (!importedModuleInfo.isTypesProcessed()) {
+                collectAllNotProcessedModuleInfos(importedModuleInfo, collectedModuleInfos);
+            }
+        }
+    }
+
+    private void collectTypes(Set<ModuleInfo> modules) {
+        Map<String,Type>foundTypes=new HashMap<>();
+        for (ModuleInfo mi : modules) {
+            for (StructureInfo structure : mi.getStructuresList()) {
+                Type structureType=new Type();
+                String typeName=mi.getModule()+"."+structure.getName();
+                structureType.setTypeName(typeName);
+                structureType.setInternal(structure);
+                foundTypes.put(typeName, structureType);
+            }
+        }
+
+        
     }
 }

@@ -10,10 +10,19 @@ public class TypeReference {
     private String typeName;
     private Type type;
     private boolean pointer;
+    private ModuleInfo ownerModuleInfo;
 
     public TypeReference(String typeName) {
         this.typeName = typeName;
         pointer = false;
+    }
+
+    public void setOwnerModuleInfo(ModuleInfo ownerModuleInfo) {
+        this.ownerModuleInfo = ownerModuleInfo;
+    }
+
+    public ModuleInfo getOwnerModuleInfo() {
+        return ownerModuleInfo;
     }
 
     public Type getType() {
