@@ -109,9 +109,11 @@ public class AstManager {
     private void collectAllNotProcessedModuleInfos(ModuleInfo moduleInfo, Set<ModuleInfo> collectedModuleInfos) {
         collectedModuleInfos.add(moduleInfo);
         for (Import importObject : moduleInfo.getImports()) {
-            ModuleInfo importedModuleInfo = getModuleInfoWithoutPreprocess(importObject.getPath());
-            if (!importedModuleInfo.isTypesProcessed()) {
-                collectAllNotProcessedModuleInfos(importedModuleInfo, collectedModuleInfos);
+            if (!collectedModuleInfos.contains(importObject.getPath())) {
+                ModuleInfo importedModuleInfo = getModuleInfoWithoutPreprocess(importObject.getPath());
+                if (!importedModuleInfo.isTypesProcessed()) {
+                    collectAllNotProcessedModuleInfos(importedModuleInfo, collectedModuleInfos);
+                }
             }
         }
     }
