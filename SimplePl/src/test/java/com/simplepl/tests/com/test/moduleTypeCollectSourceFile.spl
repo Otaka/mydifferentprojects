@@ -1,4 +1,4 @@
-import static com.test.utils
+import com.test.utils
 
 fun int main(){
     int a=add(1,2);
@@ -16,3 +16,6 @@ int@ a
 
 deftype yearpointer int@
 deftype year int
+
+deftype int i32
+deftype long i64

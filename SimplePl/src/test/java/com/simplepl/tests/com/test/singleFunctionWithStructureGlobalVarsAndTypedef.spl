@@ -16,3 +16,6 @@ int@ a
 
 deftype yearpointer int@
 deftype year int
+
+deftype int i32
+deftype long i64

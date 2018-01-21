@@ -109,8 +109,8 @@ public class AstManager {
     private void collectAllNotProcessedModuleInfos(ModuleInfo moduleInfo, Set<ModuleInfo> collectedModuleInfos) {
         collectedModuleInfos.add(moduleInfo);
         for (Import importObject : moduleInfo.getImports()) {
-            if (!collectedModuleInfos.contains(importObject.getPath())) {
-                ModuleInfo importedModuleInfo = getModuleInfoWithoutPreprocess(importObject.getPath());
+            ModuleInfo importedModuleInfo = getModuleInfoWithoutPreprocess(importObject.getPath());
+            if (!collectedModuleInfos.contains(importedModuleInfo)) {
                 if (!importedModuleInfo.isTypesProcessed()) {
                     collectAllNotProcessedModuleInfos(importedModuleInfo, collectedModuleInfos);
                 }
@@ -179,7 +179,7 @@ public class AstManager {
     }
 
     private void fixDefTypeType(Type type, DefTypeInfo deftypeInfo) {
-        String typeName = deftypeInfo.getTypeReference().getType().getTypeName();
+        String typeName = deftypeInfo.getTypeReference().getTypeName();
         Type realParentType = context.getTypeManager().getType(typeName);
         if (realParentType == null) {
             throw new ParseException(0, "Cannot find type [" + typeName + "] typed in deftype [" + deftypeInfo.getName() + "]");

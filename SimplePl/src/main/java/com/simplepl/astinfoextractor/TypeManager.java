@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class TypeManager {
 
-    private Map<String, Type> types = new HashMap<String, Type>();
+    private Map<String, Type> types = new HashMap<>();
 
     public TypeManager() {
         installBuiltinTypes();
