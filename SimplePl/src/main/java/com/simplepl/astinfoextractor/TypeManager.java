@@ -16,9 +16,11 @@ public class TypeManager {
     }
 
     private void installBuiltinTypes() {
+        types.put("i64", createTypeObject("i64"));
         types.put("i32", createTypeObject("i32"));
         types.put("i16", createTypeObject("i16"));
         types.put("i8", createTypeObject("i8"));
+        types.put("u64", createTypeObject("u64"));
         types.put("u32", createTypeObject("u32"));
         types.put("u16", createTypeObject("u16"));
         types.put("u8", createTypeObject("u8"));
@@ -39,7 +41,16 @@ public class TypeManager {
     private Type createTypeObject(String name) {
         Type type = new Type();
         type.setTypeName(name);
-        type.setInternal("internal");
+        type.setInternal(new PrimitiveType());
         return type;
+    }
+    
+    private static class PrimitiveType{
+
+        @Override
+        public String toString() {
+            return "PrimitiveType";
+        }
+        
     }
 }

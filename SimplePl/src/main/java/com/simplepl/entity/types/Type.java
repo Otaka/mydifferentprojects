@@ -45,4 +45,12 @@ public class Type {
         return typeName;
     }
 
+    @Override
+    public String toString() {
+        if (ownerModule != null) {
+            return ownerModule.getModule() + ":" + getTypeName() + " " + getInternal().getClass().getSimpleName();
+        }
+        return getTypeName() + " " + getInternal().getClass().getSimpleName();
+    }
+
 }

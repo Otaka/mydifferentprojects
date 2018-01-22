@@ -4,10 +4,12 @@ import com.simplepl.entity.Argument;
 import com.simplepl.entity.Context;
 import com.simplepl.entity.DefTypeInfo;
 import com.simplepl.entity.FunctionInfo;
+import com.simplepl.entity.GlobalVariableInfo;
 import com.simplepl.entity.Import;
 import com.simplepl.entity.ModuleInfo;
 import com.simplepl.entity.StructureField;
 import com.simplepl.entity.StructureInfo;
+import com.simplepl.entity.TypeReference;
 import com.simplepl.entity.types.Type;
 import com.simplepl.exception.ParseException;
 import com.simplepl.grammar.MainParser;
@@ -159,28 +161,63 @@ public class AstManager {
         return foundTypes;
     }
 
+    private ModuleTypeFinder getModuleTypeFinder(ModuleInfo moduleInfo, Map<ModuleInfo, ModuleTypeFinder> moduleToTypeFinderMap) {
+        ModuleTypeFinder moduleTypeFinder = moduleToTypeFinderMap.get(moduleInfo);
+        if (moduleTypeFinder != null) {
+            return moduleTypeFinder;
+        }
+
+        moduleTypeFinder = new ModuleTypeFinder(context);
+        moduleTypeFinder.addImport(moduleInfo.getModule());
+        for (Import importObject : moduleInfo.getImports()) {
+            moduleTypeFinder.addImport(importObject.getPath());
+        }
+
+        moduleToTypeFinderMap.put(moduleInfo, moduleTypeFinder);
+        return moduleTypeFinder;
+    }
+
     private void fixTypeReferences(Map<String, Type> foundTypes, Set<ModuleInfo> modules) {
+        Map<ModuleInfo, ModuleTypeFinder> moduleToTypeFinderMap = new HashMap<>();
+
         for (Type type : foundTypes.values()) {
             if (type.getInternal() == null) {
                 throw new IllegalStateException("type.getInternal should not be null. Type [" + type.getOwnerModule().getModule() + "." + type.getTypeName() + "]");
             } else if (type.getInternal() instanceof StructureInfo) {
                 StructureInfo si = (StructureInfo) type.getInternal();
-                fixStructureType(type, si);
+                fixStructureType(type, si, getModuleTypeFinder(type.getOwnerModule(), moduleToTypeFinderMap));
             } else if (type.getInternal() instanceof FunctionInfo) {
-                FunctionInfo si = (FunctionInfo) type.getInternal();
-                fixFunctionType(type, si);
+                FunctionInfo fi = (FunctionInfo) type.getInternal();
+                fixFunctionType(type, fi, getModuleTypeFinder(type.getOwnerModule(), moduleToTypeFinderMap));
             } else if (type.getInternal() instanceof DefTypeInfo) {
-                DefTypeInfo si = (DefTypeInfo) type.getInternal();
-                fixDefTypeType(type, si);
+                DefTypeInfo defType = (DefTypeInfo) type.getInternal();
+                fixDefTypeType(type, defType, getModuleTypeFinder(type.getOwnerModule(), moduleToTypeFinderMap));
             } else {
                 throw new IllegalArgumentException("Unimplemented fixTypeReferences for type " + type.getInternal().getClass());
             }
         }
+
+        //fix global variables
+        for (ModuleInfo moduleInfo : modules) {
+            for (GlobalVariableInfo gvi : moduleInfo.getGlobalVariablesList()) {
+                fixGlobalVariableType(gvi.getType(), gvi, getModuleTypeFinder(moduleInfo, moduleToTypeFinderMap));
+            }
+        }
     }
 
-    private void fixDefTypeType(Type type, DefTypeInfo deftypeInfo) {
+    private void fixGlobalVariableType(TypeReference type, GlobalVariableInfo globalVariable, ModuleTypeFinder moduleTypeFinder) {
+        String typeName = globalVariable.getType().getTypeName();
+        Type realParentType = moduleTypeFinder.searchTypeForModule(typeName);
+        if (realParentType == null) {
+            throw new ParseException(0, "Cannot find type [" + typeName + "] typed in global variable [" + globalVariable.getName() + "]");
+        }
+
+        type.setType(realParentType);
+    }
+
+    private void fixDefTypeType(Type type, DefTypeInfo deftypeInfo, ModuleTypeFinder moduleTypeFinder) {
         String typeName = deftypeInfo.getTypeReference().getTypeName();
-        Type realParentType = context.getTypeManager().getType(typeName);
+        Type realParentType = moduleTypeFinder.searchTypeForModule(typeName);
         if (realParentType == null) {
             throw new ParseException(0, "Cannot find type [" + typeName + "] typed in deftype [" + deftypeInfo.getName() + "]");
         }
@@ -188,10 +225,10 @@ public class AstManager {
         type.getParent().setType(realParentType);
     }
 
-    private void fixStructureType(Type type, StructureInfo structureInfo) {
+    private void fixStructureType(Type type, StructureInfo structureInfo, ModuleTypeFinder moduleTypeFinder) {
         for (StructureField sf : structureInfo.getFields()) {
             String typeName = sf.getType().getTypeName();
-            Type realFieldType = context.getTypeManager().getType(typeName);
+            Type realFieldType = moduleTypeFinder.searchTypeForModule(typeName);
             if (realFieldType == null) {
                 throw new ParseException(0, "Cannot find type [" + typeName + "] for field [" + sf.getName() + "] in structure [" + type.getOwnerModule().getModule() + "." + structureInfo.getName() + "]");
             }
@@ -200,12 +237,12 @@ public class AstManager {
         }
     }
 
-    private void fixFunctionType(Type type, FunctionInfo functionInfo) {
+    private void fixFunctionType(Type type, FunctionInfo functionInfo, ModuleTypeFinder moduleTypeFinder) {
         int index = -1;
         for (Argument argument : functionInfo.getArguments()) {
             index++;
             String typeName = argument.getType().getTypeName();
-            Type realFieldType = context.getTypeManager().getType(typeName);
+            Type realFieldType = moduleTypeFinder.searchTypeForModule(typeName);
             if (realFieldType == null) {
                 throw new ParseException(0, "Cannot find type [" + typeName + "] for function #" + index + " argument [" + argument.getName() + "] in function [" + type.getOwnerModule().getModule() + "." + functionInfo.getName() + "()]");
             }
@@ -213,7 +250,7 @@ public class AstManager {
         }
 
         String typeName = functionInfo.getReturnType().getTypeName();
-        Type realFieldType = context.getTypeManager().getType(typeName);
+        Type realFieldType = moduleTypeFinder.searchTypeForModule(typeName);
         if (realFieldType == null) {
             throw new ParseException(0, "Cannot find type [" + typeName + "] for return type of function [" + type.getOwnerModule().getModule() + "." + functionInfo.getName() + "()]");
         }

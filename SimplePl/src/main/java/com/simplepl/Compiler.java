@@ -1,6 +1,7 @@
 package com.simplepl;
 
 import com.simplepl.entity.Context;
+import com.simplepl.entity.ModuleInfo;
 
 /**
  * @author sad
@@ -18,27 +19,5 @@ public class Compiler {
         //compileModule(module);
     }
 
-    /* public CompiledModule compileModule(String module) {
-        if (isAlreadyCompiled(module)) {
-            return getAlreadyCompiledModule(module);
-        }
-
-        ModuleInfo moduleInfo = context.getAstManager().getModuleInfo(module);
-        //context.getTypeManager().gatherTypesFromModule(moduleInfo);
-        CompiledModule compiledModule = new CompiledModule();
-        addToAlreadyCompiledModules(module, compiledModule);
-        return compiledModule;
-    }*/
-
- /*private boolean isAlreadyCompiled(String module) {
-        return getAlreadyCompiledModule(module) != null;
-    }*/
-
- /*private CompiledModule getAlreadyCompiledModule(String module) {
-        return compiledModules.get(module);
-    }
-
-    private void addToAlreadyCompiledModules(String module, CompiledModule compiledModule) {
-        compiledModules.put(module, compiledModule);
-    }*/
+    
 }

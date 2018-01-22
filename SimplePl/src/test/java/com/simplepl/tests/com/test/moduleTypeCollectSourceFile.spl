@@ -19,3 +19,5 @@ deftype year int
 
 deftype int i32
 deftype long i64
+
+TestStructure myStruct
