@@ -11,7 +11,7 @@ structure TestStructure{
     int@ somepointer;
 }
 
-UtilsStructure@ element;
+UtilsStructure@ element
 int@ a
 
 deftype yearpointer int@

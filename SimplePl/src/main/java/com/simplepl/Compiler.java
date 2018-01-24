@@ -1,7 +1,9 @@
 package com.simplepl;
 
+import com.simplepl.astinfoextractor.PublicEntitiesExtractor;
 import com.simplepl.entity.Context;
 import com.simplepl.entity.ModuleInfo;
+import com.simplepl.grammar.ast.Ast;
 
 /**
  * @author sad
@@ -9,15 +11,25 @@ import com.simplepl.entity.ModuleInfo;
 public class Compiler {
 
     private Context context;
-    // private Map<String, CompiledModule> compiledModules = new HashMap<>();
 
-    public Compiler(Context context) {
-        this.context = context;
+    public Compiler() {
+        this.context = new Context();
+    }
+
+    public Context getContext() {
+        return context;
     }
 
     public void compileProgram(String module) {
-        //compileModule(module);
+        context.getAstManager().getModuleInfo(module);
+        for (ModuleInfo mi : context.getAstManager().getListOfModules()) {
+            compileModule(mi);
+        }
     }
 
-    
+    private void compileModule(ModuleInfo moduleInfo) {
+        Ast moduleAst=context.getAstManager().getModuleAst(moduleInfo.getModule());
+        PublicEntitiesExtractor entitiesExtractor=new PublicEntitiesExtractor();
+        ModuleInfo fullModuleInfo=entitiesExtractor.processAst(moduleAst, moduleInfo.getModule());
+    }
 }

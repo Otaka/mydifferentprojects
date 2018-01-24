@@ -24,7 +24,6 @@ public class TypeManager {
         types.put("u32", createTypeObject("u32"));
         types.put("u16", createTypeObject("u16"));
         types.put("u8", createTypeObject("u8"));
-        types.put("string", createTypeObject("string"));
         types.put("f32", createTypeObject("f32"));
         types.put("f64", createTypeObject("f64"));
     }
@@ -44,13 +43,13 @@ public class TypeManager {
         type.setInternal(new PrimitiveType());
         return type;
     }
-    
-    private static class PrimitiveType{
+
+    private static class PrimitiveType {
 
         @Override
         public String toString() {
             return "PrimitiveType";
         }
-        
+
     }
 }

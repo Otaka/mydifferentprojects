@@ -89,7 +89,7 @@ public class PublicEntitiesExtractorTest extends BaseTest {
         Assert.assertEquals(true, fileInfo.getImports().get(0).isStatic());
 
         //def types
-        Assert.assertEquals(2, fileInfo.getDeftypesList().size());
+        Assert.assertEquals(4, fileInfo.getDeftypesList().size());
         Assert.assertEquals("yearpointer", fileInfo.getDeftypesList().get(0).getName());
         Assert.assertEquals("int", fileInfo.getDeftypesList().get(0).getTypeReference().getTypeName());
         Assert.assertEquals(true, fileInfo.getDeftypesList().get(0).getTypeReference().isPointer());
@@ -101,7 +101,7 @@ public class PublicEntitiesExtractorTest extends BaseTest {
         //global vars
         Assert.assertEquals(2, fileInfo.getGlobalVariablesList().size());
         Assert.assertEquals("element", fileInfo.getGlobalVariablesList().get(0).getName());
-        Assert.assertEquals("int", fileInfo.getGlobalVariablesList().get(0).getType().getTypeName());
+        Assert.assertEquals("UtilsStructure", fileInfo.getGlobalVariablesList().get(0).getType().getTypeName());
         Assert.assertEquals("a", fileInfo.getGlobalVariablesList().get(1).getName());
         Assert.assertEquals("int", fileInfo.getGlobalVariablesList().get(1).getType().getTypeName());
         Assert.assertEquals(true, fileInfo.getGlobalVariablesList().get(1).getType().isPointer());

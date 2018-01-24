@@ -15,8 +15,11 @@ import com.simplepl.exception.ParseException;
 import com.simplepl.grammar.MainParser;
 import com.simplepl.grammar.ast.Ast;
 import com.simplepl.vfs.AbstractFile;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.parboiled.Parboiled;
@@ -32,12 +35,16 @@ public class AstManager {
 
     private Context context;
     private Map<String, Ast> parsedSourceFiles = new HashMap<>();
-    private Map<String, ModuleInfo> moduleInfoMap = new HashMap<String, ModuleInfo>();
+    private Map<String, ModuleInfo> moduleInfoMap = new HashMap<>();
 
     public AstManager(Context context) {
         this.context = context;
     }
 
+    public List<ModuleInfo>getListOfModules(){
+        return new ArrayList<>(moduleInfoMap.values());
+    }
+    
     public ModuleInfo getModuleInfo(String module) {
         ModuleInfo moduleInfo = getModuleInfoWithoutPreprocess(module);
         if (moduleInfo.isTypesProcessed() == false) {
@@ -47,7 +54,7 @@ public class AstManager {
         return moduleInfo;
     }
 
-    private Ast getModuleAst(String modulePath) {
+    public Ast getModuleAst(String modulePath) {
         Ast ast = parsedSourceFiles.get(modulePath.toLowerCase());
         if (ast != null) {
             return ast;

@@ -7,7 +7,7 @@ fun int main(){
 structure TestStructure{
     int x;
     int y;
-    string label;
+    int label;
     int@ somepointer;
 }
 
