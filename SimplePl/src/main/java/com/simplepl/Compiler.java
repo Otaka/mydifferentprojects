@@ -28,8 +28,10 @@ public class Compiler {
     }
 
     private void compileModule(ModuleInfo moduleInfo) {
-        Ast moduleAst=context.getAstManager().getModuleAst(moduleInfo.getModule());
-        PublicEntitiesExtractor entitiesExtractor=new PublicEntitiesExtractor();
-        ModuleInfo fullModuleInfo=entitiesExtractor.processAst(moduleAst, moduleInfo.getModule());
+        Ast moduleAst = context.getAstManager().getModuleAst(moduleInfo.getModule());
+        PublicEntitiesExtractor entitiesExtractor = new PublicEntitiesExtractor();
+        ModuleInfo fullModuleInfo = entitiesExtractor.processAst(moduleAst, moduleInfo.getModule());
+        context.getAstManager().fixTypeReferences(fullModuleInfo);
+        fullModuleInfo.setTypesProcessed(true);
     }
 }
