@@ -14,33 +14,42 @@ import java.util.List;
 public class IntermediateCompiler {
 
     private Context context;
+    private ModuleInfo moduleInfo;
+    private ModuleTypeFinder moduleTypeFinder;
+    private BytecodeGenerator bytecodeGenerator;
 
-    public IntermediateCompiler(Context context) {
+    public IntermediateCompiler(Context context, ModuleInfo moduleInfo, ModuleTypeFinder moduleTypeFinder) {
         this.context = context;
+        this.moduleInfo = moduleInfo;
+        this.moduleTypeFinder = moduleTypeFinder;
+        this.bytecodeGenerator = new BytecodeGenerator();
     }
 
-    public BytecodeModule compile(ModuleTypeFinder moduleTypeFinder, ModuleInfo moduleInfo) {
+    public BytecodeModule compile() {
         BytecodeModule bytecodeModule = new BytecodeModule(moduleInfo);
         for (FunctionInfo function : moduleInfo.getFunctionList()) {
-            processFunction(moduleTypeFinder, moduleInfo, function);
+            processFunction(function);
         }
 
         return bytecodeModule;
     }
 
-    private BytecodeGenerator processFunction(ModuleTypeFinder moduleTypeFinder, ModuleInfo moduleInfo, FunctionInfo functionInfo) {
-        BytecodeGenerator generator = new BytecodeGenerator();
+    private void processFunction(FunctionInfo functionInfo) {
+        bytecodeGenerator.clear();
         List<Ast> expressionList = functionInfo.getExpressions().getExpressions();
         for (Ast ast : expressionList) {
-            processAst(ast, moduleTypeFinder, moduleInfo, functionInfo, generator);
+            processAst(ast, functionInfo);
         }
-        return generator;
     }
 
-    private void processAst(Ast ast, ModuleTypeFinder moduleTypeFinder, ModuleInfo moduleInfo, FunctionInfo functionInfo,BytecodeGenerator generator) {
-        String name=ast.getName();
-        if(name.equals("var")){
-            
+    private void processAst(Ast ast, FunctionInfo functionInfo) {
+        String name = ast.getName();
+        if (name.equals("var")) {
+            processVar(ast, functionInfo);
         }
+    }
+
+    private void processVar(Ast ast, FunctionInfo functionInfo) {
+
     }
 }

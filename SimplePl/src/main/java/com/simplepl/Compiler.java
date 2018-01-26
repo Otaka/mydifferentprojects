@@ -35,7 +35,7 @@ public class Compiler {
         ModuleInfo fullModuleInfo = entitiesExtractor.processAst(moduleAst, moduleInfo.getModule());
         context.getAstManager().fixTypeReferences(fullModuleInfo);
         fullModuleInfo.setTypesProcessed(true);
-        IntermediateCompiler intermediateCompiler = new IntermediateCompiler(context);
-        BytecodeModule bytecodeModule = intermediateCompiler.compile(fullModuleInfo.createModuleTypeFinder(context), fullModuleInfo);
+        IntermediateCompiler intermediateCompiler = new IntermediateCompiler(context,fullModuleInfo,fullModuleInfo.createModuleTypeFinder(context));
+        BytecodeModule bytecodeModule = intermediateCompiler.compile();
     }
 }
