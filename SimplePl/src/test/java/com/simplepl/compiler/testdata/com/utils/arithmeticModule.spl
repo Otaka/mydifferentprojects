@@ -1,0 +1,8 @@
+import com.utils.io
+
+fun i32 main(){
+    int x=5;
+    int y=x+5-9;
+    int z=x*y;
+    print(z);
+}

@@ -53,7 +53,7 @@ public class AstManager {
     }
 
     public Ast getModuleAst(String modulePath) {
-        Ast ast = parsedSourceFiles.get(modulePath.toLowerCase());
+        Ast ast = parsedSourceFiles.get(modulePath);
         if (ast != null) {
             return ast;
         }
@@ -92,12 +92,12 @@ public class AstManager {
     }
 
     protected ModuleInfo getModuleInfoWithoutPreprocess(String module) {
-        ModuleInfo moduleInfo = moduleInfoMap.get(module.toLowerCase());
+        ModuleInfo moduleInfo = moduleInfoMap.get(module);
         if (moduleInfo == null) {
             Ast moduleAst = getModuleAst(module);
             PublicEntitiesExtractor entitiesExtractor = new PublicEntitiesExtractor();
             moduleInfo = entitiesExtractor.processAst(moduleAst, module);
-            moduleInfoMap.put(module.toLowerCase(), moduleInfo);
+            moduleInfoMap.put(module, moduleInfo);
         }
 
         return moduleInfo;
@@ -172,12 +172,7 @@ public class AstManager {
             return moduleTypeFinder;
         }
 
-        moduleTypeFinder = new ModuleTypeFinder(context);
-        moduleTypeFinder.addImport(moduleInfo.getModule());
-        for (Import importObject : moduleInfo.getImports()) {
-            moduleTypeFinder.addImport(importObject.getPath());
-        }
-
+        moduleTypeFinder=moduleInfo.createModuleTypeFinder(context);
         moduleToTypeFinderMap.put(moduleInfo, moduleTypeFinder);
         return moduleTypeFinder;
     }

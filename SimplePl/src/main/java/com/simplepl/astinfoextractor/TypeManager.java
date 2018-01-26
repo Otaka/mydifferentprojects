@@ -26,6 +26,7 @@ public class TypeManager {
         types.put("u8", createTypeObject("u8"));
         types.put("f32", createTypeObject("f32"));
         types.put("f64", createTypeObject("f64"));
+        types.put("void", createTypeObject("void"));
     }
 
     public Type getType(String typeName) {

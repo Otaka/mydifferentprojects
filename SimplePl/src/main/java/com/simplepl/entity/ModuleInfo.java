@@ -1,5 +1,6 @@
 package com.simplepl.entity;
 
+import com.simplepl.astinfoextractor.ModuleTypeFinder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,5 +56,15 @@ public class ModuleInfo {
     @Override
     public String toString() {
         return getModule();
+    }
+
+    public ModuleTypeFinder createModuleTypeFinder(Context context) {
+        ModuleTypeFinder moduleTypeFinder = new ModuleTypeFinder(context);
+        moduleTypeFinder.addImport(getModule());
+        for (Import importObject : getImports()) {
+            moduleTypeFinder.addImport(importObject.getPath());
+        }
+
+        return moduleTypeFinder;
     }
 }

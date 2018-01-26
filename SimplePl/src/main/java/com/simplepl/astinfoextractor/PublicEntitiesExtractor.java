@@ -22,7 +22,7 @@ public class PublicEntitiesExtractor {
             throw new IllegalArgumentException("Expected 'module' ast, but received");
         }
 
-        ModuleInfo moduleInfo = new ModuleInfo(modulePath.toLowerCase());
+        ModuleInfo moduleInfo = new ModuleInfo(modulePath);
         for (Ast statement : ast.getChildren()) {
             processStatement(moduleInfo, statement);
         }
@@ -91,6 +91,7 @@ public class PublicEntitiesExtractor {
             Argument argumentObject = new Argument(type, name);
             function.getArguments().add(argumentObject);
         }
+        function.getExpressions().getExpressions().addAll(statement.getChildren().get(0).getChildren());
         function.setReturnType(parseType(statement.getAttributeAst("returnValue")));
         moduleInfo.getFunctionList().add(function);
     }

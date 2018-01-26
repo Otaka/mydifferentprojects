@@ -11,28 +11,30 @@ public class BytecodeCommand {
     private short command;
     private BytecodeCommand parent;
     private List<BytecodeCommand> children = new ArrayList<>();
-    private IntermediateVar assignment;
-    private IntermediateVar[] args;
+    private String dest;
+    private String[] args;
 
     public void setCommand(short command) {
         this.command = command;
     }
 
-    public void setAssignment(IntermediateVar assignment) {
-        this.assignment = assignment;
+    public String[] getArgs() {
+        return args;
     }
 
-    public IntermediateVar getAssignment() {
-        return assignment;
+    public String getDest() {
+        return dest;
     }
 
-    public void setArgs(IntermediateVar[] args) {
+    public void setArgs(String[] args) {
         this.args = args;
     }
 
-    public IntermediateVar[] getArgs() {
-        return args;
+    public void setDest(String dest) {
+        this.dest = dest;
     }
+
+   
 
     public short getCommand() {
         return command;
