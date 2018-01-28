@@ -4,7 +4,7 @@ import com.simplepl.entity.Argument;
 import com.simplepl.entity.Context;
 import com.simplepl.entity.DefTypeInfo;
 import com.simplepl.entity.FunctionInfo;
-import com.simplepl.entity.GlobalVariableInfo;
+import com.simplepl.entity.VariableInfo;
 import com.simplepl.entity.Import;
 import com.simplepl.entity.ModuleInfo;
 import com.simplepl.entity.StructureField;
@@ -199,7 +199,7 @@ public class AstManager {
 
         //fix global variables
         for (ModuleInfo moduleInfo : modules) {
-            for (GlobalVariableInfo gvi : moduleInfo.getGlobalVariablesList()) {
+            for (VariableInfo gvi : moduleInfo.getGlobalVariablesList()) {
                 fixGlobalVariableType(gvi, getModuleTypeFinder(moduleInfo, moduleToTypeFinderMap));
             }
         }
@@ -210,7 +210,7 @@ public class AstManager {
         for (FunctionInfo fi : moduleInfo.getFunctionList()) {
             fixFunctionType(moduleInfo, fi, moduleTypeFinder);
         }
-        for (GlobalVariableInfo gi : moduleInfo.getGlobalVariablesList()) {
+        for (VariableInfo gi : moduleInfo.getGlobalVariablesList()) {
             fixGlobalVariableType(gi, moduleTypeFinder);
         }
         for (StructureInfo si : moduleInfo.getStructuresList()) {
@@ -218,7 +218,7 @@ public class AstManager {
         }
     }
 
-    private void fixGlobalVariableType(GlobalVariableInfo globalVariable, ModuleTypeFinder moduleTypeFinder) {
+    private void fixGlobalVariableType(VariableInfo globalVariable, ModuleTypeFinder moduleTypeFinder) {
         String typeName = globalVariable.getType().getTypeName();
         Type realParentType = moduleTypeFinder.searchTypeForModule(typeName);
         if (realParentType == null) {

@@ -1,7 +1,10 @@
 package com.simplepl.grammar;
 
+import com.simplepl.grammar.ast.Ast;
 import com.simplepl.grammar.matchers.JavaUnicodeMatcherStartString;
 import com.simplepl.grammar.matchers.JavaUnicodeMatcherString;
+import org.parboiled.Action;
+import org.parboiled.Context;
 import org.parboiled.Rule;
 
 /**
@@ -112,7 +115,7 @@ public class MainParser extends MainParserActions {
         return FirstOf(
                 breakStatement(),
                 continueStatement(),
-                forStatement(),continueStatement(),
+                forStatement(), continueStatement(),
                 whileStatement(),
                 ifStatement(),
                 newStatement(),
@@ -443,9 +446,24 @@ public class MainParser extends MainParserActions {
                         expression(),
                         actionFail("Expected expression assigned to variable")
                 ),
-                _pushTopStackAstToNextStackAstAsAttribute("init_expression", UNKNOWN, UNKNOWN)
+                //pushVariableAssignAction()
+            _pushTopStackAstToNextStackAstAsAttribute("init_expression", UNKNOWN, UNKNOWN)
         );
     }
+/*
+    public Action pushVariableAssignAction() {
+        return new LangAction() {
+            @Override
+            public boolean runAction(Context context) {
+                Ast initExpression=(Ast) context.getValueStack().pop();
+                Ast declaredVariableAst=(Ast) context.getValueStack().pop();
+                String varName= declaredVariableAst.getAttributeAst("name").getAttributeString("name");
+                context.getValueStack().push(declaredVariableAst);
+                
+                return true;
+            }
+        };
+    }*/
 
     public Rule arrayDeclarerSquares() {
         return OneOrMore(

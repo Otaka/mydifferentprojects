@@ -3,12 +3,12 @@ package com.simplepl.entity;
 /**
  * @author sad
  */
-public class GlobalVariableInfo {
+public class VariableInfo {
 
     private String name;
     private TypeReference type;
 
-    public GlobalVariableInfo(String name, TypeReference type) {
+    public VariableInfo(String name, TypeReference type) {
         this.name = name;
         this.type = type;
     }

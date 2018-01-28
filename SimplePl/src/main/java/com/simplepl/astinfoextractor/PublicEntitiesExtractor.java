@@ -3,7 +3,7 @@ package com.simplepl.astinfoextractor;
 import com.simplepl.entity.Argument;
 import com.simplepl.entity.DefTypeInfo;
 import com.simplepl.entity.FunctionInfo;
-import com.simplepl.entity.GlobalVariableInfo;
+import com.simplepl.entity.VariableInfo;
 import com.simplepl.entity.ModuleInfo;
 import com.simplepl.entity.Import;
 import com.simplepl.entity.StructureField;
@@ -53,7 +53,7 @@ public class PublicEntitiesExtractor {
     }
 
     private void parseGlobalVariable(ModuleInfo moduleInfo, Ast statement) {
-        GlobalVariableInfo globalVariableInfo = new GlobalVariableInfo(
+        VariableInfo globalVariableInfo = new VariableInfo(
                 extractIdentifier(statement.getAttributeAst("name")),
                 parseType(statement.getAttributeAst("type")));
         moduleInfo.getGlobalVariablesList().add(globalVariableInfo);
@@ -96,16 +96,21 @@ public class PublicEntitiesExtractor {
         moduleInfo.getFunctionList().add(function);
     }
 
-    private TypeReference parseType(Ast astType) {
-        if (astType.getName().equals("identifier")) {
-            TypeReference typeReference = new TypeReference(astType.getAttributeString("name"));
-            return typeReference;
-        } else if (astType.getName().equals("pointer")) {
-            TypeReference typeReference = parseType(astType.getAttributeAst("type"));
-            typeReference.setPointer(true);
-            return typeReference;
-        } else {
-            throw new IllegalStateException("Expected ast type [identifier] or [pointer], but found [" + astType.getName() + "]");
+    public TypeReference parseType(Ast astType) {
+        switch (astType.getName()) {
+            case "identifier":
+            {
+                TypeReference typeReference = new TypeReference(astType.getAttributeString("name"));
+                return typeReference;
+            }
+            case "pointer":
+            {
+                TypeReference typeReference = parseType(astType.getAttributeAst("type"));
+                typeReference.setPointer(true);
+                return typeReference;
+            }
+            default:
+                throw new IllegalStateException("Expected ast type [identifier] or [pointer], but found [" + astType.getName() + "]");
         }
     }
 
@@ -133,7 +138,7 @@ public class PublicEntitiesExtractor {
         return sb.toString();
     }
 
-    private String extractIdentifier(Ast ast) {
+    public String extractIdentifier(Ast ast) {
         if (!ast.getName().equals("identifier")) {
             throw new IllegalArgumentException("Expected 'identifier' but found '" + ast.getName() + "'");
         }

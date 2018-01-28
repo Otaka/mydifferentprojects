@@ -14,10 +14,10 @@ public class ModuleInfo {
     private List<FunctionInfo> functionList = new ArrayList<>();
     private List<StructureInfo> structuresList = new ArrayList<>();
     private List<DefTypeInfo> deftypesList = new ArrayList<>();
-    private List<GlobalVariableInfo> globalVariablesList = new ArrayList<>();
+    private List<VariableInfo> globalVariablesList = new ArrayList<>();
     private boolean typesProcessed = false;
 
-    public List<GlobalVariableInfo> getGlobalVariablesList() {
+    public List<VariableInfo> getGlobalVariablesList() {
         return globalVariablesList;
     }
 

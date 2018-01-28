@@ -20,10 +20,10 @@ public class AstManagerTest extends BaseTest {
         ModuleInfo moduleInfo = context.getAstManager().getModuleInfo("com.test.moduleTypeCollectSourceFile");
         ModuleInfo utilsModuleInfo = context.getAstManager().getModuleInfo("com.test.utils");
 
-        Assert.assertEquals("com.test.moduletypecollectsourcefile", moduleInfo.getModule());
+        Assert.assertEquals("com.test.moduleTypeCollectSourceFile", moduleInfo.getModule());
         Assert.assertEquals(1, moduleInfo.getFunctionList().size());
         Assert.assertEquals("main", moduleInfo.getFunctionList().get(0).getName());
-        Assert.assertEquals("com.test.moduletypecollectsourcefile.int", moduleInfo.getFunctionList().get(0).getReturnType().getType().getTypeName());
+        Assert.assertEquals("com.test.moduleTypeCollectSourceFile.int", moduleInfo.getFunctionList().get(0).getReturnType().getType().getTypeName());
 
         Assert.assertEquals("com.test.utils", utilsModuleInfo.getModule());
         Assert.assertEquals(1, utilsModuleInfo.getFunctionList().size());
