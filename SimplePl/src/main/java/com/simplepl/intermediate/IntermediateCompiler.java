@@ -59,7 +59,7 @@ public class IntermediateCompiler {
                 processBinaryOperation(ast, functionInfo);
                 break;
             default:
-                throw new IllegalStateException("Unknown ast ["+name+"]");
+                throw new IllegalStateException("Unknown ast [" + name + "]");
         }
     }
 
@@ -71,21 +71,38 @@ public class IntermediateCompiler {
         Ast initExpression = ast.getAttributeAst("init_expression");
         if (initExpression != null) {
             //let's create ast object as if we have just variableName=value
-            Ast binaryExpression=new Ast("binary_operation");
+            Ast binaryExpression = new Ast("binary_operation");
             binaryExpression.addAttribute("operation", "=");
-            
-            Ast variableNameAst=new Ast("identifier");
+
+            Ast variableNameAst = new Ast("identifier");
             variableNameAst.addAttribute("name", name);
-            
+
             binaryExpression.addChild(variableNameAst);
             binaryExpression.addChild(initExpression);
 
             processAst(binaryExpression, functionInfo);
         }
     }
-    
+
     private void processBinaryOperation(Ast ast, FunctionInfo functionInfo) {
-        String operation=ast.getAttributeString("operation");
-        
+        String operation = ast.getAttributeString("operation");
+        if (operation.equals("=")) {
+            processAssignOperation(ast, functionInfo);
+        } else {
+            throw new IllegalArgumentException("Unknown binary operation [" + operation + "] in function " + functionInfo.getName());
+        }
+    }
+
+    private String processAssignOperation(Ast ast, FunctionInfo functionInfo) {
+        Ast leftPart=ast.getChildren().get(0);
+        Ast rightPart=ast.getChildren().get(1);
+        if(!isArray(leftPart)){
+            
+        }
+        return null;
+    }
+    
+    private boolean isArray(Ast ast){
+        return false;
     }
 }

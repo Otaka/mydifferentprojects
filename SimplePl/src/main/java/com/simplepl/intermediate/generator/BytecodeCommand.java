@@ -13,6 +13,15 @@ public class BytecodeCommand {
     private List<BytecodeCommand> children = new ArrayList<>();
     private String dest;
     private String[] args;
+    private BytecodeOperandSize operandSize;
+
+    public void setOperandSize(BytecodeOperandSize operandSize) {
+        this.operandSize = operandSize;
+    }
+
+    public BytecodeOperandSize getOperandSize() {
+        return operandSize;
+    }
 
     public void setCommand(short command) {
         this.command = command;
@@ -33,8 +42,6 @@ public class BytecodeCommand {
     public void setDest(String dest) {
         this.dest = dest;
     }
-
-   
 
     public short getCommand() {
         return command;
