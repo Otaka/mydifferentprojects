@@ -7,7 +7,7 @@ public class Ast {
 
     private String type;
     private String value;
-    private Ast[] children;
+    private AstHolder[] children;
 
     public String getType() {
         return type;
@@ -27,11 +27,11 @@ public class Ast {
         return this;
     }
 
-    public Ast[] getChildren() {
+    public AstHolder[] getChildren() {
         return children;
     }
 
-    public Ast setChildren(Ast[] children) {
+    public Ast setChildren(AstHolder[] children) {
         this.children = children;
         return this;
     }

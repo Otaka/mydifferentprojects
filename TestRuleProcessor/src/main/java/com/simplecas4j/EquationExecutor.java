@@ -1,6 +1,7 @@
 package com.simplecas4j;
 
 import com.simplecas4j.ast.Ast;
+import com.simplecas4j.ast.AstHolder;
 
 /**
  * @author Dmitry
@@ -15,23 +16,23 @@ public class EquationExecutor {
     public static final String ANY = "any";
     public static final String NO_MORE = "noMore";
 
-    public Ast var(String name) {
-        return new Ast().setType(VAR).setValue(name);
+    public AstHolder var(String name) {
+        return new AstHolder(new Ast().setType(VAR).setValue(name));
     }
 
-    public Ast op(String type, Ast... children) {
-        return new Ast().setType(OPERATOR).setValue(type).setChildren(children);
+    public AstHolder op(String type, AstHolder... children) {
+        return new AstHolder( new Ast().setType(OPERATOR).setValue(type).setChildren(children));
     }
 
-    public Ast number(String number) {
-        return new Ast().setType(NUMBER).setValue(number);
+    public AstHolder number(String number) {
+        return new AstHolder(new Ast().setType(NUMBER).setValue(number));
     }
 
-    public Ast parentheses(Ast... children) {
-        return new Ast().setType(PARENTHESES).setChildren(children);
+    public AstHolder parentheses(AstHolder... children) {
+        return new AstHolder( new Ast().setType(PARENTHESES).setChildren(children));
     }
 
-    public double evaluateAst(Ast ast) {
+    public double evaluateAst(AstHolder ast) {
         return 0;
     }
 }
