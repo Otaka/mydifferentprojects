@@ -10,4 +10,40 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+    
+    <dependencies>
+        <!--        <dependency>
+            <groupId>org.matheclipse</groupId>
+            <artifactId>matheclipse-core</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>-->
+        
+        <dependency>
+            <groupId>org.appdapter</groupId>
+            <artifactId>ext.bundle.math.symja_jas</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+    </dependencies>
+
+    
+    <repositories> 
+        <repository>
+            <id>snapshots-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>jas-repository</id>
+            <url>http://krum.rz.uni-mannheim.de/maven-repository</url>
+        </repository>
+        <repository>
+            <id>Lab4Inf</id>
+            <url>http://www.lab4inf.fh-muenster.de/lab4inf/maven-repository</url>
+        </repository>
+    </repositories>
 </project>

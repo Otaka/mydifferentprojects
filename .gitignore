@@ -30,3 +30,5 @@
 /CheckNp/dist
 /CheckNp/build
 /HexEditor/build
+/ExpressionLayout/target/
+/ExpressionLayout/nbactions.xml
