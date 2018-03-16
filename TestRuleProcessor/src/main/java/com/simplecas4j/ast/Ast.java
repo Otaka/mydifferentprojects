@@ -1,19 +1,33 @@
 package com.simplecas4j.ast;
 
+import com.simplecas4j.rule.RuleType;
+import java.util.List;
+
 /**
  * @author Dmitry
  */
 public class Ast {
 
-    private String type;
+    private RuleType type;
     private String value;
-    private AstHolder[] children;
+    private List<AstHolder> children;
+    private boolean dirty = true;
 
-    public String getType() {
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
+    }
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    
+    
+    public RuleType getType() {
         return type;
     }
 
-    public Ast setType(String type) {
+    public Ast setType(RuleType type) {
         this.type = type;
         return this;
     }
@@ -27,12 +41,25 @@ public class Ast {
         return this;
     }
 
-    public AstHolder[] getChildren() {
+    protected List<AstHolder> getChildren() {
         return children;
     }
 
-    public Ast setChildren(AstHolder[] children) {
+    protected Ast setChildren(List< AstHolder> children) {
         this.children = children;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "" + getType() + " " + getValue();
+    }
+
+    public Ast clone() {
+        Ast ast = new Ast();
+        ast.children = children;
+        ast.type = type;
+        ast.value = value;
+        return ast;
     }
 }

@@ -9,18 +9,18 @@ import java.util.List;
  */
 public class Rule {
 
-    private String name;
+    private RuleType type;
     private List<Rule> children;
     private String value;
     private List<String> attributes = new ArrayList<>();
     private String label;
 
-    public Rule(String name) {
-        this.name = name;
+    public Rule(RuleType ruletype) {
+        this.type = ruletype;
     }
 
-    public Rule(String name, List<Rule> children) {
-        this.name = name;
+    public Rule(RuleType ruleType, List<Rule> children) {
+        this.type = ruleType;
         this.children = children;
     }
 
@@ -50,13 +50,13 @@ public class Rule {
         return value;
     }
 
-    public Rule setName(String name) {
-        this.name = name;
+    public Rule setRuleType(RuleType type) {
+        this.type = type;
         return this;
     }
 
-    public String getName() {
-        return name;
+    public RuleType getType() {
+        return type;
     }
 
     public Rule setChildren(List<Rule> children) {
@@ -82,4 +82,11 @@ public class Rule {
         children.add(rule);
         return this;
     }
+
+    @Override
+    public String toString() {
+        return getType()+"("+getValue()+")";
+    }
+    
+    
 }
