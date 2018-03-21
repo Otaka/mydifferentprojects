@@ -4,7 +4,6 @@ import com.simplecas4j.rule.RuleType;
 import com.simplecas4j.rule.MatchContext;
 import com.simplecas4j.rule.RuleAndReplacementPair;
 import com.simplecas4j.ast.Ast;
-import com.simplecas4j.ast.AstHolder;
 import com.simplecas4j.rule.Rule;
 import com.simplecas4j.rule.RuleReplacement;
 import com.simplecas4j.rule.SimplificationResult;
@@ -12,7 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Dmitry
@@ -30,15 +31,16 @@ public class EquationExecutor {
         this.ruleManager = ruleManager;
     }
 
-    public double evaluateAst(AstHolder ast) {
+    public double evaluateAst(Ast ast) {
+        md5OfProcessedAsts.clear();
         simplifyAst(ast);
         return 0;
     }
 
-    private SimplificationResult simplifyAst(AstHolder ast) {
+    private SimplificationResult simplifyAst(Ast ast) {
         boolean someRuleExecuted = false;
         while (true) {
-            SimplificationResult result = simplifyAstAndItChildsRound(ast,0);
+            SimplificationResult result = simplifyAstAndItChildsRound(ast, 0);
             if (result == SimplificationResult.RULES_EXECUTED) {
                 someRuleExecuted = true;
             } else {
@@ -52,7 +54,7 @@ public class EquationExecutor {
         }
     }
 
-    private SimplificationResult simplifyAstAndItChildsRound(AstHolder ast, int level) {
+    private SimplificationResult simplifyAstAndItChildsRound(Ast ast, int level) {
         if (ast.getType() == RuleType.NUMBER) {
             return SimplificationResult.NO_RULES_EXECUTED;
         }
@@ -70,11 +72,11 @@ public class EquationExecutor {
                 someRuleExecuted = true;
             }
         }
-        List<AstHolder> children = ast.getChildren();
+        List<Ast> children = ast.getChildren();
         if (children != null) {
             for (int i = 0; i < children.size(); i++) {
-                AstHolder child = children.get(i);
-                SimplificationResult result = simplifyAstAndItChildsRound(child,level+1);
+                Ast child = children.get(i);
+                SimplificationResult result = simplifyAstAndItChildsRound(child, level + 1);
                 if (result == SimplificationResult.RULES_EXECUTED) {
                     someRuleExecuted = true;
                 }
@@ -87,19 +89,10 @@ public class EquationExecutor {
             return SimplificationResult.NO_RULES_EXECUTED;
         }
     }
-    
-    private String createString(char c, int count){
-        if(count==0){
-            return "";
-        }
-        StringBuilder sb=new StringBuilder(count);
-        for(int i=0;i<count;i++){
-            sb.append(c);
-        }
-        return sb.toString();
-    }
 
-    private SimplificationResult tryToFindAndApplyOneMatchedRuleToAstHolder(AstHolder ast, AstHolder astForProcessing) {
+    private Set<String> md5OfProcessedAsts = new HashSet<>();
+
+    private SimplificationResult tryToFindAndApplyOneMatchedRuleToAstHolder(Ast ast, Ast astForProcessing) {
         if (astForProcessing.isDirty() == false) {
             return SimplificationResult.NO_RULES_EXECUTED;
         }
@@ -108,8 +101,12 @@ public class EquationExecutor {
             MatchContext matchContext = new MatchContext();
             if (tryToMatchRule(astForProcessing, rrp.getRule(), matchContext) == MatchResult.MATCH_OK) {
                 applyReplacement(rrp, matchContext);
-                astForProcessing.setDirtyRecursivelyToParents(true);
-                return SimplificationResult.RULES_EXECUTED;
+                String md5 = calculateMd5(ast.deepToString());
+                if (!md5OfProcessedAsts.contains(md5)) {
+                    md5OfProcessedAsts.add(md5);
+                    astForProcessing.setDirtyRecursivelyToParents(true);
+                    return SimplificationResult.RULES_EXECUTED;
+                }
             }
         }
 
@@ -123,14 +120,21 @@ public class EquationExecutor {
         }
     }
 
-    private void addLabelToMatchContextIfNeeded(AstHolder ast, Rule rule, MatchContext matchContext) {
+    private void addLabelToMatchContextIfNeeded(Ast ast, Rule rule, MatchContext matchContext) {
         if (rule.getLabel() != null) {
             matchContext.addMatchedAst(rule.getLabel(), ast);
         }
     }
 
-    private MatchResult tryToMatchRule(AstHolder ast, Rule rule, MatchContext matchContext) {
+    private MatchResult tryToMatchRule(Ast ast, Rule rule, MatchContext matchContext) {
         if (rule.getType() == RuleType.ANY) {
+            if (rule.getSameAsLabel() != null) {
+                Ast astToMatch = matchContext.getAstHolderThrowIfNotFound(rule.getSameAsLabel(), "Label \"{label}\" is not found while processing any rule \"" + rule.getDescription() + "\"");
+                if (!ast.deepEquals(astToMatch)) {
+                    return MatchResult.NO_MATCH;
+                }
+            }
+
             addLabelToMatchContextIfNeeded(ast, rule, matchContext);
             return MatchResult.MATCH_OK;
         }
@@ -140,9 +144,6 @@ public class EquationExecutor {
         }
 
         switch (rule.getType()) {
-            case ANY:
-                addLabelToMatchContextIfNeeded(ast, rule, matchContext);
-                return MatchResult.MATCH_OK;
             case OPERATOR:
                 if (ast.getType() != RuleType.OPERATOR) {
                     return MatchResult.NO_MATCH;
@@ -156,25 +157,45 @@ public class EquationExecutor {
 
                 if (rule.getChildren() != null && !rule.getChildren().isEmpty()) {
                     List<Rule> childrenRules = rule.getChildren();
-                    List<AstHolder> astChildren = ast.getChildren();
+                    List<Ast> astChildren = ast.getChildren();
                     if (astChildren == null || astChildren.isEmpty()) {
                         return MatchResult.NO_MATCH;
                     }
                     MatchResult matchResult = tryToMatchChildrenRules(childrenRules, ast.getChildren(), 0, 0, matchContext);
                     if (matchResult == MatchResult.MATCH_OK) {
+                        if (rule.getSameAsLabel() != null) {
+                            Ast astToMatch = matchContext.getAstHolderThrowIfNotFound(rule.getSameAsLabel(), "Label \"{label}\" is not found while processing operator rule \"" + rule.getDescription() + "\"");
+                            if (!ast.deepEquals(astToMatch)) {
+                                return MatchResult.NO_MATCH;
+                            }
+                        }
                         addLabelToMatchContextIfNeeded(ast, rule, matchContext);
                     }
 
                     return matchResult;
                 }
-                throw new IllegalStateException("Not implemented yet");
+
+                throw new IllegalStateException("Not implemented");
             case NUMBER:
                 if (ast.getType() == RuleType.NUMBER) {
                     if (rule.getValue().equals(ANY_VALUE)) {
+                        if (rule.getSameAsLabel() != null) {
+                            Ast astToMatch = matchContext.getAstHolderThrowIfNotFound(rule.getSameAsLabel(), "Label \"{label}\" is not found while processing number rule \"" + rule.getDescription() + "\"");
+                            if (!ast.deepEquals(astToMatch)) {
+                                return MatchResult.NO_MATCH;
+                            }
+                        }
+
                         addLabelToMatchContextIfNeeded(ast, rule, matchContext);
                         return MatchResult.MATCH_OK;
                     } else {
                         if (rule.getValue().equals(ast.getValue())) {
+                            if (rule.getSameAsLabel() != null) {
+                                Ast astToMatch = matchContext.getAstHolderThrowIfNotFound(rule.getSameAsLabel(), "Label \"{label}\" is not found while processing rule \"" + rule.getDescription() + "\"");
+                                if (!ast.deepEquals(astToMatch)) {
+                                    return MatchResult.NO_MATCH;
+                                }
+                            }
                             addLabelToMatchContextIfNeeded(ast, rule, matchContext);
                             return MatchResult.MATCH_OK;
                         } else {
@@ -196,6 +217,12 @@ public class EquationExecutor {
 
                 MatchResult matchResult = tryToMatchChildrenRules(rule.getChildren(), ast.getChildren(), 0, 0, matchContext);
                 if (matchResult == MatchResult.MATCH_OK) {
+                    if (rule.getSameAsLabel() != null) {
+                        Ast astToMatch = matchContext.getAstHolderThrowIfNotFound(rule.getSameAsLabel(), "Label \"{label}\" is not found while processing parenthesis rule \"" + rule.getDescription() + "\"");
+                        if (!ast.deepEquals(astToMatch)) {
+                            return MatchResult.NO_MATCH;
+                        }
+                    }
                     addLabelToMatchContextIfNeeded(ast, rule, matchContext);
                 }
 
@@ -222,7 +249,7 @@ public class EquationExecutor {
         throw new IllegalStateException("Not implemented yet... we should not be there.... Rule type [" + rule.getType() + "]");
     }
 
-    private MatchResult tryToMatchChildrenRules(List<Rule> childrenRules, List<AstHolder> astHolders, int ruleIndex, int astChildIndex, MatchContext matchContext) {
+    private MatchResult tryToMatchChildrenRules(List<Rule> childrenRules, List<Ast> astHolders, int ruleIndex, int astChildIndex, MatchContext matchContext) {
         Rule rule = childrenRules.get(ruleIndex);
         if (rule.getType() == RuleType.ZERO_OR_MORE) {
             if (ruleIndex == childrenRules.size() - 1) {
@@ -291,22 +318,6 @@ public class EquationExecutor {
         return true;
     }
 
-    public AstHolder var(String name) {
-        return new AstHolder(new Ast().setType(RuleType.VAR).setValue(name));
-    }
-
-    public AstHolder op(String type, AstHolder... children) {
-        return new AstHolder(new Ast().setType(RuleType.OPERATOR).setValue(type)).setChildren(asList(children));
-    }
-
-    public AstHolder number(String number) {
-        return new AstHolder(new Ast().setType(RuleType.NUMBER).setValue(number));
-    }
-
-    public AstHolder parentheses(AstHolder child) {
-        return new AstHolder(new Ast().setType(RuleType.PARENTHESES)).setChildren(asList(child));
-    }
-
     private <T> List<T> asList(T... objs) {
         List<T> result = new ArrayList<>();
         for (int i = 0; i < objs.length; i++) {
@@ -332,7 +343,56 @@ public class EquationExecutor {
         return sb.toString();
     }
 
+    private String createString(char c, int count) {
+        if (count == 0) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder(count);
+        for (int i = 0; i < count; i++) {
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
     private enum MatchResult {
         NO_MATCH, NO_MORE_ELEMENT, MATCH_OK
     }
+
+    public Ast var(String name) {
+        return new Ast().setType(RuleType.VAR).setValue(name);
+    }
+
+    public Ast op(String type, Ast... children) {
+        return new Ast().setType(RuleType.OPERATOR).setValue(type).setChildren(asList(children));
+    }
+
+    public Ast number(String number) {
+        return new Ast().setType(RuleType.NUMBER).setValue(number);
+    }
+
+    public Ast parentheses(Ast child) {
+        return new Ast().setType(RuleType.PARENTHESES).setChildren(asList(child));
+    }
+
+    //some usefull utilities methods
+    public Ast x() {
+        return var("x");
+    }
+
+    public Ast y() {
+        return var("y");
+    }
+
+    public Ast sum(Ast... children) {
+        return op("+", children);
+    }
+
+    public Ast mul(Ast... children) {
+        return op("*", children);
+    }
+
+    public Ast div(Ast children1, Ast children2) {
+        return op("/", children1, children2);
+    }
+
 }

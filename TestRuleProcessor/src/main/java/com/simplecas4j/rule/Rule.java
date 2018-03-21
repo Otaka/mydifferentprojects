@@ -13,7 +13,30 @@ public class Rule {
     private List<Rule> children;
     private String value;
     private List<String> attributes = new ArrayList<>();
+    private String description;
     private String label;
+    /**
+    Same_as_label it is mechanism that allows you to implement following rules: a/a =1 or (a+b)+(a+b)=2(a+b); It allows to search identical expressions
+     */
+    private String sameAsLabel;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Rule setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public Rule setSameAsLabel(String sameAsLabel) {
+        this.sameAsLabel = sameAsLabel;
+        return this;
+    }
+
+    public String getSameAsLabel() {
+        return sameAsLabel;
+    }
 
     public Rule(RuleType ruletype) {
         this.type = ruletype;
@@ -85,8 +108,7 @@ public class Rule {
 
     @Override
     public String toString() {
-        return getType()+"("+getValue()+")";
+        return getType() + "(" + getValue() + ")";
     }
-    
-    
+
 }

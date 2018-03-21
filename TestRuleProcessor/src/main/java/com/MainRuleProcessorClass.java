@@ -1,7 +1,7 @@
 package com;
 
 import com.simplecas4j.EquationExecutor;
-import com.simplecas4j.ast.AstHolder;
+import com.simplecas4j.ast.Ast;
 
 /**
  * @author Dmitry
@@ -12,7 +12,7 @@ public class MainRuleProcessorClass {
         System.out.println("Started rule processor");
         EquationExecutor ee = new EquationExecutor();
 
-        AstHolder ast = ee.op("/", ee.number("6"),ee.number("3"));
+        Ast ast = ee.op("/", ee.number("6"),ee.number("3"));
         //AstHolder ast = ee.op("+", ee.number("6"), ee.var("x"), ee.number("67"));
         System.out.println("before change: " + ast.deepToString());
         ee.evaluateAst(ast);
