@@ -78,7 +78,7 @@ replacement(replaceAstWithNewContent("outer", Ast.numberFactory("1"))));
                 ),
                 replacement(printRule("Reduction", "any1", "any2", "innerMul"), replaceAstWithNewContent("any1", Ast.numberFactory("1")), replaceAstWithNewContent("any2", Ast.numberFactory("1"))));
 
-        //(/ (* any1, any2),any1)->(* any2)
+        //(/ (* any1, any2),any1)->(* any2)   //  x*8/x
         addRule(
                 operator("/",
                         operator("*", zm(),
