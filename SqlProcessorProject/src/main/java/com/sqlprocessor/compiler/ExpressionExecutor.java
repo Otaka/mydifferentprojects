@@ -4,6 +4,10 @@ import com.sqlprocessor.table.SqlField;
 import com.sqlprocessor.table.TableManager;
 import com.sqlprocessor.utils.RuntimeUtils;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import net.sf.jsqlparser.expression.DoubleValue;
 import net.sf.jsqlparser.expression.Expression;
@@ -20,6 +24,7 @@ import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThan;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThanEquals;
+import net.sf.jsqlparser.expression.operators.relational.IsNullExpression;
 import net.sf.jsqlparser.expression.operators.relational.LikeExpression;
 import net.sf.jsqlparser.expression.operators.relational.MinorThan;
 import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
@@ -37,6 +42,21 @@ public class ExpressionExecutor {
 
         public String expressionExecSourceCode;
         public Class resultType;
+    }
+
+    public List<String> collectFieldNames(Expression expression) {
+        Set<String> columns = new HashSet<>();
+        expression.accept(new ExpressionDeParser() {
+            @Override
+            public void visit(Column tableColumn) {
+                super.visit(tableColumn);
+                columns.add(tableColumn.getName(false));
+            }
+
+        });
+        List<String> columnsNamesList = new ArrayList<>();
+        columnsNamesList.addAll(columns);
+        return columnsNamesList;
     }
 
     public ExpressionExecutorResult executeExpression(Expression expression, TableManager tableManager, SourceCode sourceCodeGenerator, String rowVariableName) {
@@ -480,7 +500,7 @@ public class ExpressionExecutor {
                     if (isTypeSupported(type)) {
                         String generatedDataObjectFieldName = "data" + sqlField.getTable().getId();
                         String generatedFieldName = "_" + generatedDataObjectFieldName + "_" + sqlField.getField();
-                        String fieldGetName = " "+ rowVariableName +"." + generatedFieldName + "() ";
+                        String fieldGetName = " " + rowVariableName + "." + generatedFieldName + "() ";
                         typeStack.add(type);
                         sourceCodeStack.add(fieldGetName);
                     } else {
@@ -542,6 +562,24 @@ public class ExpressionExecutor {
                 }
 
                 sourceCodeStack.push(leftCode + "&&" + rightCode);
+                typeStack.push(boolean.class);
+            }
+
+            @Override
+            public void visit(IsNullExpression isNullExpression) {
+                super.visit(isNullExpression);
+                Class type = typeStack.pop();
+                if (type.isPrimitive()) {
+                    String columnName=collectFieldNames(isNullExpression).toString();
+                    throw new IllegalArgumentException("You cannot check if field is null on non null field "+columnName);
+                }
+                
+                String innerSourceCode = sourceCodeStack.pop();
+                String sourceCode="("+innerSourceCode+")==null";
+                if(isNullExpression.isNot()){
+                    sourceCode="!("+sourceCode+")";
+                }
+                sourceCodeStack.push(sourceCode);
                 typeStack.push(boolean.class);
             }
 

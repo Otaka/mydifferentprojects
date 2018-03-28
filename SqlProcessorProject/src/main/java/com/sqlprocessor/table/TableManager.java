@@ -124,6 +124,8 @@ public class TableManager {
         return sqlTables.get(tableIndex);
     }
 
+    
+    
     public SqlTable getTableById(int tableId) {
         for (SqlTable table : sqlTables) {
             if (table.getId() == tableId) {
@@ -133,6 +135,7 @@ public class TableManager {
 
         return null;
     }
+    
 
     public List<SqlTable> getSqlTables() {
         return sqlTables;

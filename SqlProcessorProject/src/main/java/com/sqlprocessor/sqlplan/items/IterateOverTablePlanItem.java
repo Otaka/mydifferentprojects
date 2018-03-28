@@ -62,7 +62,7 @@ public class IterateOverTablePlanItem extends AbstractPlanItem {
             childPlanItem.generateSourceCode(tableManager, sourceCode, sourceCodeGenerator);
         }
 
-        if (isLastNestedLoop()) {
+        if (isLastNestedLoop(childItems)) {
             sourceCode.println("&{emmitLine}");
         }
 
@@ -70,13 +70,5 @@ public class IterateOverTablePlanItem extends AbstractPlanItem {
         sourceCode.append("}\n");
     }
 
-    private boolean isLastNestedLoop() {
-        for (AbstractPlanItem childPlanItem : childItems) {
-            if (childPlanItem instanceof IterateOverTablePlanItem || childPlanItem instanceof IterateOverTableLeftJoinPlanItem) {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    
 }

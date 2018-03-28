@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.openhft.compiler.CompilerUtils;
 import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.Statement;
@@ -97,7 +98,7 @@ public class SqlCompiler {
         fullSourceCode.println("import " + SqlBuffer.class.getName() + ";");
         fullSourceCode.println("import " + combinedWorkingTable.getName() + ";");
         fullSourceCode.println("import " + outputRowClass.getName() + ";");
-        
+
         fullSourceCode.println("\n");
         fullSourceCode.print("public class ").print(processorClass).print(" extends ").print(SqlExecutor.class.getName()).println(" {");
         fullSourceCode.incLevel();
@@ -286,12 +287,12 @@ public class SqlCompiler {
 
                 @Override
                 public void visit(SelectExpressionItem selectExpressionItem) {
-                    ExpressionExecutor.ExpressionExecutorResult expressionExecutorResult = new ExpressionExecutor().executeExpression(selectExpressionItem.getExpression(), tableManager, sourceCode,"workingRow");
+                    ExpressionExecutor.ExpressionExecutorResult expressionExecutorResult = new ExpressionExecutor().executeExpression(selectExpressionItem.getExpression(), tableManager, sourceCode, "workingRow");
                     String fieldName;
                     if (selectExpressionItem.getAlias() != null) {
                         fieldName = selectExpressionItem.getAlias().getName();
                     } else {
-                        fieldName = expressionExecutorResult.resultType.getSimpleName().toLowerCase();
+                        fieldName = extractNameFromExpression(selectExpressionItem);
                     }
 
                     fieldName = chooseNewNameForField(generatedOutputFields, fieldName);
@@ -302,6 +303,16 @@ public class SqlCompiler {
         }
 
         return generatedOutputFields;
+    }
+
+    private String extractNameFromExpression(SelectExpressionItem expressionItem) {
+        Expression expression = expressionItem.getExpression();
+        if (expression instanceof Column) {
+            return ((Column) expression).getColumnName();
+        } else {
+            return "field";
+            //throw new IllegalStateException("Unimplemented extraction fields name from ["+expression.getClass().getName()+"]");
+        }
     }
 
     private String chooseNewNameForField(List<GeneratedOutputField> generatedOutputFields, String fieldBaseName) {
@@ -388,7 +399,7 @@ public class SqlCompiler {
     }
 
     private void generateProcessTableLoopStage(TableManager tableManager, ExecutionPlan executionPlan, StringBuilderWithPadding collectedSourceCodeSB, SourceCode sourceCode) {
-        collectedSourceCodeSB.println(tableManager.getCombinedWorkingTableRowClassName()+" combinedWorkingTable=new "+tableManager.getCombinedWorkingTableRowClassName()+"();");
+        collectedSourceCodeSB.println(tableManager.getCombinedWorkingTableRowClassName() + " combinedWorkingTable=new " + tableManager.getCombinedWorkingTableRowClassName() + "();");
         for (AbstractPlanItem planItem : executionPlan.getStage1LoopPlanItems()) {
             planItem.generateSourceCode(tableManager, collectedSourceCodeSB, sourceCode);
         }
@@ -411,7 +422,11 @@ public class SqlCompiler {
                 String generatedFieldName = "_" + generatedDataObjectFieldName + "_" + fieldName;
                 sb.append("public ").append(reflectionField.getType().getName()).append(" ").append(generatedFieldName).append("() {\n");
                 sb.incLevel();
+
+                sb.append("if(" + generatedDataObjectFieldName + "==null){ return "+getNullStringRepresentationForType(reflectionField.getType())+";}\n");
+
                 sb.append("return ").append(generatedDataObjectFieldName).append(".").append(table.getBuffer().getGetterMethod(fieldName)).append("();\n");
+
                 sb.decLevel();
                 sb.append("}\n");
             }
@@ -431,6 +446,26 @@ public class SqlCompiler {
         sb.decLevel();
         sb.append("}");
         return compileClass(packagePath, className, sb.toString());
+    }
+
+    private String getNullStringRepresentationForType(Class clazz) {
+        if (clazz == int.class) {
+            return "-1";
+        } else if (clazz == long.class) {
+            return "-1l";
+        } else if (clazz == float.class) {
+            return "-1f";
+        } else if (clazz == double.class) {
+            return "-1.0";
+        } else if (clazz == char.class) {
+            return "(char)-1";
+        } else if (clazz == short.class) {
+            return "(short)-1";
+        } else if (clazz == boolean.class) {
+            return "false";
+        } else {
+            return "null";
+        }
     }
 
     public static Class compileClass(String packagePath, String className, String sourceCode) {
