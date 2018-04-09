@@ -1,0 +1,49 @@
+/*00000008 42 00000108                   */  T 00000108
+/*0000000D 1E 00 00000008                */  JSR 00000015
+/*00000013 20 00                         */  RETN
+/*00000015 02 03                         */  RSADDI
+/*00000017 04 03 00000064                */  CONSTI 00000064
+/*0000001D 01 01 FFFFFFF8 0004           */  CPDOWNSP FFFFFFF8,0004
+/*00000025 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*0000002B 2A 00                         */  SAVEBP
+/*0000002D 1E 00 00000010                */  JSR 0000003D
+/*00000033 2B 00                         */  RESTOREBP
+/*00000035 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*0000003B 20 00                         */  RETN
+/*0000003D 02 03                         */  RSADDI
+/*0000003F 04 03 00000006                */  CONSTI 00000006
+/*00000045 04 03 00000005                */  CONSTI 00000005
+/*0000004B 1E 00 00000047                */  JSR 00000092
+/*00000051 05 00 0004 01                 */  ACTION PrintInteger(0004),01
+/*00000056 02 03                         */  RSADDI
+/*00000058 1E 00 0000006E                */  JSR 000000C6
+/*0000005E 05 00 0004 01                 */  ACTION PrintInteger(0004),01
+/*00000063 04 03 00000019                */  CONSTI 00000019
+/*00000069 1E 00 00000081                */  JSR 000000EA
+/*0000006F 27 01 FFFFFFFC 0004           */  CPTOPBP FFFFFFFC,0004
+/*00000077 29 03 FFFFFFFC                */  INCIBP FFFFFFFC
+/*0000007D 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*00000083 02 03                         */  RSADDI
+/*00000085 1E 00 00000041                */  JSR 000000C6
+/*0000008B 05 00 0004 01                 */  ACTION PrintInteger(0004),01
+/*00000090 20 00                         */  RETN
+/*00000092 03 01 FFFFFFFC 0004           */  CPTOPSP FFFFFFFC,0004
+/*0000009A 03 01 FFFFFFF4 0004           */  CPTOPSP FFFFFFF4,0004
+/*000000A2 14 20                         */  ADDII
+/*000000A4 01 01 FFFFFFF0 0004           */  CPDOWNSP FFFFFFF0,0004
+/*000000AC 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*000000B2 1D 00 0000000C                */  JMP 000000BE
+/*000000B8 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*000000BE 1B 00 FFFFFFF8                */  MOVSP FFFFFFF8
+/*000000C4 20 00                         */  RETN
+/*000000C6 27 01 FFFFFFFC 0004           */  CPTOPBP FFFFFFFC,0004
+/*000000CE 01 01 FFFFFFF8 0004           */  CPDOWNSP FFFFFFF8,0004
+/*000000D6 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*000000DC 1D 00 0000000C                */  JMP 000000E8
+/*000000E2 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*000000E8 20 00                         */  RETN
+/*000000EA 03 01 FFFFFFFC 0004           */  CPTOPSP FFFFFFFC,0004
+/*000000F2 26 01 FFFFFFFC 0004           */  CPDOWNBP FFFFFFFC,0004
+/*000000FA 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*00000100 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*00000106 20 00                         */  RETN

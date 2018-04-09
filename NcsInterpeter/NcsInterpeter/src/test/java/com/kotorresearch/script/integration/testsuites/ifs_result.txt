@@ -1,0 +1,6 @@
+int:
+	
+	48 #test else
+	98 #test success if
+	57 #test skip if
+	

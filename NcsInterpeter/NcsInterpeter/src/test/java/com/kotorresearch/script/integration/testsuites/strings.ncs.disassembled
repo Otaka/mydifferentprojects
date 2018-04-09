@@ -1,0 +1,49 @@
+/*00000008 42 00000111                   */  T 00000111
+/*0000000D 1E 00 00000008                */  JSR 00000015
+/*00000013 20 00                         */  RETN
+/*00000015 02 05                         */  RSADDS
+/*00000017 04 05 0002 str                */  CONSTS "ab"
+/*0000001D 01 01 FFFFFFF8 0004           */  CPDOWNSP FFFFFFF8,0004
+/*00000025 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*0000002B 02 05                         */  RSADDS
+/*0000002D 04 05 0002 str                */  CONSTS "cd"
+/*00000033 01 01 FFFFFFF8 0004           */  CPDOWNSP FFFFFFF8,0004
+/*0000003B 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*00000041 02 05                         */  RSADDS
+/*00000043 03 01 FFFFFFF4 0004           */  CPTOPSP FFFFFFF4,0004
+/*0000004B 01 01 FFFFFFF8 0004           */  CPDOWNSP FFFFFFF8,0004
+/*00000053 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*00000059 03 01 FFFFFFF4 0004           */  CPTOPSP FFFFFFF4,0004
+/*00000061 03 01 FFFFFFF4 0004           */  CPTOPSP FFFFFFF4,0004
+/*00000069 14 23                         */  ADDSS
+/*0000006B 05 00 0001 01                 */  ACTION PrintString(0001),01
+/*00000070 04 05 0003 str                */  CONSTS "123"
+/*00000077 04 05 0003 str                */  CONSTS "123"
+/*0000007E 0B 23                         */  EQUALSS
+/*00000080 05 00 0004 01                 */  ACTION PrintInteger(0004),01
+/*00000085 04 05 0003 str                */  CONSTS "123"
+/*0000008C 04 05 0003 str                */  CONSTS "123"
+/*00000093 0C 23                         */  NEQUALSS
+/*00000095 05 00 0004 01                 */  ACTION PrintInteger(0004),01
+/*0000009A 04 05 0003 str                */  CONSTS "456"
+/*000000A1 04 05 0003 str                */  CONSTS "123"
+/*000000A8 0B 23                         */  EQUALSS
+/*000000AA 05 00 0004 01                 */  ACTION PrintInteger(0004),01
+/*000000AF 04 05 0003 str                */  CONSTS "456"
+/*000000B6 04 05 0003 str                */  CONSTS "123"
+/*000000BD 0C 23                         */  NEQUALSS
+/*000000BF 05 00 0004 01                 */  ACTION PrintInteger(0004),01
+/*000000C4 03 01 FFFFFFF4 0004           */  CPTOPSP FFFFFFF4,0004
+/*000000CC 03 01 FFFFFFF4 0004           */  CPTOPSP FFFFFFF4,0004
+/*000000D4 0B 23                         */  EQUALSS
+/*000000D6 05 00 0004 01                 */  ACTION PrintInteger(0004),01
+/*000000DB 03 01 FFFFFFF4 0004           */  CPTOPSP FFFFFFF4,0004
+/*000000E3 03 01 FFFFFFF8 0004           */  CPTOPSP FFFFFFF8,0004
+/*000000EB 0B 23                         */  EQUALSS
+/*000000ED 05 00 0004 01                 */  ACTION PrintInteger(0004),01
+/*000000F2 03 01 FFFFFFF4 0004           */  CPTOPSP FFFFFFF4,0004
+/*000000FA 03 01 FFFFFFF8 0004           */  CPTOPSP FFFFFFF8,0004
+/*00000102 0C 23                         */  NEQUALSS
+/*00000104 05 00 0004 01                 */  ACTION PrintInteger(0004),01
+/*00000109 1B 00 FFFFFFF4                */  MOVSP FFFFFFF4
+/*0000010F 20 00                         */  RETN

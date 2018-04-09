@@ -58,10 +58,34 @@ public class Main {
         }
     }
 
+    private static void convertTpcTexturesFromFolder(String folderWithTpc, String destinationFolder) throws IOException {
+        File sourceDir = new File(folderWithTpc);
+        if (!sourceDir.exists()) {
+            throw new IllegalArgumentException("Cannot find folder [" + folderWithTpc + "]");
+        }
+        File[] textureFiles = sourceDir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".tpc");
+            }
+        });
+        for (File tpcFile : textureFiles) {
+            System.out.println("Process file "+tpcFile.getName());
+            try{
+            FileReaderTpc readerTpc = new FileReaderTpc();
+            TpcTexture texture = readerTpc.loadFile(new FileInputStream(tpcFile), (int) tpcFile.length(), tpcFile.getName());
+            new TpcConverter().saveTpcAsPng(texture, new File(destinationFolder,tpcFile.getName()+".png"));
+            }catch(Exception ex){
+                System.out.println("ERROR while processing: "+tpcFile.getName());
+            }
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println("Start processing");
+        convertTpcTexturesFromFolder("g:\\kotor_Extracted\\extracted\\erf\\tpa\\", "g:\\kotor_Extracted\\extracted\\erf\\tpa_converted\\");
         //tryToExtractTextures("swpc_tex_gui.erf");
-        tryToExtractTextures("swpc_tex_tpa.erf");
+        //tryToExtractTextures("swpc_tex_tpa.erf");
         /*FileReaderErf erfReader = new FileReaderErf();
          File file = new File("h:\\Games\\Games\\StarWarsKnightsOfTheOldRepublic\\TexturePacks\\swpc_tex_gui.erf");
          Erf erf = erfReader.loadFile(new FileInputStream(file), file);

@@ -1,0 +1,5 @@
+string:
+	before_closure
+	after_closure
+	MyStringVarFromClosure
+	argToDelayedFunction

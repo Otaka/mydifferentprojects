@@ -1,0 +1,4 @@
+int:
+	11 #function add
+	100#get from global
+	26 #setGlobal

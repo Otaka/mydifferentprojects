@@ -1,0 +1,29 @@
+/*00000008 42 000000FB                   */  T 000000FB
+/*0000000D 1E 00 00000008                */  JSR 00000015
+/*00000013 20 00                         */  RETN
+/*00000015 04 05 000E str                */  CONSTS "before_closure"
+/*00000027 05 00 0001 01                 */  ACTION PrintString(0001),01
+/*0000002C 2C 10 00000000 00000000       */  STORE_STATE 00000000,00000000
+/*00000036 1D 00 00000035                */  JMP 0000006B
+/*0000003C 04 05 0024 str                */  CONSTS "hello_from_closure_without_variables"
+/*00000064 05 00 0001 01                 */  ACTION PrintString(0001),01
+/*00000069 20 00                         */  RETN
+/*0000006B 04 04 00000000                */  CONSTF 0.0
+/*00000071 05 00 0007 02                 */  ACTION DelayCommand(0007),02
+/*00000076 04 05 000D str                */  CONSTS "after_closure"
+/*00000087 05 00 0001 01                 */  ACTION PrintString(0001),01
+/*0000008C 1E 00 00000008                */  JSR 00000094
+/*00000092 20 00                         */  RETN
+/*00000094 02 05                         */  RSADDS
+/*00000096 04 05 0021 str                */  CONSTS "message_from_closureWithVariables"
+/*000000BB 01 01 FFFFFFF8 0004           */  CPDOWNSP FFFFFFF8,0004
+/*000000C3 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*000000C9 2C 10 00000000 00000004       */  STORE_STATE 00000000,00000004
+/*000000D3 1D 00 00000015                */  JMP 000000E8
+/*000000D9 03 01 FFFFFFFC 0004           */  CPTOPSP FFFFFFFC,0004
+/*000000E1 05 00 0001 01                 */  ACTION PrintString(0001),01
+/*000000E6 20 00                         */  RETN
+/*000000E8 04 04 00000000                */  CONSTF 0.0
+/*000000EE 05 00 0007 02                 */  ACTION DelayCommand(0007),02
+/*000000F3 1B 00 FFFFFFFC                */  MOVSP FFFFFFFC
+/*000000F9 20 00                         */  RETN

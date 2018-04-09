@@ -1,0 +1,21 @@
+int:
+	0 #!8
+	1 #!0
+	0 #!(-65)
+	
+	6  #4|2
+	14 #30&15
+	19 #25^10
+	
+	#increment variable
+	66
+	
+	#decrement variable
+	99
+	
+	#increment global
+	201
+	#decrement global
+	299
+	#set global variable
+	1000

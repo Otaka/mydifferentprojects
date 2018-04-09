@@ -14,6 +14,33 @@ public class KeyResource {
         this.resId = resId;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 59 * hash + this.resId;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final KeyResource other = (KeyResource) obj;
+        if (this.resId != other.resId) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+
     public String getResRef() {
         return resRef;
     }

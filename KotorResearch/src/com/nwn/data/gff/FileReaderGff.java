@@ -1,5 +1,7 @@
-package com.nwn.data;
+package com.nwn.data.gff;
 
+import com.nwn.data.BaseReader;
+import com.nwn.data.NwnByteArrayInputStream;
 import com.nwn.data.gff.GffStructure;
 import com.nwn.data.gff.GffFieldType;
 import com.nwn.data.gff.Gff;

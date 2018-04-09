@@ -5,13 +5,12 @@ import java.util.*;
 /**
  * @author sad
  */
-public class ListIndicies {
+class ListIndicies {
+
     private List<int[]> indicies = new ArrayList<>();
-    ;
+
     private HashMap<Integer, int[]> byteOffsetToIndiciesArray = new HashMap<>();
 
-    ;
-    
     public ListIndicies() {
     }
 

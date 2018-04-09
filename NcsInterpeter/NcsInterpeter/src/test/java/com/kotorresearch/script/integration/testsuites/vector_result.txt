@@ -1,0 +1,31 @@
+float:
+	12.0
+	2.0
+	3.0
+	13.0
+	
+	#vector add
+	6
+	8
+	10
+	
+	#vector sub
+	4
+	4
+	4
+	
+	#vector div on float
+	35.0
+	45.0
+	40.0
+	
+	#vector mul on float
+	140.0
+	180.0
+	160.0
+	
+	#float mul on vector
+	3
+	6
+	9
+	

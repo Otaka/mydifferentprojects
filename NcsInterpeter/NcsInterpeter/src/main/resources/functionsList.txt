@@ -1,0 +1,772 @@
+﻿0	int	Random	int nMaxInteger	used
+1	void	PrintString	string sString	used
+2	void	PrintFloat	float fFloat	 int nWidth	 int nDecimals	not_used
+3	string	FloatToString	float fFloat	 int nWidth	 int nDecimals	used
+4	void	PrintInteger	int nInteger	not_used
+5	void	PrintObject	object oObject	not_used
+6	void	AssignCommand	object oActionSubject	action aActionToAssign	used
+7	void	DelayCommand	float fSeconds	action aActionToDelay	used
+8	void	ExecuteScript	string sScript	object oTarget	int nScriptVar	used
+9	void	ClearAllActions		used
+10	void	SetFacing	float fDirection	used
+11	int	SwitchPlayerCharacter	int nNPC	not_used
+12	void	SetTime	int nHour	int nMinute	int nSecond	int nMillisecond	not_used
+13	int	SetPartyLeader	int nNPC	used
+14	void	SetAreaUnescapable	int bUnescapable	used
+15	int	GetAreaUnescapable		not_used
+16	int	GetTimeHour		not_used
+17	int	GetTimeMinute		not_used
+18	int	GetTimeSecond		not_used
+19	int	GetTimeMillisecond		not_used
+20	void	ActionRandomWalk		used
+21	void	ActionMoveToLocation	location lDestination	int bRun	used
+22	void	ActionMoveToObject	object oMoveTo	int bRun	float fRange	used
+23	void	ActionMoveAwayFromObject	object oFleeFrom	int bRun	float fMoveAwayRange	used
+24	object	GetArea	object oTarget	used
+25	object	GetEnteringObject		used
+26	object	GetExitingObject		used
+27	vector	GetPosition	object oTarget	used
+28	float	GetFacing	object oTarget	used
+29	object	GetItemPossessor	object oItem	used
+30	object	GetItemPossessedBy	object oCreature	string sItemTag	used
+31	object	CreateItemOnObject	string sItemTemplate	object oTarget	int nStackSize	used
+32	void	ActionEquipItem	object oItem	int nInventorySlot	int bInstant	used
+33	void	ActionUnequipItem	object oItem	int bInstant	used
+34	void	ActionPickUpItem	object oItem	not_used
+35	void	ActionPutDownItem	object oItem	not_used
+36	object	GetLastAttacker	object oAttackee	used
+37	void	ActionAttack	object oAttackee	int bPassive	used
+38	object	GetNearestCreature	int nFirstCriteriaType	int nFirstCriteriaValue	object oTarget	int nNth	int nSecondCriteriaType	int nSecondCriteriaValue	int nThirdCriteriaType	int nThirdCriteriaValue	used
+39	void	ActionSpeakString	string sStringToSpeak	int nTalkVolume	not_used
+40	void	ActionPlayAnimation	int nAnimation	float fSpeed	float fDurationSeconds	used
+41	float	GetDistanceToObject	object oObject	used
+42	int	GetIsObjectValid	object oObject	used
+43	void	ActionOpenDoor	object oDoor	used
+44	void	ActionCloseDoor	object oDoor	used
+45	void	SetCameraFacing	float fDirection	not_used
+46	void	PlaySound	string sSoundName	used
+47	object	GetSpellTargetObject		used
+48	void	ActionCastSpellAtObject	int nSpell	object oTarget	int nMetaMagic	int bCheat	int nDomainLevel	int nProjectilePathType	int bInstantSpell	not_used
+49	int	GetCurrentHitPoints	object oObject	used
+50	int	GetMaxHitPoints	object oObject	used
+51	effect	EffectAssuredHit		used
+52	object	GetLastItemEquipped		not_used
+53	int	GetSubScreenID		not_used
+54	void	CancelCombat	object oidCreature	used
+55	int	GetCurrentForcePoints	object oObject	not_used
+56	int	GetMaxForcePoints	object oObject	not_used
+57	void	PauseGame	int bPause	used
+58	void	SetPlayerRestrictMode	int bRestrict	not_used
+59	int	GetStringLength	string sString	used
+60	string	GetStringUpperCase	string sString	not_used
+61	string	GetStringLowerCase	string sString	not_used
+62	string	GetStringRight	string sString	int nCount	used
+63	string	GetStringLeft	string sString	int nCount	used
+64	string	InsertString	string sDestination	string sString	int nPosition	not_used
+65	string	GetSubString	string sString	int nStart	int nCount	used
+66	int	FindSubString	string sString	string sSubString	used
+67	float	fabs	float fValue	not_used
+68	float	cos	float fValue	not_used
+69	float	sin	float fValue	not_used
+70	float	tan	float fValue	not_used
+71	float	acos	float fValue	not_used
+72	float	asin	float fValue	not_used
+73	float	atan	float fValue	not_used
+74	float	log	float fValue	not_used
+75	float	pow	float fValue	float fExponent	not_used
+76	float	sqrt	float fValue	not_used
+77	int	abs	int nValue	used
+78	effect	EffectHeal	int nDamageToHeal	used
+79	effect	EffectDamage	int nDamageAmount	int nDamageType	int nDamagePower	used
+80	effect	EffectAbilityIncrease	int nAbilityToIncrease	int nModifyBy	used
+81	effect	EffectDamageResistance	int nDamageType	int nAmount	int nLimit	used
+82	effect	EffectResurrection		used
+83	int	GetPlayerRestrictMode	object oObject	used
+84	int	GetCasterLevel	object oCreature	used
+85	effect	GetFirstEffect	object oCreature	used
+86	effect	GetNextEffect	object oCreature	used
+87	void	RemoveEffect	object oCreature	effect eEffect	used
+88	int	GetIsEffectValid	effect eEffect	used
+89	int	GetEffectDurationType	effect eEffect	not_used
+90	int	GetEffectSubType	effect eEffect	not_used
+91	object	GetEffectCreator	effect eEffect	used
+92	string	IntToString	int nInteger	used
+93	object	GetFirstObjectInArea	object oArea	int nObjectFilter	used
+94	object	GetNextObjectInArea	object oArea	int nObjectFilter	used
+95	int	d2	int nNumDice	used
+96	int	d3	int nNumDice	used
+97	int	d4	int nNumDice	used
+98	int	d6	int nNumDice	used
+99	int	d8	int nNumDice	used
+100	int	d10	int nNumDice	used
+101	int	d12	int nNumDice	used
+102	int	d20	int nNumDice	used
+103	int	d100	int nNumDice	used
+104	float	VectorMagnitude	vector vVector	not_used
+105	int	GetMetaMagicFeat		used
+106	int	GetObjectType	object oTarget	used
+107	int	GetRacialType	object oCreature	used
+108	int	FortitudeSave	object oCreature	int nDC	int nSaveType	object oSaveVersus	used
+109	int	ReflexSave	object oCreature	int nDC	int nSaveType	object oSaveVersus	used
+110	int	WillSave	object oCreature	int nDC	int nSaveType	object oSaveVersus	used
+111	int	GetSpellSaveDC		used
+112	effect	MagicalEffect	effect eEffect	not_used
+113	effect	SupernaturalEffect	effect eEffect	not_used
+114	effect	ExtraordinaryEffect	effect eEffect	not_used
+115	effect	EffectACIncrease	int nValue	int nModifyType	int nDamageType	used
+116	int	GetAC	object oObject	int nForFutureUse	not_used
+117	effect	EffectSavingThrowIncrease	int nSave	int nValue	int nSaveType	used
+118	effect	EffectAttackIncrease	int nBonus	int nModifierType	used
+119	effect	EffectDamageReduction	int nAmount	int nDamagePower	int nLimit	not_used
+120	effect	EffectDamageIncrease	int nBonus	int nDamageType	used
+121	float	RoundsToSeconds	int nRounds	used
+122	float	HoursToSeconds	int nHours	used
+123	float	TurnsToSeconds	int nTurns	not_used
+124	void	SoundObjectSetFixedVariance	object oSound	float fFixedVariance	not_used
+125	int	GetGoodEvilValue	object oCreature	used
+126	int	GetPartyMemberCount		used
+127	int	GetAlignmentGoodEvil	object oCreature	not_used
+128	object	GetFirstObjectInShape	int nShape	float fSize	location lTarget	int bLineOfSight	int nObjectFilter	vector vOrigin	used
+129	object	GetNextObjectInShape	int nShape	float fSize	location lTarget	int bLineOfSight	int nObjectFilter	vector vOrigin	used
+130	effect	EffectEntangle		used
+131	void	SignalEvent	object oObject	event evToRun	used
+132	event	EventUserDefined	int nUserDefinedEventNumber	used
+133	effect	EffectDeath	int nSpectacularDeath	int nDisplayFeedback	used
+134	effect	EffectKnockdown		not_used
+135	void	ActionGiveItem	object oItem	object oGiveTo	used
+136	void	ActionTakeItem	object oItem	object oTakeFrom	used
+137	vector	VectorNormalize	vector vVector	not_used
+138	int	GetItemStackSize	object oItem	used
+139	int	GetAbilityScore	object oCreature	int nAbilityType	used
+140	int	GetIsDead	object oCreature	used
+141	void	PrintVector	vector vVector	int bPrepend	not_used
+142	vector	Vector	float x	float y	float z	used
+143	void	SetFacingPoint	vector vTarget	used
+144	vector	AngleToVector	float fAngle	not_used
+145	float	VectorToAngle	vector vVector	not_used
+146	int	TouchAttackMelee	object oTarget	int bDisplayFeedback	not_used
+147	int	TouchAttackRanged	object oTarget	int bDisplayFeedback	not_used
+148	effect	EffectParalyze		used
+149	effect	EffectSpellImmunity	int nImmunityToSpell	not_used
+150	void	SetItemStackSize	object oItem	int nStackSize	used
+151	float	GetDistanceBetween	object oObjectA	object oObjectB	used
+152	void	SetReturnStrref	int bShow	int srStringRef	int srReturnQueryStrRef	used
+153	effect	EffectForceJump	object oTarget	int nAdvanced	not_used
+154	effect	EffectSleep		not_used
+155	object	GetItemInSlot	int nInventorySlot	object oCreature	used
+156	effect	EffectTemporaryForcePoints	int nTempForce	used
+157	effect	EffectConfused		not_used
+158	effect	EffectFrightened		not_used
+159	effect	EffectChoke		used
+160	void	SetGlobalString	string sIdentifier	string sValue	used
+161	effect	EffectStunned		used
+162	void	SetCommandable	int bCommandable	object oTarget	used
+163	int	GetCommandable	object oTarget	used
+164	effect	EffectRegenerate	int nAmount	float fIntervalSeconds	used
+165	effect	EffectMovementSpeedIncrease	int nNewSpeedPercent	used
+166	int	GetHitDice	object oCreature	used
+167	void	ActionForceFollowObject	object oFollow	float fFollowDistance	not_used
+168	string	GetTag	object oObject	used
+169	int	ResistForce	object oSource	object oTarget	used
+170	int	GetEffectType	effect eEffect	used
+171	effect	EffectAreaOfEffect	int nAreaEffectId	string sOnEnterScript	string sHeartbeatScript	string sOnExitScript	not_used
+172	int	GetFactionEqual	object oFirstObject	object oSecondObject	used
+173	void	ChangeFaction	object oObjectToChangeFaction	object oMemberOfFactionToJoin	not_used
+174	int	GetIsListening	object oObject	not_used
+175	void	SetListening	object oObject	int bValue	used
+176	void	SetListenPattern	object oObject	string sPattern	int nNumber	used
+177	int	TestStringAgainstPattern	string sPattern	string sStringToTest	not_used
+178	string	GetMatchedSubstring	int nString	not_used
+179	int	GetMatchedSubstringsCount		not_used
+180	effect	EffectVisualEffect	int nVisualEffectId	int nMissEffect	used
+181	object	GetFactionWeakestMember	object oFactionMember	int bMustBeVisible	not_used
+182	object	GetFactionStrongestMember	object oFactionMember	int bMustBeVisible	not_used
+183	object	GetFactionMostDamagedMember	object oFactionMember	int bMustBeVisible	not_used
+184	object	GetFactionLeastDamagedMember	object oFactionMember	int bMustBeVisible	not_used
+185	int	GetFactionGold	object oFactionMember	not_used
+186	int	GetFactionAverageReputation	object oSourceFactionMember	object oTarget	not_used
+187	int	GetFactionAverageGoodEvilAlignment	object oFactionMember	not_used
+188	float	SoundObjectGetFixedVariance	object oSound	not_used
+189	int	GetFactionAverageLevel	object oFactionMember	not_used
+190	int	GetFactionAverageXP	object oFactionMember	not_used
+191	int	GetFactionMostFrequentClass	object oFactionMember	not_used
+192	object	GetFactionWorstAC	object oFactionMember	int bMustBeVisible	not_used
+193	object	GetFactionBestAC	object oFactionMember	int bMustBeVisible	not_used
+194	string	GetGlobalString	string sIdentifier	used
+195	int	GetListenPatternNumber		used
+196	void	ActionJumpToObject	object oToJumpTo	int bWalkStraightLineToPoint	used
+197	object	GetWaypointByTag	string sWaypointTag	used
+198	object	GetTransitionTarget	object oTransition	not_used
+199	effect	EffectLinkEffects	effect eChildEffect	effect eParentEffect	used
+200	object	GetObjectByTag	string sTag	int nNth	used
+201	void	AdjustAlignment	object oSubject	int nAlignment	int nShift	used
+202	void	ActionWait	float fSeconds	used
+203	void	SetAreaTransitionBMP	int nPredefinedAreaTransition	string sCustomAreaTransitionBMP	not_used
+204	void	ActionStartConversation	object oObjectToConverse	string sDialogResRef	int bPrivateConversation	int nConversationType	int bIgnoreStartRange	string sNameObjectToIgnore1	string sNameObjectToIgnore2	string sNameObjectToIgnore3	string sNameObjectToIgnore4	string sNameObjectToIgnore5	string sNameObjectToIgnore6	int bUseLeader	used
+205	void	ActionPauseConversation		used
+206	void	ActionResumeConversation		used
+207	effect	EffectBeam	int nBeamVisualEffect	object oEffector	int nBodyPart	int bMissEffect	used
+208	int	GetReputation	object oSource	object oTarget	not_used
+209	void	AdjustReputation	object oTarget	object oSourceFactionMember	int nAdjustment	used
+210	string	GetModuleFileName		used
+211	object	GetGoingToBeAttackedBy	object oTarget	not_used
+212	effect	EffectForceResistanceIncrease	int nValue	used
+213	location	GetLocation	object oObject	used
+214	void	ActionJumpToLocation	location lLocation	used
+215	location	Location	vector vPosition	float fOrientation	used
+216	void	ApplyEffectAtLocation	int nDurationType	effect eEffect	location lLocation	float fDuration	used
+217	int	GetIsPC	object oCreature	used
+218	float	FeetToMeters	float fFeet	not_used
+219	float	YardsToMeters	float fYards	not_used
+220	void	ApplyEffectToObject	int nDurationType	effect eEffect	object oTarget	float fDuration	used
+221	void	SpeakString	string sStringToSpeak	int nTalkVolume	used
+222	location	GetSpellTargetLocation		used
+223	vector	GetPositionFromLocation	location lLocation	not_used
+224	effect	EffectBodyFuel		used
+225	float	GetFacingFromLocation	location lLocation	not_used
+226	object	GetNearestCreatureToLocation	int nFirstCriteriaType	int nFirstCriteriaValue	 location lLocation	int nNth	int nSecondCriteriaType	int nSecondCriteriaValue	int nThirdCriteriaType	 int nThirdCriteriaValue	not_used
+227	object	GetNearestObject	int nObjectType	object oTarget	int nNth	used
+228	object	GetNearestObjectToLocation	int nObjectType	location lLocation	int nNth	not_used
+229	object	GetNearestObjectByTag	string sTag	object oTarget	int nNth	used
+230	float	IntToFloat	int nInteger	used
+231	int	FloatToInt	float fFloat	used
+232	int	StringToInt	string sNumber	used
+233	float	StringToFloat	string sNumber	not_used
+234	void	 ActionCastSpellAtLocation	int nSpell	location lTargetLocation	int nMetaMagic	int bCheat	int nProjectilePathType	int bInstantSpell	not_used
+235	int	GetIsEnemy	object oTarget	object oSource	used
+236	int	GetIsFriend	object oTarget	object oSource	used
+237	int	GetIsNeutral	object oTarget	object oSource	used
+238	object	GetPCSpeaker		used
+239	string	GetStringByStrRef	int nStrRef	used
+240	void	ActionSpeakStringByStrRef	int nStrRef	int nTalkVolume	not_used
+241	void	DestroyObject	object oDestroy	float fDelay	int bNoFade	float fDelayUntilFade	used
+242	object	GetModule		used
+243	object	CreateObject	int nObjectType	string sTemplate	location lLocation	int bUseAppearAnimation	used
+244	event	EventSpellCastAt	object oCaster	int nSpell	int bHarmful	used
+245	object	GetLastSpellCaster		used
+246	int	GetLastSpell		not_used
+247	int	GetUserDefinedEventNumber		used
+248	int	GetSpellId		used
+249	string	RandomName		not_used
+250	effect	EffectPoison	int nPoisonType	used
+251	int	GetLoadFromSaveGame		used
+252	effect	EffectAssuredDeflection	int nReturn	not_used
+253	string	GetName	object oObject	used
+254	object	GetLastSpeaker		used
+255	int	BeginConversation	string sResRef	object oObjectToDialog	used
+256	object	GetLastPerceived		used
+257	int	GetLastPerceptionHeard		not_used
+258	int	GetLastPerceptionInaudible		not_used
+259	int	GetLastPerceptionSeen		used
+260	object	GetLastClosedBy		not_used
+261	int	GetLastPerceptionVanished		used
+262	object	GetFirstInPersistentObject	object oPersistentObject	int nResidentObjectType	int nPersistentZone	used
+263	object	GetNextInPersistentObject	object oPersistentObject	int nResidentObjectType	int nPersistentZone	used
+264	object	GetAreaOfEffectCreator	object oAreaOfEffectObject	not_used
+265	int	ShowLevelUpGUI		used
+266	void	SetItemNonEquippable	object oItem	int bNonEquippable	not_used
+267	int	GetButtonMashCheck		not_used
+268	void	SetButtonMashCheck	int nCheck	used
+269	effect	EffectForcePushTargeted	location lCentre	int nIgnoreTestDirectLine	used
+270	effect	EffectHaste		not_used
+271	void	GiveItem	object oItem	object oGiveTo	not_used
+272	string	ObjectToString	object oObject	used
+273	effect	EffectImmunity	int nImmunityType	used
+274	int	GetIsImmune	object oCreature	int nImmunityType	object oVersus	not_used
+275	effect	EffectDamageImmunityIncrease	int nDamageType	int nPercentImmunity	used
+276	int	GetEncounterActive	object oEncounter	used
+277	void	SetEncounterActive	int nNewValue	object oEncounter	used
+278	int	GetEncounterSpawnsMax	object oEncounter	not_used
+279	void	SetEncounterSpawnsMax	int nNewValue	object oEncounter	not_used
+280	int	GetEncounterSpawnsCurrent	object oEncounter	not_used
+281	void	SetEncounterSpawnsCurrent	int nNewValue	object oEncounter	not_used
+282	object	GetModuleItemAcquired		used
+283	object	GetModuleItemAcquiredFrom		not_used
+284	void	SetCustomToken	int nCustomTokenNumber	string sTokenValue	used
+285	int	GetHasFeat	int nFeat	object oCreature	used
+286	int	GetHasSkill	int nSkill	object oCreature	not_used
+287	void	ActionUseFeat	int nFeat	object oTarget	not_used
+288	void	ActionUseSkill	int nSkill	object oTarget	int nSubSkill	object oItemUsed	not_used
+289	int	GetObjectSeen	object oTarget	object oSource	used
+290	int	GetObjectHeard	object oTarget	object oSource	not_used
+291	object	GetLastPlayerDied		used
+292	object	GetModuleItemLost		not_used
+293	object	GetModuleItemLostBy		not_used
+294	void	ActionDoCommand	action aActionToDo	used
+295	event	EventConversation		not_used
+296	void	SetEncounterDifficulty	int nEncounterDifficulty	object oEncounter	not_used
+297	int	GetEncounterDifficulty	object oEncounter	not_used
+298	float	GetDistanceBetweenLocations	location lLocationA	location lLocationB	not_used
+299	int	GetReflexAdjustedDamage	int nDamage	object oTarget	int nDC	int nSaveType	object oSaveVersus	used
+300	void	PlayAnimation	int nAnimation	float fSpeed	float fSeconds	used
+301	talent	TalentSpell	int nSpell	used
+302	talent	TalentFeat	int nFeat	used
+303	talent	TalentSkill	int nSkill	not_used
+304	int	GetHasSpellEffect	int nSpell	object oObject	used
+305	int	GetEffectSpellId	effect eSpellEffect	used
+306	int	GetCreatureHasTalent	talent tTalent	object oCreature	used
+307	talent	GetCreatureTalentRandom	int nCategory	object oCreature	int nInclusion	used
+308	talent	GetCreatureTalentBest	int nCategory	int nCRMax	object oCreature	int nInclusion	int nExcludeType	int nExcludeId	used
+309	void	ActionUseTalentOnObject	talent tChosenTalent	object oTarget	used
+310	void	ActionUseTalentAtLocation	talent tChosenTalent	location lTargetLocation	not_used
+311	int	GetGoldPieceValue	object oItem	not_used
+312	int	GetIsPlayableRacialType	object oCreature	not_used
+313	void	JumpToLocation	location lDestination	used
+314	effect	EffectTemporaryHitpoints	int nHitPoints	used
+315	int	GetSkillRank	int nSkill	object oTarget	used
+316	object	GetAttackTarget	object oCreature	used
+317	int	GetLastAttackType	object oCreature	not_used
+318	int	GetLastAttackMode	object oCreature	not_used
+319	float	GetDistanceBetween2D	object oObjectA	object oObjectB	used
+320	int	GetIsInCombat	object oCreature	used
+321	int	GetLastAssociateCommand	object oAssociate	not_used
+322	void	GiveGoldToCreature	object oCreature	int nGP	used
+323	void	SetIsDestroyable	int bDestroyable	int bRaiseable	int bSelectableWhenDead	used
+324	void	SetLocked	object oTarget	int bLocked	used
+325	int	GetLocked	object oTarget	not_used
+326	object	GetClickingObject		not_used
+327	void	SetAssociateListenPatterns	object oTarget	not_used
+328	object	GetLastWeaponUsed	object oCreature	not_used
+329	void	ActionInteractObject	object oPlaceable	not_used
+330	object	GetLastUsedBy		used
+331	int	GetAbilityModifier	int nAbility	object oCreature	used
+332	int	GetIdentified	object oItem	not_used
+333	void	SetIdentified	object oItem	int bIdentified	not_used
+334	float	GetDistanceBetweenLocations2D	location lLocationA	location lLocationB	not_used
+335	float	GetDistanceToObject2D	object oObject	used
+336	object	GetBlockingDoor		used
+337	int	GetIsDoorActionPossible	object oTargetDoor	int nDoorAction	used
+338	void	DoDoorAction	object oTargetDoor	int nDoorAction	used
+339	object	GetFirstItemInInventory	object oTarget	used
+340	object	GetNextItemInInventory	object oTarget	used
+341	int	GetClassByPosition	int nClassPosition	object oCreature	used
+342	int	GetLevelByPosition	int nClassPosition	object oCreature	not_used
+343	int	GetLevelByClass	int nClassType	object oCreature	used
+344	int	GetDamageDealtByType	int nDamageType	not_used
+345	int	GetTotalDamageDealt		used
+346	object	GetLastDamager		used
+347	object	GetLastDisarmed		not_used
+348	object	GetLastDisturbed		not_used
+349	object	GetLastLocked		not_used
+350	object	GetLastUnlocked		not_used
+351	effect	EffectSkillIncrease	int nSkill	int nValue	used
+352	int	GetInventoryDisturbType		used
+353	object	GetInventoryDisturbItem		not_used
+354	void	ShowUpgradeScreen	object oItem	used
+355	effect	VersusAlignmentEffect	effect eEffect	int nLawChaos	int nGoodEvil	not_used
+356	effect	VersusRacialTypeEffect	effect eEffect	int nRacialType	not_used
+357	effect	VersusTrapEffect	effect eEffect	not_used
+358	int	GetGender	object oCreature	used
+359	int	GetIsTalentValid	talent tTalent	used
+360	void	ActionMoveAwayFromLocation	location lMoveAwayFrom	int bRun	float fMoveAwayRange	not_used
+361	object	GetAttemptedAttackTarget		used
+362	int	GetTypeFromTalent	talent tTalent	used
+363	int	GetIdFromTalent	talent tTalent	used
+364	void	PlayPazaak	int nOpponentPazaakDeck	string sEndScript	int nMaxWager	int bShowTutorial	object oOpponent	used
+365	int	GetLastPazaakResult		used
+366	void	DisplayFeedBackText	object oCreature	int nTextConstant	used
+367	void	AddJournalQuestEntry	string szPlotID	int nState	int bAllowOverrideHigher	used
+368	void	RemoveJournalQuestEntry	string szPlotID	used
+369	int	GetJournalEntry	string szPlotID	not_used
+370	int	PlayRumblePattern	int nPattern	used
+371	int	StopRumblePattern	int nPattern	not_used
+372	effect	EffectDamageForcePoints	int nDamage	used
+373	effect	EffectHealForcePoints	int nHeal	used
+374	void	SendMessageToPC	object oPlayer	string szMessage	not_used
+375	object	GetAttemptedSpellTarget		used
+376	object	GetLastOpenedBy		used
+377	int	GetHasSpell	int nSpell	object oCreature	used
+378	void	OpenStore	object oStore	object oPC	int nBonusMarkUp	int nBonusMarkDown	used
+379	void	ActionSurrenderToEnemies		used
+380	object	GetFirstFactionMember	object oMemberOfFaction	int bPCOnly	not_used
+381	object	GetNextFactionMember	object oMemberOfFaction	int bPCOnly	not_used
+382	void	ActionForceMoveToLocation	location lDestination	int bRun	float fTimeout	not_used
+383	void	ActionForceMoveToObject	object oMoveTo	int bRun	float fRange	float fTimeout	used
+384	int	GetJournalQuestExperience	string szPlotID	not_used
+385	void	JumpToObject	object oToJumpTo	int nWalkStraightLineToPoint	used
+386	void	SetMapPinEnabled	object oMapPin	int nEnabled	used
+387	effect	EffectHitPointChangeWhenDying	float fHitPointChangePerRound	not_used
+388	void	PopUpGUIPanel	object oPC	int nGUIPanel	not_used
+389	void	AddMultiClass	int nClassType	object oSource	used
+390	int	GetIsLinkImmune	object oTarget	effect eEffect	used
+391	effect	EffectDroidStun		used
+392	effect	EffectForcePushed		used
+393	void	GiveXPToCreature	object oCreature	int nXpAmount	used
+394	void	SetXP	object oCreature	int nXpAmount	not_used
+395	int	GetXP	object oCreature	used
+396	string	IntToHexString	int nInteger	not_used
+397	int	GetBaseItemType	object oItem	used
+398	int	GetItemHasItemProperty	object oItem	int nProperty	not_used
+399	void	ActionEquipMostDamagingMelee	object oVersus	int bOffHand	used
+400	void	ActionEquipMostDamagingRanged	object oVersus	used
+401	int	GetItemACValue	object oItem	not_used
+402	effect	EffectForceResisted	object oSource	used
+403	void	ExploreAreaForPlayer	object oArea	object oPlayer	not_used
+404	void	ActionEquipMostEffectiveArmor		not_used
+405	int	GetIsDay		not_used
+406	int	GetIsNight		not_used
+407	int	GetIsDawn		not_used
+408	int	GetIsDusk		not_used
+409	int	GetIsEncounterCreature	object oCreature	used
+410	object	GetLastPlayerDying		not_used
+411	location	GetStartingLocation		not_used
+412	void	ChangeToStandardFaction	object oCreatureToChange	int nStandardFaction	used
+413	void	SoundObjectPlay	object oSound	used
+414	void	SoundObjectStop	object oSound	used
+415	void	SoundObjectSetVolume	object oSound	int nVolume	not_used
+416	void	SoundObjectSetPosition	object oSound	vector vPosition	not_used
+417	void	SpeakOneLinerConversation	string sDialogResRef	object oTokenTarget	not_used
+418	int	GetGold	object oTarget	used
+419	object	GetLastRespawnButtonPresser		not_used
+420	effect	EffectForceFizzle		used
+421	void	SetLightsaberPowered	object oCreature	int bOverride	int bPowered	int bShowTransition	not_used
+422	int	GetIsWeaponEffective	object oVersus	int bOffHand	not_used
+423	int	GetLastSpellHarmful		used
+424	event	EventActivateItem	object oItem	location lTarget	object oTarget	not_used
+425	void	MusicBackgroundPlay	object oArea	used
+426	void	MusicBackgroundStop	object oArea	used
+427	void	MusicBackgroundSetDelay	object oArea	int nDelay	not_used
+428	void	MusicBackgroundChangeDay	object oArea	int nTrack	not_used
+429	void	MusicBackgroundChangeNight	object oArea	int nTrack	not_used
+430	void	MusicBattlePlay	object oArea	used
+431	void	MusicBattleStop	object oArea	used
+432	void	MusicBattleChange	object oArea	int nTrack	not_used
+433	void	AmbientSoundPlay	object oArea	not_used
+434	void	AmbientSoundStop	object oArea	not_used
+435	void	AmbientSoundChangeDay	object oArea	int nTrack	not_used
+436	void	AmbientSoundChangeNight	object oArea	int nTrack	not_used
+437	object	GetLastKiller		not_used
+438	object	GetSpellCastItem		not_used
+439	object	GetItemActivated		not_used
+440	object	GetItemActivator		not_used
+441	location	GetItemActivatedTargetLocation		not_used
+442	object	GetItemActivatedTarget		not_used
+443	int	GetIsOpen	object oObject	used
+444	void	TakeGoldFromCreature	int nAmount	object oCreatureToTakeFrom	int bDestroy	used
+445	int	GetIsInConversation	object oObject	used
+446	effect	EffectAbilityDecrease	int nAbility	int nModifyBy	used
+447	effect	EffectAttackDecrease	int nPenalty	int nModifierType	used
+448	effect	EffectDamageDecrease	int nPenalty	int nDamageType	not_used
+449	effect	EffectDamageImmunityDecrease	int nDamageType	int nPercentImmunity	not_used
+450	effect	EffectACDecrease	int nValue	int nModifyType	int nDamageType	used
+451	effect	EffectMovementSpeedDecrease	int nPercentChange	used
+452	effect	EffectSavingThrowDecrease	int nSave	int nValue	int nSaveType	used
+453	effect	EffectSkillDecrease	int nSkill	int nValue	not_used
+454	effect	EffectForceResistanceDecrease	int nValue	not_used
+455	int	GetPlotFlag	object oTarget	used
+456	void	SetPlotFlag	object oTarget	int nPlotFlag	used
+457	effect	EffectInvisibility	int nInvisibilityType	used
+458	effect	EffectConcealment	int nPercentage	not_used
+459	effect	EffectForceShield	int nShield	used
+460	effect	EffectDispelMagicAll	int nCasterLevel	not_used
+461	void	SetDialogPlaceableCamera	int nCameraId	used
+462	int	GetSoloMode		used
+463	effect	EffectDisguise	int nDisguiseAppearance	used
+464	int	GetMaxStealthXP		not_used
+465	effect	EffectTrueSeeing		used
+466	effect	EffectSeeInvisible		not_used
+467	effect	EffectTimeStop		not_used
+468	void	SetMaxStealthXP	int nMax	not_used
+469	effect	EffectBlasterDeflectionIncrease	int nChange	used
+470	effect	EffectBlasterDeflectionDecrease	int nChange	not_used
+471	effect	EffectHorrified		used
+472	effect	EffectSpellLevelAbsorption	int nMaxSpellLevelAbsorbed	int nTotalSpellLevelsAbsorbed	int nSpellSchool	not_used
+473	effect	EffectDispelMagicBest	int nCasterLevel	not_used
+474	int	GetCurrentStealthXP		not_used
+475	int	GetNumStackedItems	object oItem	used
+476	void	SurrenderToEnemies		used
+477	effect	EffectMissChance	int nPercentage	not_used
+478	void	SetCurrentStealthXP	int nCurrent	not_used
+479	int	GetCreatureSize	object oCreature	used
+480	void	AwardStealthXP	object oTarget	used
+481	int	GetStealthXPEnabled		not_used
+482	void	SetStealthXPEnabled	int bEnabled	used
+483	void	ActionUnlockObject	object oTarget	used
+484	void	ActionLockObject	object oTarget	not_used
+485	effect	EffectModifyAttacks	int nAttacks	used
+486	object	GetLastTrapDetected	object oTarget	not_used
+487	effect	EffectDamageShield	int nDamageAmount	int nRandomAmount	int nDamageType	not_used
+488	object	GetNearestTrapToObject	object oTarget	int nTrapDetected	not_used
+489	object	GetAttemptedMovementTarget		used
+490	object	GetBlockingCreature	object oTarget	used
+491	int	GetFortitudeSavingThrow	object oTarget	not_used
+492	int	GetWillSavingThrow	object oTarget	not_used
+493	int	GetReflexSavingThrow	object oTarget	not_used
+494	float	GetChallengeRating	object oCreature	not_used
+495	object	GetFoundEnemyCreature	object oTarget	used
+496	int	GetMovementRate	object oCreature	not_used
+497	int	GetSubRace	object oCreature	used
+498	int	GetStealthXPDecrement		not_used
+499	void	SetStealthXPDecrement	int nDecrement	not_used
+500	void	DuplicateHeadAppearance	object oidCreatureToChange	object oidCreatureToMatch	not_used
+501	void	ActionCastFakeSpellAtObject	int nSpell	object oTarget	int nProjectilePathType	used
+502	void	ActionCastFakeSpellAtLocation	int nSpell	location lTarget	int nProjectilePathType	not_used
+503	void	CutsceneAttack	object oTarget	int nAnimation	int nAttackResult	int nDamage	used
+504	void	SetCameraMode	object oPlayer	int nCameraMode	not_used
+505	void	SetLockOrientationInDialog	object oObject	int nValue	used
+506	void	SetLockHeadFollowInDialog	object oObject	int nValue	used
+507	void	CutsceneMove	object oObject	vector vPosition	int nRun	not_used
+508	void	EnableVideoEffect	int nEffectType	not_used
+509	void	StartNewModule	string sModuleName	string sWayPoint	string sMovie1	string sMovie2	string sMovie3	string sMovie4	string sMovie5	string sMovie6	used
+510	void	DisableVideoEffect		not_used
+511	int	GetWeaponRanged	object oItem	not_used
+512	void	DoSinglePlayerAutoSave		not_used
+513	int	GetGameDifficulty		not_used
+514	int	GetUserActionsPending		used
+515	void	RevealMap	vector vPoint	int nRadius	used
+516	void	SetTutorialWindowsEnabled	int bEnabled	not_used
+517	void	ShowTutorialWindow	int nWindow	not_used
+518	void	StartCreditSequence	int bTransparentBackground	not_used
+519	int	IsCreditSequenceInProgress		not_used
+520	void	SWMG_SetLateralAccelerationPerSecond	float fLAPS	not_used
+521	float	SWMG_GetLateralAccelerationPerSecond		not_used
+522	int	GetCurrentAction	object oObject	used
+523	float	GetDifficultyModifier		not_used
+524	int	GetAppearanceType	object oCreature	used
+525	void	FloatingTextStrRefOnCreature	int nStrRefToDisplay	object oCreatureToFloatAbove	int bBroadcastToFaction	not_used
+526	void	FloatingTextStringOnCreature	string sStringToDisplay	object oCreatureToFloatAbove	int bBroadcastToFaction	not_used
+527	int	GetTrapDisarmable	object oTrapObject	not_used
+528	int	GetTrapDetectable	object oTrapObject	not_used
+529	int	GetTrapDetectedBy	object oTrapObject	object oCreature	not_used
+530	int	GetTrapFlagged	object oTrapObject	not_used
+531	int	GetTrapBaseType	object oTrapObject	used
+532	int	GetTrapOneShot	object oTrapObject	not_used
+533	object	GetTrapCreator	object oTrapObject	not_used
+534	string	GetTrapKeyTag	object oTrapObject	not_used
+535	int	GetTrapDisarmDC	object oTrapObject	not_used
+536	int	GetTrapDetectDC	object oTrapObject	not_used
+537	int	GetLockKeyRequired	object oObject	not_used
+538	int	GetLockKeyTag	object oObject	not_used
+539	int	GetLockLockable	object oObject	not_used
+540	int	GetLockUnlockDC	object oObject	not_used
+541	int	GetLockLockDC	object oObject	not_used
+542	object	GetPCLevellingUp		not_used
+543	int	GetHasFeatEffect	int nFeat	object oObject	not_used
+544	void	SetPlaceableIllumination	object oPlaceable	int bIlluminate	not_used
+545	int	GetPlaceableIllumination	object oPlaceable	not_used
+546	int	GetIsPlaceableObjectActionPossible	object oPlaceable	int nPlaceableAction	not_used
+547	void	DoPlaceableObjectAction	object oPlaceable	int nPlaceableAction	not_used
+548	object	GetFirstPC		used
+549	object	GetNextPC		not_used
+550	int	SetTrapDetectedBy	object oTrap	object oDetector	not_used
+551	int	GetIsTrapped	object oObject	not_used
+552	effect	SetEffectIcon	effect eEffect	int nIcon	used
+553	void	FaceObjectAwayFromObject	object oFacer	object oObjectToFaceAwayFrom	not_used
+554	void	PopUpDeathGUIPanel	object oPC	int bRespawnButtonEnabled	int bWaitForHelpButtonEnabled	int nHelpStringReference	string sHelpString	not_used
+555	void	SetTrapDisabled	object oTrap	not_used
+556	object	GetLastHostileActor	object oVictim	used
+557	void	ExportAllCharacters		not_used
+558	int	MusicBackgroundGetDayTrack	object oArea	not_used
+559	int	MusicBackgroundGetNightTrack	object oArea	not_used
+560	void	WriteTimestampedLogEntry	string sLogEntry	not_used
+561	string	GetModuleName		not_used
+562	object	GetFactionLeader	object oMemberOfFaction	not_used
+563	void	SWMG_SetSpeedBlurEffect	int bEnabled	float fRatio	not_used
+564	void	EndGame	int nShowEndGameGui	used
+565	int	GetRunScriptVar		used
+566	int	GetCreatureMovmentType	object oidCreature	used
+567	void	AmbientSoundSetDayVolume	object oArea	int nVolume	not_used
+568	void	AmbientSoundSetNightVolume	object oArea	int nVolume	not_used
+569	int	MusicBackgroundGetBattleTrack	object oArea	used
+570	int	GetHasInventory	object oObject	used
+571	float	GetStrRefSoundDuration	int nStrRef	not_used
+572	void	AddToParty	object oPC	object oPartyLeader	not_used
+573	void	RemoveFromParty	object oPC	not_used
+574	int	AddPartyMember	int nNPC	object oCreature	used
+575	int	RemovePartyMember	int nNPC	used
+576	int	IsObjectPartyMember	object oCreature	used
+577	object	GetPartyMemberByIndex	int nIndex	used
+578	int	GetGlobalBoolean	string sIdentifier	used
+579	void	SetGlobalBoolean	string sIdentifier	int nValue	used
+580	int	GetGlobalNumber	string sIdentifier	used
+581	void	SetGlobalNumber	string sIdentifier	int nValue	used
+582	void	AurPostString	string sString	int nX	int nY	float fLife	used
+583	string	SWMG_GetLastEvent		not_used
+584	string	SWMG_GetLastEventModelName		not_used
+585	object	SWMG_GetObjectByName	string sName	not_used
+586	void	SWMG_PlayAnimation	object oObject	string sAnimName	int bLooping	int bQueue	int bOverlay	not_used
+587	int	SWMG_GetLastBulletHitDamage		not_used
+588	int	SWMG_GetLastBulletHitTarget		not_used
+589	object	SWMG_GetLastBulletHitShooter		not_used
+590	int	SWMG_AdjustFollowerHitPoints	object oFollower	int nHP	int nAbsolute	not_used
+591	void	SWMG_OnBulletHit		not_used
+592	void	SWMG_OnObstacleHit		not_used
+593	object	SWMG_GetLastFollowerHit		not_used
+594	object	SWMG_GetLastObstacleHit		not_used
+595	int	SWMG_GetLastBulletFiredDamage		not_used
+596	int	SWMG_GetLastBulletFiredTarget		not_used
+597	string	SWMG_GetObjectName	object oid	not_used
+598	void	SWMG_OnDeath		not_used
+599	int	SWMG_IsFollower	object oid	not_used
+600	int	SWMG_IsPlayer	object oid	not_used
+601	int	SWMG_IsEnemy	object oid	not_used
+602	int	SWMG_IsTrigger	object oid	not_used
+603	int	SWMG_IsObstacle	object oid	not_used
+604	void	SWMG_SetFollowerHitPoints	object oFollower	int nHP	not_used
+605	void	SWMG_OnDamage		not_used
+606	int	SWMG_GetLastHPChange		not_used
+607	void	SWMG_RemoveAnimation	object oObject	string sAnimName	not_used
+608	float	SWMG_GetCameraNearClip		not_used
+609	float	SWMG_GetCameraFarClip		not_used
+610	void	SWMG_SetCameraClip	float fNear	float fFar	not_used
+611	object	SWMG_GetPlayer		not_used
+612	int	SWMG_GetEnemyCount		not_used
+613	object	SWMG_GetEnemy	int nEntry	not_used
+614	int	SWMG_GetObstacleCount		not_used
+615	object	SWMG_GetObstacle	int nEntry	not_used
+616	int	SWMG_GetHitPoints	object oFollower	not_used
+617	int	SWMG_GetMaxHitPoints	object oFollower	not_used
+618	void	SWMG_SetMaxHitPoints	object oFollower	int nMaxHP	not_used
+619	float	SWMG_GetSphereRadius	object oFollower	not_used
+620	void	SWMG_SetSphereRadius	object oFollower	float fRadius	not_used
+621	int	SWMG_GetNumLoops	object oFollower	not_used
+622	void	SWMG_SetNumLoops	object oFollower	int nNumLoops	not_used
+623	vector	SWMG_GetPosition	object oFollower	not_used
+624	int	SWMG_GetGunBankCount	object oFollower	not_used
+625	string	SWMG_GetGunBankBulletModel	object oFollower	int nGunBank	not_used
+626	string	SWMG_GetGunBankGunModel	object oFollower	int nGunBank	not_used
+627	int	SWMG_GetGunBankDamage	object oFollower	int nGunBank	not_used
+628	float	SWMG_GetGunBankTimeBetweenShots	object oFollower	int nGunBank	not_used
+629	float	SWMG_GetGunBankLifespan	object oFollower	int nGunBank	not_used
+630	float	SWMG_GetGunBankSpeed	object oFollower	int nGunBank	not_used
+631	int	SWMG_GetGunBankTarget	object oFollower	int nGunBank	not_used
+632	void	SWMG_SetGunBankBulletModel	object oFollower	int nGunBank	string sBulletModel	not_used
+633	void	SWMG_SetGunBankGunModel	object oFollower	int nGunBank	string sGunModel	not_used
+634	void	SWMG_SetGunBankDamage	object oFollower	int nGunBank	int nDamage	not_used
+635	void	SWMG_SetGunBankTimeBetweenShots	object oFollower	int nGunBank	float fTBS	not_used
+636	void	SWMG_SetGunBankLifespan	object oFollower	int nGunBank	float fLifespan	not_used
+637	void	SWMG_SetGunBankSpeed	object oFollower	int nGunBank	float fSpeed	not_used
+638	void	SWMG_SetGunBankTarget	object oFollower	int nGunBank	int nTarget	not_used
+639	string	SWMG_GetLastBulletHitPart		not_used
+640	int	SWMG_IsGunBankTargetting	object oFollower	int nGunBank	not_used
+641	vector	SWMG_GetPlayerOffset		not_used
+642	float	SWMG_GetPlayerInvincibility		not_used
+643	float	SWMG_GetPlayerSpeed		not_used
+644	float	SWMG_GetPlayerMinSpeed		not_used
+645	float	SWMG_GetPlayerAccelerationPerSecond		not_used
+646	vector	SWMG_GetPlayerTunnelPos		not_used
+647	void	SWMG_SetPlayerOffset	vector vOffset	not_used
+648	void	SWMG_SetPlayerInvincibility	float fInvincibility	not_used
+649	void	SWMG_SetPlayerSpeed	float fSpeed	not_used
+650	void	SWMG_SetPlayerMinSpeed	float fMinSpeed	not_used
+651	void	SWMG_SetPlayerAccelerationPerSecond	float fAPS	not_used
+652	void	SWMG_SetPlayerTunnelPos	vector vTunnel	not_used
+653	vector	SWMG_GetPlayerTunnelNeg		not_used
+654	void	SWMG_SetPlayerTunnelNeg	vector vTunnel	not_used
+655	vector	SWMG_GetPlayerOrigin		not_used
+656	void	SWMG_SetPlayerOrigin	vector vOrigin	not_used
+657	float	SWMG_GetGunBankHorizontalSpread	object oEnemy	int nGunBank	not_used
+658	float	SWMG_GetGunBankVerticalSpread	object oEnemy	int nGunBank	not_used
+659	float	SWMG_GetGunBankSensingRadius	object oEnemy	int nGunBank	not_used
+660	float	SWMG_GetGunBankInaccuracy	object oEnemy	int nGunBank	not_used
+661	void	SWMG_SetGunBankHorizontalSpread	object oEnemy	int nGunBank	float fHorizontalSpread	not_used
+662	void	SWMG_SetGunBankVerticalSpread	object oEnemy	int nGunBank	float fVerticalSpread	not_used
+663	void	SWMG_SetGunBankSensingRadius	object oEnemy	int nGunBank	float fSensingRadius	not_used
+664	void	SWMG_SetGunBankInaccuracy	object oEnemy	int nGunBank	float fInaccuracy	not_used
+665	int	SWMG_GetIsInvulnerable	object oFollower	not_used
+666	void	SWMG_StartInvulnerability	object oFollower	not_used
+667	float	SWMG_GetPlayerMaxSpeed		not_used
+668	void	SWMG_SetPlayerMaxSpeed	float fMaxSpeed	not_used
+669	void	AddJournalWorldEntry	int nIndex	string szEntry	string szTitle	not_used
+670	void	AddJournalWorldEntryStrref	int strref	int strrefTitle	not_used
+671	void	BarkString	object oCreature	int strRef	used
+672	void	DeleteJournalWorldAllEntries		not_used
+673	void	DeleteJournalWorldEntry	int nIndex	not_used
+674	void	DeleteJournalWorldEntryStrref	int strref	not_used
+675	effect	EffectForceDrain	int nDamage	not_used
+676	effect	EffectPsychicStatic		used
+677	void	PlayVisualAreaEffect	int nEffectID	location lTarget	not_used
+678	void	SetJournalQuestEntryPicture	string szPlotID	object oObject	int nPictureIndex	int bAllPartyMemebers	int bAllPlayers	not_used
+679	int	GetLocalBoolean	object oObject	int nIndex	used
+680	void	SetLocalBoolean	object oObject	int nIndex	int nValue	used
+681	int	GetLocalNumber	object oObject	int nIndex	used
+682	void	SetLocalNumber	object oObject	int nIndex	int nValue	used
+683	int	SWMG_GetSoundFrequency	object oFollower	int nSound	not_used
+684	void	SWMG_SetSoundFrequency	object oFollower	int nSound	int nFrequency	not_used
+685	int	SWMG_GetSoundFrequencyIsRandom	object oFollower	int nSound	not_used
+686	void	SWMG_SetSoundFrequencyIsRandom	object oFollower	int nSound	int bIsRandom	not_used
+687	int	SWMG_GetSoundVolume	object oFollower	int nSound	not_used
+688	void	SWMG_SetSoundVolume	object oFollower	int nSound	int nVolume	not_used
+689	float	SoundObjectGetPitchVariance	object oSound	not_used
+690	void	SoundObjectSetPitchVariance	object oSound	float fVariance	not_used
+691	int	SoundObjectGetVolume	object oSound	not_used
+692	location	GetGlobalLocation	string sIdentifier	not_used
+693	void	SetGlobalLocation	string sIdentifier	location lValue	not_used
+694	int	AddAvailableNPCByObject	int nNPC	object oCreature	used
+695	int	RemoveAvailableNPC	int nNPC	not_used
+696	int	IsAvailableCreature	int nNPC	used
+697	int	AddAvailableNPCByTemplate	int nNPC	string sTemplate	used
+698	object	SpawnAvailableNPC	int nNPC	location lPosition	used
+699	int	IsNPCPartyMember	int nNPC	used
+700	void	ActionBarkString	int strRef	not_used
+701	int	GetIsConversationActive		used
+702	effect	EffectLightsaberThrow	object oTarget1	object oTarget2	object oTarget3	int nAdvancedDamage	used
+703	effect	EffectWhirlWind		used
+704	int	GetPartyAIStyle		used
+705	int	GetNPCAIStyle	object oCreature	used
+706	void	SetPartyAIStyle	int nStyle	not_used
+707	void	SetNPCAIStyle	object oCreature	int nStyle	used
+708	void	SetNPCSelectability	int nNPC	int nSelectability	used
+709	int	GetNPCSelectability	int nNPC	used
+710	void	ClearAllEffects		used
+711	string	GetLastConversation		not_used
+712	void	ShowPartySelectionGUI	string sExitScript	int nForceNPC1	int nForceNPC2	used
+713	int	GetStandardFaction	object oObject	used
+714	void	GivePlotXP	string sPlotName	int nPercentage	used
+715	int	GetMinOneHP	object oObject	not_used
+716	void	SetMinOneHP	object oObject	int nMinOneHP	used
+717	vector	SWMG_GetPlayerTunnelInfinite		not_used
+718	void	SWMG_SetPlayerTunnelInfinite	vector vInfinite	not_used
+719	void	SetGlobalFadeIn	float fWait	float fLength	float fR	float fG	float fB	used
+720	void	SetGlobalFadeOut	float fWait	float fLength	float fR	float fG	float fB	used
+721	object	GetLastHostileTarget	object oAttacker	used
+722	int	GetLastAttackAction	object oAttacker	used
+723	int	GetLastForcePowerUsed	object oAttacker	used
+724	int	GetLastCombatFeatUsed	object oAttacker	used
+725	int	GetLastAttackResult	object oAttacker	used
+726	int	GetWasForcePowerSuccessful	object oAttacker	used
+727	object	GetFirstAttacker	object oCreature	not_used
+728	object	GetNextAttacker	object oCreature	not_used
+729	void	SetFormation	object oAnchor	object oCreature	int nFormationPattern	int nPosition	not_used
+730	void	ActionFollowLeader		used
+731	void	SetForcePowerUnsuccessful	int nResult	object oCreature	not_used
+732	int	GetIsDebilitated	object oCreature	used
+733	void	PlayMovie	string sMovie	used
+734	void	SaveNPCState	int nNPC	used
+735	int	GetCategoryFromTalent	talent tTalent	used
+736	void	SurrenderByFaction	int nFactionFrom	int nFactionTo	not_used
+737	void	ChangeFactionByFaction	int nFactionFrom	int nFactionTo	not_used
+738	void	PlayRoomAnimation	string sRoom	int nAnimation	used
+739	void	ShowGalaxyMap	int nPlanet	used
+740	void	SetPlanetSelectable	int nPlanet	int bSelectable	used
+741	int	GetPlanetSelectable	int nPlanet	not_used
+742	void	SetPlanetAvailable	int nPlanet	int bAvailable	used
+743	int	GetPlanetAvailable	int nPlanet	not_used
+744	int	GetSelectedPlanet		used
+745	void	SoundObjectFadeAndStop	object oSound	float fSeconds	not_used
+746	void	SetAreaFogColor	object oArea	float fRed	float fGreen	float fBlue	not_used
+747	void	ChangeItemCost	string sItem	float fCostMultiplier	used
+748	int	GetIsLiveContentAvailable	int nPkg	used
+749	void	ResetDialogState		used
+750	void	SetGoodEvilValue	object oCreature	int nAlignment	not_used
+751	int	GetIsPoisoned	object oObject	used
+752	object	GetSpellTarget	object oCreature	used
+753	void	SetSoloMode	int bActivate	not_used
+754	effect	EffectCutSceneHorrified		not_used
+755	effect	EffectCutSceneParalyze		used
+756	effect	EffectCutSceneStunned		not_used
+757	void	CancelPostDialogCharacterSwitch		used
+758	void	SetMaxHitPoints	object oObject	int nMaxHP	used
+759	void	NoClicksFor	float fDuration	used
+760	void	HoldWorldFadeInForDialog		used
+761	int	ShipBuild		used
+762	void	SurrenderRetainBuffs		not_used
+763	void	SuppressStatusSummaryEntry	int nNumEntries	not_used
+764	int	GetCheatCode	int nCode	not_used
+765	void	SetMusicVolume	float fVolume	not_used
+766	object	CreateItemOnFloor	string sTemplate	location lLocation	int bUseAppearAnimation	not_used
+767	void	SetAvailableNPCId	INT nNPC	OBJECT_ID oidNPC	used
+768	int	IsMoviePlaying		not_used
+769	void	QueueMovie	string sMovie	int bSkippable	not_used
+770	void	PlayMovieQueue	int bAllowSeparateSkips	not_used
+771	void	YavinHackCloseDoor	object oidDoor	not_used
