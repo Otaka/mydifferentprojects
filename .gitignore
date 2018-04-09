@@ -30,6 +30,8 @@
 /CheckNp/dist
 /CheckNp/build
 /HexEditor/build
+/ExpressionLayout/target/
+/ExpressionLayout/nbactions.xml
 /HexEditor/nbproject/private/private.properties
 /HexEditor/nbproject/private/private.xml
 /KotorResearch/dist/KotorResearch.jar
@@ -48,5 +50,4 @@
 /jogl/nbproject/private/private.xml
 /jogl/nbproject/project.properties
 /jogl/nbproject/project.xml
-/NcsInterpeter/NcsInterpeter/target/
-/NcsInterpeter/NcsInterpeter/nbproject/
+/TestRuleProcessor/target/

@@ -12,8 +12,10 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
@@ -26,6 +28,7 @@ public class SqlExecutionTestRunner {
     public void checkTestFilesFromResourceFolder(String pathToResourceFolder) throws IOException, Exception {
         List<String> filesToCheck = getResourcesFromResourcesFolder(pathToResourceFolder, "txt");
         for (String file : filesToCheck) {
+            System.out.println("Check file "+file);
             runSqlFromTestFile(file);
         }
         System.out.println("Passed checking " + filesToCheck.size() + " sql test files");
@@ -97,6 +100,8 @@ public class SqlExecutionTestRunner {
             }
         }
 
+        Collections.sort(foundResources, (o1, o2) -> o1.compareToIgnoreCase(o2));
+
         return foundResources;
     }
 
@@ -138,7 +143,11 @@ public class SqlExecutionTestRunner {
                 Field f = buffer.getField(field);
                 f.setAccessible(true);
                 Object result = f.get(data);
-                sb.append(result.toString()).newEntry();
+                if (result == null) {
+                    sb.append("null").newEntry();
+                } else {
+                    sb.append(result.toString()).newEntry();
+                }
             }
             sb.skipNewEntry();
 

@@ -1,5 +1,5 @@
 title:
-Simple query from table
+Simple query from two tables(inner join) with simple condition field to field condition
 
 
 table:users

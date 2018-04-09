@@ -1,0 +1,26 @@
+title:
+query with left outer join
+
+table:tableA
+id#int, name#string
+0,John
+1,Harry
+2,Ann
+3,Maria
+
+table:tableJob
+id#int, job#string
+0,teacher
+1,driver
+3,designer
+
+
+sql:
+select a.id, a.name, b.job from tableA a left outer join tableJob b on a.id=b.id
+
+expectedResult:
+id,name,job
+0,John,teacher
+1,Harry,driver
+2,Ann,null
+3,Maria,designer

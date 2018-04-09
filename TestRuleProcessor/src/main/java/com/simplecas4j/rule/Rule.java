@@ -9,18 +9,41 @@ import java.util.List;
  */
 public class Rule {
 
-    private String name;
+    private RuleType type;
     private List<Rule> children;
     private String value;
     private List<String> attributes = new ArrayList<>();
+    private String description;
     private String label;
+    /**
+    Same_as_label it is mechanism that allows you to implement following rules: a/a =1 or (a+b)+(a+b)=2(a+b); It allows to search identical expressions
+     */
+    private String sameAsLabel;
 
-    public Rule(String name) {
-        this.name = name;
+    public String getDescription() {
+        return description;
     }
 
-    public Rule(String name, List<Rule> children) {
-        this.name = name;
+    public Rule setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public Rule setSameAsLabel(String sameAsLabel) {
+        this.sameAsLabel = sameAsLabel;
+        return this;
+    }
+
+    public String getSameAsLabel() {
+        return sameAsLabel;
+    }
+
+    public Rule(RuleType ruletype) {
+        this.type = ruletype;
+    }
+
+    public Rule(RuleType ruleType, List<Rule> children) {
+        this.type = ruleType;
         this.children = children;
     }
 
@@ -50,13 +73,13 @@ public class Rule {
         return value;
     }
 
-    public Rule setName(String name) {
-        this.name = name;
+    public Rule setRuleType(RuleType type) {
+        this.type = type;
         return this;
     }
 
-    public String getName() {
-        return name;
+    public RuleType getType() {
+        return type;
     }
 
     public Rule setChildren(List<Rule> children) {
@@ -82,4 +105,10 @@ public class Rule {
         children.add(rule);
         return this;
     }
+
+    @Override
+    public String toString() {
+        return getType() + "(" + getValue() + ")";
+    }
+
 }

@@ -5,12 +5,17 @@ import com.expressionlayout.interpreter.Interpreter;
 import com.expressionlayout.interpreter.NumberObject;
 import com.expressionlayout.interpreter.VariableResolver;
 
+
 /**
  * @author sad
  */
 public class Main {
 
     public static void main(String[] args) {
+        testPolishNotationInterpreter();
+    }
+
+    private static void testPolishNotationInterpreter() {
         Interpreter interpreter = new Interpreter();
         interpreter.addVariableResolver(new VariableResolver() {
             @Override
